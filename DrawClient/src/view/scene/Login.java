@@ -137,44 +137,44 @@ public class Login extends javax.swing.JFrame {
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
          
-        String username = txtUsername.getText();
-        String password = new String(txPassword.getPassword());
-        
-        if (username.equals("") || password.equals("") ) {
-            JOptionPane.showConfirmDialog(rootPane, "Vui lòng nhập đủ thông tin", "Error", 1);
-        } else {
-             login();
-        }
-        RunClient.socketHandler.login(username, password);
-
 //        String username = txtUsername.getText();
-//        String password = new String(txPassword.getPassword());
-//
-//        if (username.equals("") || password.equals("")) {
+//      String password = new String(txPassword.getPassword());
+//        
+//        if (username.equals("") || password.equals("") ) {
 //            JOptionPane.showConfirmDialog(rootPane, "Vui lòng nhập đủ thông tin", "Error", 1);
 //        } else {
-//            PreparedStatement pst = null;
-//            Connection conn = null;
-//            try {
-//                conn = JDBCConnection.getJDBCConnection();
-//                String sql = "SELECT * FROM user WHERE USERNAME =  ? AND PASSWORD = ?";
-//                pst = conn.prepareStatement(sql);
-//                pst.setString(1, username);
-//                pst.setString(2, password);
-//
-//                ResultSet resultSet = pst.executeQuery();
-//
-//                if (resultSet.next()) {
-//                    JOptionPane.showMessageDialog(null, "Login Successfully");
-//                } else {
-//                    JOptionPane.showConfirmDialog(rootPane, "Sai mật khẩu hoặc Username", "Login Error", 1);
-//                }
-//
-//            } catch (SQLException ex) {
-//                ex.printStackTrace();
-//            }
+//             login();
 //        }
-//        RunClient.socketHandler.login(username, password);
+//       RunClient.socketHandler.login(username, password);
+
+        String username = txtUsername.getText();
+       String password = new String(txPassword.getPassword());
+
+        if (username.equals("") || password.equals("")) {
+            JOptionPane.showConfirmDialog(rootPane, "Vui lòng nhập đủ thông tin", "Error", 1);
+        } else {
+            PreparedStatement pst = null;
+            Connection conn = null;
+            try {
+                conn = JDBCConnection.getJDBCConnection();
+                String sql = "SELECT * FROM user WHERE USERNAME =  ? AND PASSWORD = ?";
+                pst = conn.prepareStatement(sql);
+                pst.setString(1, username);
+                pst.setString(2, password);
+
+                ResultSet resultSet = pst.executeQuery();
+
+                if (resultSet.next()) {
+                    JOptionPane.showMessageDialog(null, "Login Successfully");
+                } else {
+                    JOptionPane.showConfirmDialog(rootPane, "Sai mật khẩu hoặc Username", "Login Error", 1);
+                }
+
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        RunClient.socketHandler.login(username, password);
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void btnSignupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSignupActionPerformed
@@ -244,23 +244,22 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
 
-    private void login() {
-        try {
-            Socket client = new Socket("localhost", 1234);
-            System.out.println("client sẵn sàng");
-            Scanner inFromServer = new Scanner(client.getInputStream());
-            PrintStream outToServer = new PrintStream(client.getOutputStream());
-            String a = txtUsername.getText();
-            String b = txPassword.getText();
-            outToServer.print(a);
-            System.out.println("server :" + inFromServer.nextLine());
-            outToServer.print(b);
-            String c = inFromServer.nextLine();
-            JOptionPane.showMessageDialog(null, c);
-
+//    private void login() {
+//        try {
+//            Socket client = new Socket("localhost", 1234);
+//            System.out.println("client sẵn sàng");
+//           Scanner inFromServer = new Scanner(client.getInputStream());
+//            PrintStream outToServer = new PrintStream(client.getOutputStream());
+//            String a = txtUsername.getText();
+//            String b = txPassword.getText();
+//            outToServer.print(a);
+//           System.out.println("server :" + inFromServer.nextLine());
+//            outToServer.print(b);
+//            String c = inFromServer.nextLine();
+//            JOptionPane.showMessageDialog(null, c);
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        } catch (IOException ex) {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+//       } catch (IOException ex) {
+//            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//    }
 }
