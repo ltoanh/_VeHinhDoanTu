@@ -5,6 +5,9 @@
  */
 package view.scene;
 
+import client.RunClient;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Admin
@@ -16,8 +19,19 @@ public class ConnectServer extends javax.swing.JFrame {
      */
     public ConnectServer() {
         initComponents();
+        this.setLocationRelativeTo(null);
+
+        // default is hidden
+        pgbLoading.setVisible(false);
     }
 
+    public void setLoading(boolean isLoading, String btnText) {
+        pgbLoading.setVisible(isLoading);
+        btnConnect.setEnabled(!isLoading);
+        
+    }
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -32,8 +46,8 @@ public class ConnectServer extends javax.swing.JFrame {
         lbPort = new javax.swing.JLabel();
         txtIP = new javax.swing.JTextField();
         txtPort = new javax.swing.JTextField();
-        jPrBarLoading = new javax.swing.JProgressBar();
-        jButton1 = new javax.swing.JButton();
+        pgbLoading = new javax.swing.JProgressBar();
+        btnConnect = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -47,10 +61,15 @@ public class ConnectServer extends javax.swing.JFrame {
 
         txtIP.setText("127.0.0.1");
 
-        jPrBarLoading.setIndeterminate(true);
+        pgbLoading.setIndeterminate(true);
 
-        jButton1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton1.setText("Connect");
+        btnConnect.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnConnect.setText("Connect");
+        btnConnect.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConnectActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -71,10 +90,10 @@ public class ConnectServer extends javax.swing.JFrame {
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                             .addComponent(txtPort, javax.swing.GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE)
                                             .addComponent(txtIP)))
-                                    .addComponent(jPrBarLoading, javax.swing.GroupLayout.PREFERRED_SIZE, 409, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(pgbLoading, javax.swing.GroupLayout.PREFERRED_SIZE, 409, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(220, 220, 220)
-                                .addComponent(jButton1)))
+                                .addComponent(btnConnect)))
                         .addGap(0, 70, Short.MAX_VALUE))
                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -93,15 +112,69 @@ public class ConnectServer extends javax.swing.JFrame {
                     .addComponent(lbPort)
                     .addComponent(txtPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(30, 30, 30)
-                .addComponent(jButton1)
+                .addComponent(btnConnect)
                 .addGap(33, 33, 33)
-                .addComponent(jPrBarLoading, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pgbLoading, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(106, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnConnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConnectActionPerformed
+        // TODO add your handling code here:
+        String ip;
+        int port;
+
+        // validate input
+        try {
+            ip = txtIP.getText();
+            port = Integer.parseInt(txtPort.getText());
+
+            if (port < 0 || port > 65535) {
+                JOptionPane.showMessageDialog(this, "Port phải từ 0 - 65535", "Sai port", JOptionPane.ERROR_MESSAGE);
+                txtPort.requestFocus();
+                return;
+            }
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Port phải là số nguyên", "Sai port", JOptionPane.ERROR_MESSAGE);
+            txtPort.requestFocus();
+            return;
+        }
+
+        // connect to server
+        connect(ip, port);
+    }//GEN-LAST:event_btnConnectActionPerformed
+
+    
+   private void connect(String ip, int port) {
+        // show loading
+        setLoading(true, "Đang kết nối..");
+
+        // connect to server
+        new Thread(() -> {
+            // call controller
+            String result = RunClient.socketHandler.connect(ip, port);
+
+            // check result
+            if (result.equals("success")) {
+                onSuccess();
+            } else {
+                String failedMsg = result.split(";")[1];
+                onFailed(failedMsg);
+            }
+        }).start();
+    }
+   
+    private void onSuccess() {
+        setLoading(true, "Đang bảo mật..");
+    }
+
+    private void onFailed(String failedMsg) {
+        setLoading(false, null);
+        JOptionPane.showMessageDialog(this, failedMsg, "Lỗi kết nối", JOptionPane.ERROR_MESSAGE);
+    }
     /**
      * @param args the command line arguments
      */
@@ -138,11 +211,11 @@ public class ConnectServer extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnConnect;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JProgressBar jPrBarLoading;
     private javax.swing.JLabel lbIp;
     private javax.swing.JLabel lbPort;
+    private javax.swing.JProgressBar pgbLoading;
     private javax.swing.JTextField txtIP;
     private javax.swing.JTextField txtPort;
     // End of variables declaration//GEN-END:variables
