@@ -5,6 +5,11 @@
  */
 package view.scene;
 
+import client.Avatar;
+import client.RunClient;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Admin
@@ -16,8 +21,24 @@ public class Signup extends javax.swing.JFrame {
      */
     public Signup() {
         initComponents();
-    }
+        this.setLocationRelativeTo(null);
 
+        // avatar combobox
+        cbAvatar.setMaximumRowCount(5);
+        for (String s : Avatar.LIST) {
+            cbAvatar.addItem(new ImageIcon(Avatar.PATH + s));
+        }
+    }
+    
+    private String getAvatar() {
+        String fullPath = cbAvatar.getSelectedItem().toString();
+        String[] splitted = fullPath.split("/");
+
+        return splitted[splitted.length - 1];
+    }
+    
+    
+            
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -34,12 +55,12 @@ public class Signup extends javax.swing.JFrame {
         lbConfirm = new javax.swing.JLabel();
         txtName = new javax.swing.JTextField();
         txtUsername = new javax.swing.JTextField();
-        btnRememberP = new javax.swing.JButton();
-        btnSignup = new javax.swing.JButton();
-        jPasswordField1 = new javax.swing.JPasswordField();
-        jPasswordField2 = new javax.swing.JPasswordField();
+        btnLogin = new javax.swing.JButton();
+        txtPassword = new javax.swing.JPasswordField();
+        txRetypePassword = new javax.swing.JPasswordField();
         lbConfirm1 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cbAvatar = new javax.swing.JComboBox<>();
+        btnSignup = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -55,13 +76,26 @@ public class Signup extends javax.swing.JFrame {
 
         lbConfirm.setText("Xác nhận mật khẩu:");
 
-        btnRememberP.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btnRememberP.setText("Đăng nhập");
-
-        btnSignup.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btnSignup.setText("Đăng ký");
+        btnLogin.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnLogin.setText("Đăng nhập");
+        btnLogin.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnLoginMouseClicked(evt);
+            }
+        });
 
         lbConfirm1.setText("Chọn ảnh đại diện:");
+
+        cbAvatar.setToolTipText("ảnh đại diện");
+        cbAvatar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
+        btnSignup.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnSignup.setText("Đăng Ký");
+        btnSignup.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSignupActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -75,20 +109,25 @@ public class Signup extends javax.swing.JFrame {
                     .addComponent(lbName)
                     .addComponent(lbPassword)
                     .addComponent(lbConfirm)
-                    .addComponent(btnRememberP)
+                    .addComponent(btnLogin)
                     .addComponent(lbConfirm1))
-                .addGap(74, 74, 74)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtName)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(btnSignup)
-                            .addComponent(jPasswordField1, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPasswordField2, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtUsername, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.LEADING, 0, 327, Short.MAX_VALUE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addGap(60, 60, 60))
+                        .addGap(74, 74, 74)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtName)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(txtPassword, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txRetypePassword, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtUsername, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(cbAvatar, javax.swing.GroupLayout.Alignment.LEADING, 0, 327, Short.MAX_VALUE))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(60, 60, 60))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnSignup)
+                        .addGap(112, 112, 112))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -106,24 +145,67 @@ public class Signup extends javax.swing.JFrame {
                 .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbPassword)
-                    .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbConfirm)
-                    .addComponent(jPasswordField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txRetypePassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbAvatar, javax.swing.GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE)
                     .addComponent(lbConfirm1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSignup)
-                    .addComponent(btnRememberP))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnLogin)
+                    .addComponent(btnSignup))
                 .addGap(48, 48, 48))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnLoginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLoginMouseClicked
+        this.dispose();
+        RunClient.openScene(RunClient.SceneName.LOGIN);
+    }//GEN-LAST:event_btnLoginMouseClicked
+
+    private void btnSignupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSignupActionPerformed
+        // TODO add your handling code here:
+            StringBuilder sb=new StringBuilder();
+            // get data from form
+            String username = txtUsername.getText();
+            
+            //System.out.println(username+"\n");
+            String password = new String(txtPassword.getPassword());
+            String rePass = new String(txRetypePassword.getPassword());
+            String name = txtName.getText();
+            String avatar = getAvatar();
+            if(name.equals("")){
+                sb.append("Họ tên bị bỏ trống!\n");
+            }
+            if(name.length()>0 && name.matches("[^a-zA-Z]+")){
+                sb.append("Họ tên phải là các chữ cái\n");
+            }
+            if(username.equals("")){
+                sb.append("Username bị bỏ trống!\n");
+            }
+            if(password.equals("")){
+                sb.append("Mật khẩu bị bỏ trống!\n");
+            }
+            if(password.length()<6 ){
+                sb.append("Mật khẩu phải từ 6 ký tự trở lên!\n");
+            }
+            if(!password.equals(rePass)){
+                sb.append( "Xác nhận lại mật khẩu!");
+            }
+            if(sb.length()>0){
+                JOptionPane.showMessageDialog(this, sb.toString(), "Invalidation", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            else JOptionPane.showMessageDialog(this, "Đăng ký thành công!");
+   
+            RunClient.socketHandler.signup(username, password, name, avatar);
+    }//GEN-LAST:event_btnSignupActionPerformed
 
     /**
      * @param args the command line arguments
@@ -161,18 +243,18 @@ public class Signup extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnRememberP;
+    private javax.swing.JButton btnLogin;
     private javax.swing.JButton btnSignup;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<ImageIcon> cbAvatar;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JPasswordField jPasswordField2;
     private javax.swing.JLabel lbConfirm;
     private javax.swing.JLabel lbConfirm1;
     private javax.swing.JLabel lbName;
     private javax.swing.JLabel lbPassword;
     private javax.swing.JLabel lbUsername;
+    private javax.swing.JPasswordField txRetypePassword;
     private javax.swing.JTextField txtName;
+    private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
 }
