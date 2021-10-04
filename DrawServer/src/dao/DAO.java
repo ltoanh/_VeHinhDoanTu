@@ -12,15 +12,19 @@ public class DAO {
     private Connection conn = null;
     
     private String server = "localhost:3306";
-    private String db = "scribble";
+    private String db = "Scribble";
     private String user = "root";
     private String pass = "";
-
+    
     public DAO() {
-        setupConnection();
     }
 
-    private void setupConnection() {
+    
+    public Connection getConn() {
+        return conn;
+    }
+    
+    public void setupConnection() {
         try {
             String url = "jdbc:mysql://" + server + "/" + db + "?useUnicode=true&characterEncoding=UTF-8";
             

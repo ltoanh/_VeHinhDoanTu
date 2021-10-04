@@ -20,6 +20,7 @@ public class StreamData {
         // specific
         EXIT, // thoat
         UNKNOW_TYPE,
+        SIGNUP,
     }
     public static Type getType(String typeName) {
         Type result = Type.UNKNOW_TYPE;

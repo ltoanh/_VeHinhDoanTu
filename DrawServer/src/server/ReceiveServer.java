@@ -34,7 +34,7 @@ public class ReceiveServer extends Thread {
             Server.listSK.add(dp);
         }
         
-        return new String(dp.getData());
+        return new String(dp.getData()).trim();
     }
     
     private boolean checkExistSK(DatagramPacket dp){

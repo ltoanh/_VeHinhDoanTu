@@ -1,12 +1,14 @@
 package server;
 
 import constant.StreamData;
+import dao.CreateAccount;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -55,6 +57,9 @@ public class Server {
                         break;
                     case GAME_EVENT:
                         handleSendGameEvent(msg);
+                        break;
+                    case SIGNUP:
+                        handleReceiveInformation(msg);
                         break;
                 }
 
@@ -112,5 +117,13 @@ public class Server {
                 }
             }
         }
+    }
+    //============================Dang ky=======================================
+    private void handleReceiveInformation(String msg) 
+    {
+//        String 1 name, String 2 username, string 3 password;
+        String[] infor = msg.split(";");
+        CreateAccount create = new CreateAccount(infor[1], infor[2], infor[3]);
+        create.insertInformation();
     }
 }

@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 import view.scene.Ingame;
 import view.scene.Lobby;
 import view.scene.LobbySetting;
+import view.scene.Signup;
 
 
 /**
@@ -21,6 +22,7 @@ public class Client {
         LOBBY,
         LOBBY_SETTING,
         INGAME,
+        SIGNUP,
     }
     
     //=================== controller ==================
@@ -30,12 +32,13 @@ public class Client {
     public static Lobby lobby;
     public static LobbySetting lobbySetting;
     public static Ingame ingame;
-
+    public static Signup signup;
+            
     public Client(){
         try {
             
             initScene();
-            openScene(SceneName.INGAME);
+            openScene(SceneName.SIGNUP);
             
             clientCtr = new ClientCtr(InetAddress.getByName("localhost"), 5000);
             clientCtr.execute();
@@ -47,6 +50,7 @@ public class Client {
     }
     
     public void initScene(){
+        signup = new Signup();
         lobby = new Lobby();
         lobbySetting = new LobbySetting();
         ingame = new Ingame();
@@ -66,6 +70,9 @@ public class Client {
 //                ingame = new Ingame();
                 ingame.setVisible(true);
                 break;
+            case SIGNUP:
+                signup.setVisible(true);
+                break;
             default:
                 break;
         }
@@ -82,6 +89,9 @@ public class Client {
             case INGAME:
                 ingame.dispose();
                 break;
+            case SIGNUP:
+                signup.dispose();
+                break;
             default:
                 break;
         }
@@ -91,6 +101,7 @@ public class Client {
         lobby.dispose();
         lobbySetting.dispose();
         ingame.dispose();
+        signup.dispose();
     }
     
     public static void main(String[] args) throws UnknownHostException, SocketException {
