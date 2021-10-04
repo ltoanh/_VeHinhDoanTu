@@ -19,6 +19,7 @@ public class Server {
 
     private int port;
 
+    private DatagramSocket server;
     public static SenderServer senderServer;
     public static ReceiveServer receiveServer;
 
@@ -30,7 +31,7 @@ public class Server {
 
     private void execute() {
         try {
-            DatagramSocket server = new DatagramSocket(port);
+            server = new DatagramSocket(port);
             System.out.println("server created");
 
             senderServer = new SenderServer(server, port);
@@ -42,11 +43,21 @@ public class Server {
             while (true) {
                 String msg = receiveServer.receiveData(server);
                 System.out.println("> received: " + msg);
-                for (DatagramPacket item : listSK) {
-                    if (!(item.getAddress().equals(receiveServer.clientIP) && item.getPort() == receiveServer.clientPort)) {
-                        senderServer.sendData(msg, server, item.getAddress(), item.getPort());
-                    }
+
+                StreamData.Type type = StreamData.getTypeFromReceivedData(msg);
+
+                switch (type) {
+                    case JOIN_ROOM:
+                        handlePlayerJoinRoom(msg);
+                        break;
+                    case CHAT_ROOM:
+                        handleSendChatMessage(msg);
+                        break;
+                    case GAME_EVENT:
+                        handleSendGameEvent(msg);
+                        break;
                 }
+
             }
 
         } catch (SocketException ex) {
@@ -61,6 +72,45 @@ public class Server {
         new Server(5000).execute();
     }
 
-    //========================= game event =====================================
-    //draw point
+    
+    //========================= game =====================================
+    
+    // join room
+    private void handlePlayerJoinRoom(String msg) {
+        for (DatagramPacket item : listSK) {
+            if (!(item.getAddress().equals(receiveServer.clientIP) && item.getPort() == receiveServer.clientPort)) {
+                try {
+                    senderServer.sendData(msg, server, item.getAddress(), item.getPort());
+                } catch (IOException ex) {
+                    Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
+    
+    // game event
+    private void handleSendGameEvent(String msg) {
+        for (DatagramPacket item : listSK) {
+            if (!(item.getAddress().equals(receiveServer.clientIP) && item.getPort() == receiveServer.clientPort)) {
+                try {
+                    senderServer.sendData(msg, server, item.getAddress(), item.getPort());
+                } catch (IOException ex) {
+                    Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
+
+    //============================= chat =======================================
+    private void handleSendChatMessage(String msg) {
+        for (DatagramPacket item : listSK) {
+            if (!(item.getAddress().equals(receiveServer.clientIP) && item.getPort() == receiveServer.clientPort)) {
+                try {
+                    senderServer.sendData(msg, server, item.getAddress(), item.getPort());
+                } catch (IOException ex) {
+                    Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
 }
