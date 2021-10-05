@@ -6,7 +6,10 @@
 package view.scene;
 
 import client.Client;
+import constant.Avatar;
 import controller.SenderClient;
+import java.awt.Image;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import model.AccountSignUp;
 
@@ -21,6 +24,7 @@ public class Signup extends javax.swing.JFrame {
      */
     public Signup() {
         initComponents();
+        showAvata();
     }
 
     /**
@@ -88,28 +92,32 @@ public class Signup extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(52, 52, 52)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lbUsername)
-                    .addComponent(lbName)
-                    .addComponent(lbPassword)
-                    .addComponent(lbConfirm)
-                    .addComponent(btnRememberP)
-                    .addComponent(lbConfirm1))
-                .addGap(74, 74, 74)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtName)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(btnSignup)
-                            .addComponent(txtPass, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtPass2, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtUsername, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.LEADING, 0, 327, Short.MAX_VALUE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addGap(60, 60, 60))
+                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(61, 61, 61))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(52, 52, 52)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbUsername)
+                            .addComponent(lbName)
+                            .addComponent(lbPassword)
+                            .addComponent(lbConfirm)
+                            .addComponent(btnRememberP)
+                            .addComponent(lbConfirm1))
+                        .addGap(74, 74, 74)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtName)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(btnSignup)
+                                    .addComponent(txtPass, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtPass2, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtUsername, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.LEADING, 0, 327, Short.MAX_VALUE))
+                                .addGap(0, 13, Short.MAX_VALUE)))))
+                .addGap(27, 27, 27))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -152,6 +160,10 @@ public class Signup extends javax.swing.JFrame {
         String userName = txtUsername.getText();
         String password = new String(txtPass.getPassword());
         String repassword = new String(txtPass2.getPassword());
+        int idex = jComboBox1.getSelectedIndex();
+        String tmp = jComboBox1.getItemAt(idex).toString();
+        String avata = Avatar.getAvatarFilNameFromPath(tmp);
+        System.out.println(avata);
         if(name.equals("")){
             mes.append("Vui lòng điền tên\n");
         }
@@ -173,20 +185,25 @@ public class Signup extends javax.swing.JFrame {
         if(mes.length()>0){
             JOptionPane.showMessageDialog(this, mes.toString(), "Invalidation", JOptionPane.ERROR_MESSAGE);
         }else{
-            AccountSignUp acc = new AccountSignUp(name, userName, password);
+            AccountSignUp acc = new AccountSignUp(name, userName, password,avata);
             String account = acc.toString();
             Client.clientCtr.senderClient.sendInformation(account);
+            Homepage home = new Homepage();
+            home.setVisible(true);
+            this.dispose();
         }
         
     }//GEN-LAST:event_btnSignupActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void btnRememberPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRememberPActionPerformed
         // TODO add your handling code here:
-        
+        Login login = new Login();
+        login.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnRememberPActionPerformed
 
     /**
@@ -227,7 +244,7 @@ public class Signup extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRememberP;
     private javax.swing.JButton btnSignup;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<ImageIcon> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lbConfirm;
     private javax.swing.JLabel lbConfirm1;
@@ -239,4 +256,15 @@ public class Signup extends javax.swing.JFrame {
     private javax.swing.JPasswordField txtPass2;
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
+
+    private void showAvata() {
+        String[] avata = Avatar.LIST;
+        for (String string : avata) {
+            ImageIcon img;
+            img = new ImageIcon(Avatar.PATH.concat(string));
+            jComboBox1.addItem(img);
+            jLabel1.setDisabledIcon(img);
+        }
+      
+    }
 }

@@ -15,15 +15,17 @@ import java.util.logging.Logger;
  * @author hp
  */
 public class CreateAccount {
-    String JDBC_DRIVER =  "com.mysql.cj.jdbc.Driver"; //xóa cj đi nếu phiên bản mysql-connector-java chưa có driver này nhé
+    String JDBC_DRIVER =  "com.mysql.jdbc.Driver"; //xóa cj đi nếu phiên bản mysql-connector-java chưa có driver này nhé
     private String name;
     private String username;
     private String password;
+    private String avata;
 
-    public CreateAccount(String name, String username, String password) {
+    public CreateAccount(String name, String username, String password, String avata) {
         this.name = name;
         this.username = username;
         this.password = password;
+        this.avata = avata;
     }
     
     
@@ -34,7 +36,7 @@ public class CreateAccount {
             Statement stmt;
             Class.forName(JDBC_DRIVER);
             stmt = dao.getConn().createStatement();
-            String sql = "INSERT INTO account (name, username, password) VALUES ('" + name + "','" + username + "','"+ password+ "')";
+            String sql = "INSERT INTO account (name, username, password, avata) VALUES ('" + name + "','" + username + "','"+ password+ "','" + avata+"')";
             stmt.executeUpdate(sql);
             
             System.out.println("Insert data success");

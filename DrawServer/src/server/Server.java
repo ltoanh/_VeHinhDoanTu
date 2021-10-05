@@ -123,7 +123,7 @@ public class Server {
     {
 //        String 1 name, String 2 username, string 3 password;
         String[] infor = msg.split(";");
-        CreateAccount create = new CreateAccount(infor[1], infor[2], infor[3]);
+        CreateAccount create = new CreateAccount(infor[1], infor[2], infor[3], infor[4]);
         create.insertInformation();
     }
 }
