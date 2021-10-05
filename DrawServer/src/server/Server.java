@@ -1,6 +1,7 @@
 package server;
 
 import constant.StreamData;
+import dao.JDBCConnection;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -56,6 +57,9 @@ public class Server {
                     case GAME_EVENT:
                         handleSendGameEvent(msg);
                         break;
+                    case LOGIN:
+                        handleReceiveInformation(msg);
+                        break;
                 }
 
             }
@@ -72,9 +76,7 @@ public class Server {
         new Server(5000).execute();
     }
 
-    
     //========================= game =====================================
-    
     // join room
     private void handlePlayerJoinRoom(String msg) {
         for (DatagramPacket item : listSK) {
@@ -87,7 +89,7 @@ public class Server {
             }
         }
     }
-    
+
     // game event
     private void handleSendGameEvent(String msg) {
         for (DatagramPacket item : listSK) {
@@ -112,5 +114,13 @@ public class Server {
                 }
             }
         }
+    }
+    
+    private void handleReceiveInformation(String msg) 
+    {
+//        String 1 name, String 2 username, string 3 password;
+        String[] infor = msg.split(";");
+        JDBCConnection con = new JDBCConnection(infor[1], infor[2]);
+        con.ConnectDB();
     }
 }

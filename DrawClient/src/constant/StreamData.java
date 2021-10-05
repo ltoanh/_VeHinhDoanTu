@@ -8,6 +8,8 @@ public class StreamData {
 
     public enum Type {
         
+        LOGIN,
+        
         // in game
         JOIN_ROOM, // join room
         CHAT_ROOM, //chat 
