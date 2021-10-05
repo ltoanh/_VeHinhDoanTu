@@ -15,7 +15,7 @@ import java.util.logging.Logger;
  * @author hp
  */
 public class CreateAccount {
-    String JDBC_DRIVER =  "com.mysql.cj.jdbc.Driver";
+    String JDBC_DRIVER =  "com.mysql.cj.jdbc.Driver"; //xóa cj đi nếu phiên bản mysql-connector-java chưa có driver này nhé
     private String name;
     private String username;
     private String password;

@@ -23,6 +23,7 @@ public class Client {
         LOBBY_SETTING,
         INGAME,
         SIGNUP,
+        
     }
     
     //=================== controller ==================
