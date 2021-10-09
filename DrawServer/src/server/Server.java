@@ -124,9 +124,9 @@ public class Server {
         JDBCConnection con = new JDBCConnection(infor[0], infor[1]);
         
         if(con.ConnectDB()){
-            msg = "Đăng nhập thành công";
+            msg = "Success";
         }
-        else msg = "Đăng nhập thất bại";
+        else msg = "Failed";
         
         for (DatagramPacket item : listSK) {
             if (!(item.getAddress().equals(receiveServer.clientIP) && item.getPort() == receiveServer.clientPort)) {
