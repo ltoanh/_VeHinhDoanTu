@@ -34,7 +34,7 @@ public class Server {
             server = new DatagramSocket(port);
             System.out.println("server created");
 
-            senderServer = new SenderServer(server, port);
+            senderServer = new SenderServer();
             receiveServer = new ReceiveServer();
             receiveServer.start();
 
