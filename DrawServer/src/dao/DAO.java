@@ -14,13 +14,17 @@ public class DAO {
     private String server = "localhost:3306";
     private String db = "scribble";
     private String user = "root";
-    private String pass = "";
+    private String pass = "phuong@nh04";
 
     public DAO() {
         setupConnection();
     }
+    
+     public Connection getConn() {
+        return conn;
+    }
 
-    private void setupConnection() {
+    public void setupConnection() {
         try {
             String url = "jdbc:mysql://" + server + "/" + db + "?useUnicode=true&characterEncoding=UTF-8";
             

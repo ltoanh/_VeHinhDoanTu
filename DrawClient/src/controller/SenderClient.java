@@ -55,4 +55,11 @@ public class SenderClient extends Thread{
         String msg = StreamData.Type.DRAW_POSITION + ";" + tool + ";" + x1 + ";" + y1 + ";" + x2 + ";" + y2 + ";" + Integer.toString(color.getRGB());
         this.sendGameEvent(msg);
     }
+    
+    //=========================send login inf====================
+    
+//    public void sendInformation(String msg1,String msg2){
+//        sendPacket(StreamData.Type.LOGIN.name() + ";" + msg1 +" "+ msg2);
+//        System.out.println("> " + StreamData.Type.LOGIN.name()+";"+msg1+" "+msg2);
+//    }
 }
