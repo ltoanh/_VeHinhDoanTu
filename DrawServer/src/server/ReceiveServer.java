@@ -1,6 +1,6 @@
 package server;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -21,6 +21,28 @@ public class ReceiveServer extends Thread {
     ReceiveServer() {
     }
 
+    // receive object
+    public <T> T receiveObjectData(DatagramSocket server){
+        try {
+            byte[] buff = new byte[1024];
+            DatagramPacket dp = new DatagramPacket(buff, buff.length);
+            
+            server.receive(dp);
+            
+            ByteArrayInputStream bin = new ByteArrayInputStream(dp.getData());
+            ObjectInputStream oin = new ObjectInputStream(bin);
+            
+            return (T) oin.readObject();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+        
+        return null;
+    }
+    
+    // receive string
     public String receiveData(DatagramSocket server) throws IOException {
         byte[] buff = new byte[1024];
         DatagramPacket dp = new DatagramPacket(buff, buff.length);

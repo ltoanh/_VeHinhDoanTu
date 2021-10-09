@@ -2,7 +2,7 @@ package controller;
 
 import constant.StreamData;
 import java.awt.Color;
-import java.io.IOException;
+import java.io.*;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -26,6 +26,25 @@ public class SenderClient extends Thread{
         this.port = port;
     }
     
+    // send object
+    public <T> void sendObjectPacket(T obj){
+        ObjectOutputStream oout = null;
+        try {
+            ByteArrayOutputStream bout = new ByteArrayOutputStream();
+            oout = new ObjectOutputStream(bout);
+            oout.writeObject(obj);
+            
+            byte[] buff = bout.toByteArray();
+            
+            DatagramPacket dp = new DatagramPacket(buff, 0, buff.length, host, port);
+            client.send(dp);
+            
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        
+    }
+    // send string
     public void sendPacket(String msg){
         try {
             client.send(createPacket(msg));
