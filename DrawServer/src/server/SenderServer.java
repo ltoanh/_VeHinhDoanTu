@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import model.ObjectModel;
 
 /**
  *
@@ -23,7 +24,7 @@ public class SenderServer extends Thread{
     }
     
     // send object
-    public <T> void sendObjectData(T obj, DatagramSocket server, InetAddress clientIP, int clientPort){
+    public void sendObjectData(ObjectModel obj, DatagramSocket server, InetAddress clientIP, int clientPort){
         ObjectOutputStream oout = null;
         try {
             ByteArrayOutputStream bout = new ByteArrayOutputStream();

@@ -7,6 +7,9 @@ package constant;
 public class StreamData {
 
     public enum Type {
+        LOGIN, // dang nhap
+        SIGNUP, // dang ky
+        
         // in game
         JOIN_ROOM, // join room
         CHAT_ROOM, //chat
@@ -18,6 +21,7 @@ public class StreamData {
 
         // specific
         EXIT, // thoat
+        ERROR,
         UNKNOW_TYPE,
     }
 

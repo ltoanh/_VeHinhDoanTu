@@ -49,7 +49,6 @@ public class ClientCtr {
         receiveClient.start();
         
         senderClient = new SenderClient(client, host, port);
-        senderClient.sendPacket(StreamData.Type.JOIN_ROOM.name() + ";player1");
         senderClient.start();
     }
 }
