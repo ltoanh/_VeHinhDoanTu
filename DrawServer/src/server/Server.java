@@ -1,6 +1,7 @@
 package server;
 
 import constant.StreamData;
+import dao.DAO;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -10,6 +11,8 @@ import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.Account;
+import model.ObjectModel;
 
 /**
  *
@@ -18,7 +21,10 @@ import java.util.logging.Logger;
 public class Server {
 
     private int port;
+    //dao
+    private DAO dao;
 
+    // server
     private DatagramSocket server;
     public static SenderServer senderServer;
     public static ReceiveServer receiveServer;
@@ -31,6 +37,10 @@ public class Server {
 
     private void execute() {
         try {
+            // mysql
+            dao = new DAO();
+
+            // server
             server = new DatagramSocket(port);
             System.out.println("server created");
 
@@ -47,6 +57,10 @@ public class Server {
                 StreamData.Type type = StreamData.getTypeFromReceivedData(msg);
 
                 switch (type) {
+                    case LOGIN:
+                        handleLogin(msg);
+                        break;
+
                     case JOIN_ROOM:
                         handlePlayerJoinRoom(msg);
                         break;
@@ -72,9 +86,17 @@ public class Server {
         new Server(5000).execute();
     }
 
-    
+    //========================= sign =====================================
+    //login
+    private void handleLogin(String msg) {
+        String[] data = msg.trim().split(";");
+        Account acc = dao.checkAccount(data[1], data[2]);
+        // send result
+        ObjectModel obj = new ObjectModel(StreamData.Type.LOGIN.name(), acc);
+        senderServer.sendObjectData(obj, server, receiveServer.clientIP, receiveServer.clientPort);
+    }
+
     //========================= game =====================================
-    
     // join room
     private void handlePlayerJoinRoom(String msg) {
         for (DatagramPacket item : listSK) {
@@ -87,7 +109,7 @@ public class Server {
             }
         }
     }
-    
+
     // game event
     private void handleSendGameEvent(String msg) {
         for (DatagramPacket item : listSK) {

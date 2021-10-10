@@ -1,17 +1,24 @@
 package view.scene;
 
+import model.Account;
+
 /**
  *
  * @author whiwf
  */
 public class Homepage extends javax.swing.JFrame {
 
+    private Account account;
+    
     /**
      * Creates new form Homepage
      */
     public Homepage() {
         initComponents();
-        setTitle("Trang chủ " + "ten nguoi choi");
+        this.setLocationRelativeTo(null);
+        
+        account = client.Client.account;
+        setTitle("Trang chủ " + account.getName());
     }
 
     /**

@@ -9,6 +9,7 @@ import java.net.InetAddress;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.ObjectModel;
 
 /**
  *
@@ -27,7 +28,7 @@ public class SenderClient extends Thread{
     }
     
     // send object
-    public <T> void sendObjectPacket(T obj){
+    public void sendObjectPacket(ObjectModel obj){
         ObjectOutputStream oout = null;
         try {
             ByteArrayOutputStream bout = new ByteArrayOutputStream();
@@ -58,16 +59,22 @@ public class SenderClient extends Thread{
         return new DatagramPacket(buff, 0, buff.length, host, port);
     }
     
+    //========================= login =============================
+    public void sendLoginMessage(String username, String password){
+        sendPacket(StreamData.Type.LOGIN.name() + ";" + username + ";" + password);
+        System.out.println("> msg login: " + StreamData.Type.LOGIN.name() + ";" + username + ";" + password);
+    }
+    
     //========================= chat ==============================
     public void sendChatMessage(String msg){
         sendPacket(StreamData.Type.CHAT_ROOM.name() + ";" + msg);
-        System.out.println("> msg send: " + StreamData.Type.CHAT_ROOM.name() + ";" + msg);
+//        System.out.println("> msg send: " + StreamData.Type.CHAT_ROOM.name() + ";" + msg);
     }
     
     //========================= ingame ============================
     public void sendGameEvent(String msg){
         sendPacket(StreamData.Type.GAME_EVENT.name() + ";" + msg);
-        System.out.println("> " + StreamData.Type.GAME_EVENT.name() + ";" + msg);
+//        System.out.println("> " + StreamData.Type.GAME_EVENT.name() + ";" + msg);
     }
     
     public void drawPoint(int tool, int x1, int y1, int x2, int y2, Color color){

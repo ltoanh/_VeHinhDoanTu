@@ -8,6 +8,9 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import model.Account;
+import model.ObjectModel;
 
 /**
  *
@@ -25,47 +28,52 @@ public class ReceiveClient extends Thread {
         boolean running = true;
 
         while (running) {
-            try {
-                String receivedMsg = receiveData(client);
+//                String receivedMsg = receiveData(client);
+//    
+//
+//                System.out.println("> received msg: " + receivedMsg);
+//                // xu ly loai du lieu nhan dc
+//                StreamData.Type type = StreamData.getTypeFromReceivedData(receivedMsg);
+//                switch (type) {
+//                    case CHAT_ROOM:
+//                        handleChatMsg(receivedMsg);
+//                        break;
+//                    case JOIN_ROOM:
+//                        handlePlayerJoinRoom(receivedMsg);
+//                    case GAME_EVENT:
+//                        handleReceivedGameEvent(receivedMsg);
+//                        break;
+//                    case UNKNOW_TYPE:
+//                        break;
+//                }
 
-                System.out.println("> received msg: " + receivedMsg);
-                // xu ly loai du lieu nhan dc
-                StreamData.Type type = StreamData.getTypeFromReceivedData(receivedMsg);
-                switch (type) {
-                    case CHAT_ROOM:
-                        handleChatMsg(receivedMsg);
-                        break;
-                    case JOIN_ROOM:
-                        handlePlayerJoinRoom(receivedMsg);
-                    case GAME_EVENT:
-                        handleReceivedGameEvent(receivedMsg);
-                        break;
-                    case UNKNOW_TYPE:
-                        break;
-                }
+            ObjectModel objReceived = receiveObjectData(client);
+            StreamData.Type type = StreamData.getType(objReceived.getType());
 
-            } catch (IOException ex) {
-                Logger.getLogger(ReceiveClient.class.getName()).log(Level.SEVERE, null, ex);
-                running = false;
+            switch (type) {
+                case LOGIN:
+                    handleReceivedAccountLogin((Account) objReceived.getT());
+                    break;
             }
+
         }
 
         client.close();
     }
 
     //receive object
-    private <T> T receiveObjectData(DatagramSocket client) {
+    private ObjectModel receiveObjectData(DatagramSocket client) {
 
         try {
             byte[] buff = new byte[1024];
             DatagramPacket dp = new DatagramPacket(buff, buff.length);
 
             client.receive(dp);
-            
+
             ByteArrayInputStream bin = new ByteArrayInputStream(dp.getData());
             ObjectInputStream oin = new ObjectInputStream(bin);
-            
-            return (T) oin.readObject();
+
+            return (ObjectModel) oin.readObject();
 
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -82,6 +90,18 @@ public class ReceiveClient extends Thread {
 
         client.receive(din);
         return new String(din.getData());
+    }
+
+    //============================ sign =============================
+    // login
+    private void handleReceivedAccountLogin(Account acc) {
+        if (acc == null) {
+            JOptionPane.showMessageDialog(null, "Nguoi dung khong ton tai", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            Client.account = acc;
+            Client.closeScene(Client.SceneName.LOGIN);
+            Client.openScene(Client.SceneName.HOMEPAGE);
+        }
     }
 
     // =========================== game =============================
