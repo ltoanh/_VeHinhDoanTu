@@ -1,5 +1,8 @@
 package view.scene;
 
+import client.Client;
+import controller.ClientCtr;
+import javax.swing.JOptionPane;
 import model.Account;
 
 /**
@@ -8,8 +11,6 @@ import model.Account;
  */
 public class Homepage extends javax.swing.JFrame {
 
-    private Account account;
-    
     /**
      * Creates new form Homepage
      */
@@ -17,8 +18,7 @@ public class Homepage extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         
-        account = client.Client.account;
-        setTitle("Trang chủ " + account.getName());
+        setTitle("Trang chủ");
     }
 
     /**
@@ -39,7 +39,7 @@ public class Homepage extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tbRoom = new javax.swing.JTable();
         btnRefreshListRoom = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -48,19 +48,9 @@ public class Homepage extends javax.swing.JFrame {
 
         btnLogout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/assets/icons8_logout_rounded_left_24px.png"))); // NOI18N
         btnLogout.setText("Đăng xuất");
-        btnLogout.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLogoutActionPerformed(evt);
-            }
-        });
 
         btnProfile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/assets/icons8_contact_24px.png"))); // NOI18N
         btnProfile.setText("Hồ sơ");
-        btnProfile.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnProfileActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -87,9 +77,19 @@ public class Homepage extends javax.swing.JFrame {
 
         btnCreateRoom.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/assets/icons8_add_24px.png"))); // NOI18N
         btnCreateRoom.setText("Tạo phòng");
+        btnCreateRoom.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCreateRoomActionPerformed(evt);
+            }
+        });
 
         btnJoin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/assets/icons8_open_door_24px.png"))); // NOI18N
         btnJoin.setText("Vào phòng");
+        btnJoin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnJoinActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout plBtnsLayout = new javax.swing.GroupLayout(plBtns);
         plBtns.setLayout(plBtnsLayout);
@@ -116,18 +116,18 @@ public class Homepage extends javax.swing.JFrame {
 
         jLabel1.setText("Danh sách phòng");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tbRoom.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"123", "plants", "5", "4"},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {"123", "5", "4"},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Mã phòng", "Bộ từ", "Số lượng", "Tham gia"
+                "Mã phòng", "Số lượng", "Tham gia"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tbRoom);
 
         btnRefreshListRoom.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/assets/icons8_replay_24px.png"))); // NOI18N
         btnRefreshListRoom.setText("Làm mới");
@@ -190,13 +190,14 @@ public class Homepage extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
-        
-    }//GEN-LAST:event_btnLogoutActionPerformed
+    private void btnJoinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJoinActionPerformed
+        JoinRoomDialog joinRoomDialog = new JoinRoomDialog(this, true);
+        joinRoomDialog.setVisible(true);
+    }//GEN-LAST:event_btnJoinActionPerformed
 
-    private void btnProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProfileActionPerformed
-        
-    }//GEN-LAST:event_btnProfileActionPerformed
+    private void btnCreateRoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateRoomActionPerformed
+        ClientCtr.senderClient.sendCreateRoomMessage();
+    }//GEN-LAST:event_btnCreateRoomActionPerformed
 
     /**
      * @param args the command line arguments
@@ -243,7 +244,7 @@ public class Homepage extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JPanel plBtns;
+    private javax.swing.JTable tbRoom;
     // End of variables declaration//GEN-END:variables
 }

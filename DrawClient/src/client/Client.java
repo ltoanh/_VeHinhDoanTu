@@ -4,13 +4,15 @@ import controller.ClientCtr;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Account;
+import model.Player;
+import model.Room;
 import view.scene.Homepage;
 import view.scene.Ingame;
 import view.scene.Lobby;
-import view.scene.LobbySetting;
 import view.scene.Login;
 import view.scene.Signup;
 
@@ -25,7 +27,6 @@ public class Client {
         SIGNUP,
         HOMEPAGE,
         LOBBY,
-        LOBBY_SETTING,
         INGAME,
     }
 
@@ -39,15 +40,15 @@ public class Client {
     public static Homepage homepage;
 
     public static Lobby lobby;
-    public static LobbySetting lobbySetting;
     public static Ingame ingame;
 
     //=================== model ========================
     public static Account account;
+    public static Room room;
+    public static ArrayList<Player> listPlayer;
 
     public Client() {
         try {
-
             initScene();
             openScene(SceneName.LOGIN);
 
@@ -64,9 +65,10 @@ public class Client {
         login = new Login();
         signup = new Signup();
 
+        homepage = new Homepage();
+
         lobby = new Lobby();
-        lobbySetting = new LobbySetting();
-        ingame = new Ingame();
+
     }
 
     public static void openScene(SceneName sceneName) {
@@ -79,7 +81,7 @@ public class Client {
                 break;
 
             case HOMEPAGE:
-                homepage = new Homepage();
+//                homepage = new Homepage();
                 homepage.setVisible(true);
                 break;
 
@@ -87,12 +89,8 @@ public class Client {
 //                lobby = new Lobby();
                 lobby.setVisible(true);
                 break;
-            case LOBBY_SETTING:
-//                lobbySetting = new LobbySetting();
-                lobbySetting.setVisible(true);
-                break;
             case INGAME:
-//                ingame = new Ingame();
+                ingame = new Ingame();
                 ingame.setVisible(true);
                 break;
             default:
@@ -116,9 +114,6 @@ public class Client {
             case LOBBY:
                 lobby.dispose();
                 break;
-            case LOBBY_SETTING:
-                lobbySetting.dispose();
-                break;
             case INGAME:
                 ingame.dispose();
                 break;
@@ -134,7 +129,6 @@ public class Client {
         homepage.dispose();
 
         lobby.dispose();
-        lobbySetting.dispose();
         ingame.dispose();
     }
 

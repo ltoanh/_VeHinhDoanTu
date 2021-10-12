@@ -10,6 +10,10 @@ public class StreamData {
         LOGIN, // dang nhap
         SIGNUP, // dang ky
         
+        // room
+        CREATE_ROOM, //tao phong
+        LOBBY_ROOM, // phong cho
+        
         // in game
         JOIN_ROOM, // join room
         CHAT_ROOM, //chat

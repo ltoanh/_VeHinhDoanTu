@@ -11,22 +11,22 @@ public class ObjectModel<T> implements java.io.Serializable{
     
     private String type;
     private T t;
-
-    public ObjectModel() {
-    }
-
+    
     public ObjectModel(String type, T t) {
         this.type = type;
         this.t = t;
     }
-    
-    public void setType(String type) {
-        this.type = type;
+
+    public String getType() {
+        return type;
     }
 
-    public void setT(T t) {
-        this.t = t;
+    public T getT() {
+        return t;
     }
     
-    
+    @Override
+    public String toString() {
+        return "ObjectModel{" + "type=" + type + ", t=" + t + '}';
+    }
 }

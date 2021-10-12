@@ -55,9 +55,7 @@ public class Ingame extends javax.swing.JFrame {
     }
 
     //================set list player=======================
-    public void addPlayerJoinRoom(String msg){
-        taPlayers.append("guess tham gia phong\n");
-    }
+    
     //================result game===========================
     //================start game============================
     
