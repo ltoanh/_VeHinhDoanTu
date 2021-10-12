@@ -36,10 +36,6 @@ public class ReceiveServer extends Thread {
             clientIP = dp.getAddress();
             clientPort = dp.getPort();
 
-            if (!checkExistSK(dp)) {
-                Server.listSK.add(dp);
-            }
-
             return (ObjectModel) oin.readObject();
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -60,19 +56,6 @@ public class ReceiveServer extends Thread {
         clientIP = dp.getAddress();
         clientPort = dp.getPort();
 
-        if (!checkExistSK(dp)) {
-            Server.listSK.add(dp);
-        }
-
         return new String(dp.getData());
-    }
-
-    private boolean checkExistSK(DatagramPacket dp) {
-        for (DatagramPacket item : Server.listSK) {
-            if (item.getAddress().equals(dp.getAddress()) && item.getPort() == dp.getPort()) {
-                return true;
-            }
-        }
-        return false;
     }
 }

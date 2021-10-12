@@ -24,5 +24,10 @@ public class ObjectModel<T> implements java.io.Serializable{
     public T getT() {
         return t;
     }
+
+    @Override
+    public String toString() {
+        return "ObjectModel{" + "type=" + type + ", t=" + t + '}';
+    }
     
 }

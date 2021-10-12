@@ -94,9 +94,6 @@
             </Property>
             <Property name="text" type="java.lang.String" value="&#x110;&#x103;ng xu&#x1ea5;t"/>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnLogoutActionPerformed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnProfile">
           <Properties>
@@ -105,9 +102,6 @@
             </Property>
             <Property name="text" type="java.lang.String" value="H&#x1ed3; s&#x1a1;"/>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnProfileActionPerformed"/>
-          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -153,6 +147,9 @@
             </Property>
             <Property name="text" type="java.lang.String" value="T&#x1ea1;o ph&#xf2;ng"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCreateRoomActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnJoin">
           <Properties>
@@ -161,6 +158,9 @@
             </Property>
             <Property name="text" type="java.lang.String" value="V&#xe0;o ph&#xf2;ng"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnJoinActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -221,18 +221,12 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JTable" name="jTable1">
+            <Component class="javax.swing.JTable" name="tbRoom">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="4" rowCount="4">
+                  <Table columnCount="3" rowCount="4">
                     <Column editable="true" title="M&#xe3; ph&#xf2;ng" type="java.lang.Object">
                       <Data value="123"/>
-                      <Data value="null"/>
-                      <Data value="null"/>
-                      <Data value="null"/>
-                    </Column>
-                    <Column editable="true" title="B&#x1ed9; t&#x1eeb;" type="java.lang.Object">
-                      <Data value="plants"/>
                       <Data value="null"/>
                       <Data value="null"/>
                       <Data value="null"/>
@@ -253,11 +247,6 @@
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                   <TableColumnModel selectionModel="0">
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                      <Title/>
-                      <Editor/>
-                      <Renderer/>
-                    </Column>
                     <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                       <Title/>
                       <Editor/>

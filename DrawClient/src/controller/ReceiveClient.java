@@ -11,6 +11,8 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import model.Account;
 import model.ObjectModel;
+import model.Player;
+import model.Room;
 
 /**
  *
@@ -48,12 +50,21 @@ public class ReceiveClient extends Thread {
 //                }
 
             ObjectModel objReceived = receiveObjectData(client);
-            StreamData.Type type = StreamData.getType(objReceived.getType());
+
+            String msg = objReceived.getType();
+            System.out.println("> received : " + msg + ":" + objReceived.getT());
+            StreamData.Type type = StreamData.getTypeFromReceivedData(msg);
 
             switch (type) {
                 case LOGIN:
                     handleReceivedAccountLogin((Account) objReceived.getT());
                     break;
+                // GAME
+                case LOBBY_ROOM:
+                    handleReceivedCreatedRoom((Room) objReceived.getT());
+                    break;
+                case JOIN_ROOM:
+                    handlePlayerJoinRoom((Room) objReceived.getT());
             }
 
         }
@@ -97,6 +108,7 @@ public class ReceiveClient extends Thread {
     private void handleReceivedAccountLogin(Account acc) {
         if (acc == null) {
             JOptionPane.showMessageDialog(null, "Nguoi dung khong ton tai", "Error", JOptionPane.ERROR_MESSAGE);
+            Client.login.setUnloading();
         } else {
             Client.account = acc;
             Client.closeScene(Client.SceneName.LOGIN);
@@ -105,9 +117,30 @@ public class ReceiveClient extends Thread {
     }
 
     // =========================== game =============================
+    // create room
+    private void handleReceivedCreatedRoom(Room receivedRoom) {
+        Client.room = receivedRoom;
+        Client.listPlayer = receivedRoom.getListPlayer();
+
+        Client.closeScene(Client.SceneName.HOMEPAGE);
+        Client.openScene(Client.SceneName.LOBBY);
+
+        Client.lobby.displayRoomID(Client.room.getId() + "");
+        Client.lobby.addPlayerToList(Client.account.getName() + "(" + Client.account.getUsername() + ")");
+    }
+
     //join room
-    private void handlePlayerJoinRoom(String receivedMsg) {
-        Client.ingame.addPlayerJoinRoom(receivedMsg);
+    private void handlePlayerJoinRoom(Room receivedRoom) {
+        Client.room = receivedRoom;
+        Client.listPlayer = receivedRoom.getListPlayer();
+
+        Client.lobby.displayRoomID(Client.room.getId() + "");
+        Client.lobby.clearPlayersList();
+        
+        for (Player player : Client.listPlayer) {
+            Account acc = player.getAccount();
+            Client.lobby.addPlayerToList(acc.getName() + "(" + acc.getUsername() + ")");
+        }
     }
 
     //============================ in game ===========================
