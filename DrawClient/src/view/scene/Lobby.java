@@ -7,6 +7,8 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import model.Account;
 
 /**
  *
@@ -21,7 +23,7 @@ public class Lobby extends javax.swing.JFrame {
         setTitle("Phòng chờ");
 
     }
-
+    
     public void displayRoomID(String roomID){
         lbRoomID.setText("Mã phòng: " + roomID);
     }
@@ -198,6 +200,10 @@ public class Lobby extends javax.swing.JFrame {
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
         // remove player out room
         //--code---
+        String roomID = lbRoomID.getText();
+        roomID = roomID.replaceAll("[^0-9]", "");
+         
+        ClientCtr.senderClient.sendExitRoomMessage(roomID);
         
         
         // open homepage
@@ -254,4 +260,9 @@ public class Lobby extends javax.swing.JFrame {
     private javax.swing.JLabel lbRoomID;
     private javax.swing.JTextArea taPlayer;
     // End of variables declaration//GEN-END:variables
+
+    public void removePlayerToList(String Infor) {
+        taPlayer.setText(taPlayer.getText().replace( Infor, "" ));
+        
+    }
 }

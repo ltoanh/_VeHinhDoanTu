@@ -63,6 +63,10 @@ public class ReceiveClient extends Thread {
                 case LOBBY_ROOM:
                     handleReceivedCreatedRoom((Room) objReceived.getT());
                     break;
+                
+                case EXIT:
+                    handleExitRoom((Room) objReceived.getT());
+                    break;
                 case JOIN_ROOM:
                     handlePlayerJoinRoom((Room) objReceived.getT());
             }
@@ -170,6 +174,19 @@ public class ReceiveClient extends Thread {
     //============================ chat ========================================
     private void handleChatMsg(String receivedMsg) {
         Client.ingame.addChatMessage(receivedMsg.split(";")[1]);
+    }
+
+    private void handleExitRoom(Room receivedRoom) {
+        Client.room = receivedRoom;
+        Client.listPlayer = receivedRoom.getListPlayer();
+
+        Client.lobby.displayRoomID(Client.room.getId() + "");
+        Client.lobby.clearPlayersList();
+        
+        for (Player player : Client.listPlayer) {
+            Account acc = player.getAccount();
+            Client.lobby.removePlayerToList(acc.getName() + "(" + acc.getUsername() + ")");
+        }
     }
 
 }

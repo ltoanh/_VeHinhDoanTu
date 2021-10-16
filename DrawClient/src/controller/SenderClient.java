@@ -105,4 +105,15 @@ public class SenderClient extends Thread {
         String msg = StreamData.Type.DRAW_POSITION + ";" + tool + ";" + x1 + ";" + y1 + ";" + x2 + ";" + y2 + ";" + Integer.toString(color.getRGB());
         this.sendGameEvent(msg);
     }
+    
+    public boolean sendExitRoomMessage(String roomID) {
+        try {
+            String msg = StreamData.Type.EXIT.name() + ";" + roomID;
+            ObjectModel obj = new ObjectModel(msg, Client.account);
+            sendObjectPacket(obj);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

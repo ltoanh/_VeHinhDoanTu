@@ -69,7 +69,9 @@ public class Server {
                     case LOGIN:
                         handleLogin(msg);
                         break;
-                        
+                    case EXIT:
+                        handleExitRoom(msg, (Account) receivedObj.getT());
+                        break;
                     //============= room ===========
                     // create room
                     case CREATE_ROOM:
@@ -148,6 +150,16 @@ public class Server {
         
         System.out.println("> send: " + obj.toString());
     }
+    
+    private void handleExitRoom(String msg, Account receivedRoom) {
+        int roomID = Integer.parseInt(msg.split(";")[1]);
+        Player player = new Player(receiveServer.clientIP, receiveServer.clientPort, receivedRoom, 0);
+        
+        Room curRoom = helpers.RoomHelpers.checkRoomByID(roomID); 
+        ArrayList<Player> lsPlayers = curRoom.getListPlayer();
+        lsPlayers.remove(player);
+        curRoom.setListPlayer(lsPlayers);
+    }
 
     // game event
     private void handleSendGameEvent(String msg) {
@@ -174,4 +186,6 @@ public class Server {
 //            }
 //        }
     }
+
+    
 }
