@@ -82,6 +82,12 @@ public class SenderClient extends Thread {
         ObjectModel obj = new ObjectModel(msg, Client.account);
         sendObjectPacket(obj);
     }
+    //start
+    public void sendStartRoomMessage(){
+        String msg = StreamData.Type.GAME_EVENT.name() + ";" + StreamData.Type.START.name() + ";" + Client.room.getId();
+        ObjectModel obj = new ObjectModel(msg, null);
+        sendObjectPacket(obj);
+    }
 
     // join
     public boolean sendJoinRoomMessage(String roomID) {

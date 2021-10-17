@@ -11,7 +11,7 @@ import model.Account;
 import model.Player;
 import model.Room;
 import view.scene.Homepage;
-import view.scene.Ingame;
+import view.scene.IngameFrm;
 import view.scene.Lobby;
 import view.scene.Login;
 import view.scene.Signup;
@@ -40,12 +40,11 @@ public class Client {
     public static Homepage homepage;
 
     public static Lobby lobby;
-    public static Ingame ingame;
+    public static IngameFrm ingame;
 
     //=================== model ========================
     public static Account account;
     public static Room room;
-    public static ArrayList<Player> listPlayer;
 
     public Client() {
         try {
@@ -90,7 +89,7 @@ public class Client {
                 lobby.setVisible(true);
                 break;
             case INGAME:
-                ingame = new Ingame();
+                ingame = new IngameFrm();
                 ingame.setVisible(true);
                 break;
             default:

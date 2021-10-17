@@ -13,6 +13,7 @@ public class Player implements java.io.Serializable{
     private InetAddress host;
     private int port;
     private Account account;
+    private boolean isHostPlayer;
     private int score;
     
     public int getScore() {
@@ -21,6 +22,10 @@ public class Player implements java.io.Serializable{
 
     public Account getAccount() {
         return account;
+    }
+
+    public boolean isHostPlayer() {
+        return isHostPlayer;
     }
     
     @Override

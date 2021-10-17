@@ -25,21 +25,6 @@ public class ClientCtr {
         this.host = host;
         this.port = port;
     }
-    
-    public String connect(String host, int port) {
-        try {
-            
-            ClientCtr clientCtr = new ClientCtr(InetAddress.getByName(host), port);
-            clientCtr.execute();
-            
-            return "success";
-        } catch (UnknownHostException ex) {
-            return "failed: " + ex.getMessage();
-        } catch (SocketException ex) {
-            return "failed: " + ex.getMessage();
-        }
-
-    }
 
     public void execute() throws SocketException {
         client = new DatagramSocket();
