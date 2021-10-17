@@ -21,6 +21,8 @@ import model.Room;
 public class ReceiveClient extends Thread {
 
     private DatagramSocket client;
+    
+    private ObjectModel objReceived;
 
     ReceiveClient(DatagramSocket client) {
         this.client = client;
@@ -30,12 +32,6 @@ public class ReceiveClient extends Thread {
         boolean running = true;
 
         while (running) {
-//                String receivedMsg = receiveData(client);
-//    
-//
-//                System.out.println("> received msg: " + receivedMsg);
-//                // xu ly loai du lieu nhan dc
-//                StreamData.Type type = StreamData.getTypeFromReceivedData(receivedMsg);
 //                switch (type) {
 //                    case CHAT_ROOM:
 //                        handleChatMsg(receivedMsg);
@@ -49,7 +45,7 @@ public class ReceiveClient extends Thread {
 //                        break;
 //                }
 
-            ObjectModel objReceived = receiveObjectData(client);
+            objReceived = receiveObjectData(client);
 
             String msg = objReceived.getType();
             System.out.println("> received : " + msg + ":" + objReceived.getT());
@@ -65,6 +61,10 @@ public class ReceiveClient extends Thread {
                     break;
                 case JOIN_ROOM:
                     handlePlayerJoinRoom((Room) objReceived.getT());
+                    break;
+                case GAME_EVENT:
+                    handleReceivedGameEvent(msg);
+                    break;
             }
 
         }
@@ -94,6 +94,7 @@ public class ReceiveClient extends Thread {
         return null;
     }
 
+    /**
     //receive string
     private String receiveData(DatagramSocket client) throws IOException {
         byte[] buff = new byte[1024];
@@ -102,6 +103,7 @@ public class ReceiveClient extends Thread {
         client.receive(din);
         return new String(din.getData());
     }
+    */
 
     //============================ sign =============================
     // login
@@ -120,24 +122,23 @@ public class ReceiveClient extends Thread {
     // create room
     private void handleReceivedCreatedRoom(Room receivedRoom) {
         Client.room = receivedRoom;
-        Client.listPlayer = receivedRoom.getListPlayer();
 
         Client.closeScene(Client.SceneName.HOMEPAGE);
         Client.openScene(Client.SceneName.LOBBY);
 
         Client.lobby.displayRoomID(Client.room.getId() + "");
+        Client.lobby.displayStartButton();
         Client.lobby.addPlayerToList(Client.account.getName() + "(" + Client.account.getUsername() + ")");
     }
 
     //join room
     private void handlePlayerJoinRoom(Room receivedRoom) {
         Client.room = receivedRoom;
-        Client.listPlayer = receivedRoom.getListPlayer();
 
         Client.lobby.displayRoomID(Client.room.getId() + "");
         Client.lobby.clearPlayersList();
         
-        for (Player player : Client.listPlayer) {
+        for (Player player : Client.room.getListPlayer()) {
             Account acc = player.getAccount();
             Client.lobby.addPlayerToList(acc.getName() + "(" + acc.getUsername() + ")");
         }
@@ -149,6 +150,10 @@ public class ReceiveClient extends Thread {
         String[] data = receivedMsg.split(";");
         StreamData.Type gameEventType = StreamData.getType(data[1]);
         switch (gameEventType) {
+            case START:
+                // open ingame scene
+                handleStartGame((Room) objReceived.getT());
+                break;
             case DRAW_POSITION:
                 int tool = Integer.parseInt(data[2]);
                 int x1 = Integer.parseInt(data[3]);
@@ -162,14 +167,23 @@ public class ReceiveClient extends Thread {
 
                 }
 
-                Client.ingame.paintPane.addPointDraw(tool, x1, y1, x2, y2, color);
+//                Client.ingame.paintPane.addPointDraw(tool, x1, y1, x2, y2, color);
                 break;
         }
     }
 
+    //start
+    private void handleStartGame(Room receivedRoom){
+        Client.room = receivedRoom;
+        
+        Client.closeScene(Client.SceneName.LOBBY);
+        Client.openScene(Client.SceneName.INGAME);
+        Client.ingame.displayLsPlayer(receivedRoom.getListPlayer());
+    }
+    
     //============================ chat ========================================
     private void handleChatMsg(String receivedMsg) {
-        Client.ingame.addChatMessage(receivedMsg.split(";")[1]);
+//        Client.ingame.addChatMessage(receivedMsg.split(";")[1]);
     }
 
 }

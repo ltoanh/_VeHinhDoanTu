@@ -15,7 +15,7 @@ import java.awt.image.BufferedImage;
 public class PaintPane extends javax.swing.JPanel {
 
     private int lastX, lastY;
-    private int inkWidth = 625, inkHeight = 390;
+    private int inkWidth = 590, inkHeight = 390;
 
     private int activeTool = 1;
     private Color currentColor = Color.BLACK;
@@ -47,6 +47,7 @@ public class PaintPane extends javax.swing.JPanel {
     private void initComponents() {
 
         setBackground(new java.awt.Color(255, 255, 255));
+        setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
                 formMouseDragged(evt);
@@ -62,11 +63,11 @@ public class PaintPane extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 398, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGap(0, 298, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -75,7 +76,7 @@ public class PaintPane extends javax.swing.JPanel {
             int x = evt.getX(), y = evt.getY();
 
             draw(lastX, lastY, x, y, currentColor);
-            Client.clientCtr.senderClient.drawPoint(activeTool, lastX, lastY, x, y, currentColor);
+//            Client.clientCtr.senderClient.drawPoint(activeTool, lastX, lastY, x, y, currentColor);
             
             lastX = x;
             lastY = y;

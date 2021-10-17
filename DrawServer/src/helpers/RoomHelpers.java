@@ -1,5 +1,8 @@
 package helpers;
 
+import java.util.ArrayList;
+import java.util.Random;
+import model.Player;
 import model.Room;
 
 /**
@@ -7,6 +10,11 @@ import model.Room;
  * @author whiwf
  */
 public class RoomHelpers {
+    /**
+     * Tim kiem phong trong danh sach phong hien co cua server
+     * @param id
+     * @return 
+     */
     public static Room checkRoomByID(int id){
         for(Room room : server.Server.listRoom){
             if(room.getId() == id){
@@ -15,5 +23,27 @@ public class RoomHelpers {
         }
         
         return null;
+    }
+    
+    /**
+     * Lua chon nguoi ve
+     */
+    public static ArrayList chooseLsPlayerToDraw(int max){
+        ArrayList<Integer> lsPainterID = new ArrayList<>();
+       
+        Random rd = new Random();
+        int num1 = rd.nextInt(0 + max);
+        
+        int num2 = 0;
+        
+        do{
+            num2 = rd.nextInt(0 + max);
+        } while(num2 == num1);
+        
+        lsPainterID.add(num1);
+        lsPainterID.add(num2);
+        
+        
+        return lsPainterID;
     }
 }
