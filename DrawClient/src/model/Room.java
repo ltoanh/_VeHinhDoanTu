@@ -12,27 +12,24 @@ public class Room implements java.io.Serializable {
 
     private int id;
     private ArrayList<Player> listPlayer;
-    private ArrayList<Integer> lsPainterID;
+    private ArrayList<String> lsPainterUsername;
 
     public int getId() {
         return id;
-    }
-
-    public void setLsPainterID(ArrayList<Integer> lsPainterID) {
-        this.lsPainterID = lsPainterID;
-    }
-
-    public ArrayList<Integer> getLsPainterID() {
-        return lsPainterID;
     }
 
     public ArrayList<Player> getListPlayer() {
         return listPlayer;
     }
 
-    @Override
-    public String toString() {
-        return "Room{" + "id=" + id + ", listPlayer=" + listPlayer + ", lsPainterID=" + lsPainterID + '}';
+    public ArrayList<String> getLsPainterUsername() {
+        return lsPainterUsername;
     }
 
+    @Override
+    public String toString() {
+        return "Room{" + "id=" + id + ", listPlayer=" + listPlayer + ", lsPainterUsername=" + lsPainterUsername + '}';
+    }
+
+    
 }

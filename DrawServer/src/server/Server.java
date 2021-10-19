@@ -10,9 +10,12 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Account;
+import model.DrawPoint;
 import model.ObjectModel;
 import model.Player;
 import model.Room;
@@ -57,8 +60,6 @@ public class Server {
             listRoom = new ArrayList<>();
 
             while (true) {
-//                String msg = receiveServer.receiveData(server);
-//                System.out.println("> received: " + msg);
                 receivedObj = receiveServer.receiveObjectData(server);
 
                 String msg = receivedObj.getType();
@@ -114,7 +115,7 @@ public class Server {
     //========================= game =====================================
     //create room
     private void handleCreateRoom() {
-        Player player = new Player(receiveServer.clientIP, receiveServer.clientPort, (Account) receivedObj.getT(), true, 0);
+        Player player = new Player(receiveServer.clientIP, receiveServer.clientPort, (Account) receivedObj.getT(), 0);
         ArrayList<Player> listPlayer = new ArrayList<>();
         listPlayer.add(player);
 
@@ -151,13 +152,16 @@ public class Server {
 
     //===========================game event=====================================
     private void handleSendGameEvent(String msg) {
-        String msgGameEvent = msg.split(";")[1];
+        String[] msgGameEvent = msg.split(";");
 
-        StreamData.Type type = StreamData.getType(msgGameEvent);
+        StreamData.Type type = StreamData.getType(msgGameEvent[1]);
 
         switch (type) {
             case START:
                 handleSendStartGameMessage(msg);
+                break;
+            case DRAW_POSITION:
+                handleSendDrawPoint(msgGameEvent[2], msgGameEvent[3], (DrawPoint) receivedObj.getT());
                 break;
         }
     }
@@ -168,16 +172,46 @@ public class Server {
         Room curRoom = helpers.RoomHelpers.checkRoomByID(roomID);
 
         // chon 2 nguoi ve
-        ArrayList<Integer> lsPainterID = helpers.RoomHelpers.chooseLsPlayerToDraw(curRoom.getListPlayer().size());
-        curRoom.setLsPainterID(lsPainterID);
-        
+        ArrayList<String> lsPainterID = helpers.RoomHelpers.chooseLsPlayerToDraw(curRoom.getListPlayer());
+        curRoom.setLsPainterUsername(lsPainterID);
+
         // send to all player
         ArrayList<Player> lsPlayers = curRoom.getListPlayer();
         String msgStart = StreamData.Type.GAME_EVENT.name() + ";" + StreamData.Type.START;
         ObjectModel obj = new ObjectModel(msgStart, curRoom);
-        for(Player player : lsPlayers){
+        for (Player player : lsPlayers) {
             senderServer.sendObjectData(obj, server, player.getHost(), player.getPort());
         }
+    }
+
+    // draw point
+    private void handleSendDrawPoint(String roomIDStr, String painter, DrawPoint drawPoint) {
+        int roomID = Integer.parseInt(roomIDStr);
+        Room curRoom = helpers.RoomHelpers.checkRoomByID(roomID);
+
+        // send point to all client except painter
+        String msgDrawPoint = StreamData.Type.GAME_EVENT.name() + ";" + StreamData.Type.DRAW_POSITION.name() + ";" + painter;
+        ObjectModel obj = new ObjectModel(msgDrawPoint, drawPoint);
+
+        ArrayList<Player> lsPlayers = curRoom.getListPlayer();
+        for (Player player : lsPlayers) {
+            if (player.getHost().toString().equals(receiveServer.clientIP.toString()) && player.getPort() == receiveServer.clientPort) {
+                continue;
+            }
+            senderServer.sendObjectData(obj, server, player.getHost(), player.getPort());
+        }
+    }
+
+    // change turn
+    private void changeTurnPlayerDraw(int roomID) {
+        // tim kiem phong
+        Room curRoom = helpers.RoomHelpers.checkRoomByID(roomID);
+        
+        // get 2 painter
+        ArrayList<String> lsPainterID = helpers.RoomHelpers.chooseLsPlayerToDraw(curRoom.getListPlayer());
+        curRoom.setLsPainterUsername(lsPainterID);
+        
+        // send coundown to all player in room
     }
 
     //============================= chat =======================================

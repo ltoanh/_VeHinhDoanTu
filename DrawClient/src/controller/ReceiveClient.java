@@ -10,6 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import model.Account;
+import model.DrawPoint;
 import model.ObjectModel;
 import model.Player;
 import model.Room;
@@ -32,19 +33,6 @@ public class ReceiveClient extends Thread {
         boolean running = true;
 
         while (running) {
-//                switch (type) {
-//                    case CHAT_ROOM:
-//                        handleChatMsg(receivedMsg);
-//                        break;
-//                    case JOIN_ROOM:
-//                        handlePlayerJoinRoom(receivedMsg);
-//                    case GAME_EVENT:
-//                        handleReceivedGameEvent(receivedMsg);
-//                        break;
-//                    case UNKNOW_TYPE:
-//                        break;
-//                }
-
             objReceived = receiveObjectData(client);
 
             String msg = objReceived.getType();
@@ -155,20 +143,20 @@ public class ReceiveClient extends Thread {
                 handleStartGame((Room) objReceived.getT());
                 break;
             case DRAW_POSITION:
-                int tool = Integer.parseInt(data[2]);
-                int x1 = Integer.parseInt(data[3]);
-                int y1 = Integer.parseInt(data[4]);
-                int x2 = Integer.parseInt(data[5]);
-                int y2 = Integer.parseInt(data[6]);
-                Color color = Color.BLACK;
-                try {
-                    color = new Color(Integer.parseInt(data[7]));
-                } catch (NumberFormatException e) {
-
-                }
-
-//                Client.ingame.paintPane.addPointDraw(tool, x1, y1, x2, y2, color);
+                handleDrawPoint(data[2], (DrawPoint) objReceived.getT());
                 break;
+        }
+    }
+    
+    // hien thi pane paint tool / guess
+    private void displayIngamePanel(){
+        String uPainter1 = Client.room.getLsPainterUsername().get(0);
+        String uPainter2 = Client.room.getLsPainterUsername().get(1);
+        String curUsername = Client.account.getUsername();
+        if(curUsername.equals(uPainter1) || curUsername.equals(uPainter2)){
+            Client.ingame.displayPaintTool();
+        } else {
+            Client.ingame.displayGuessPane();
         }
     }
 
@@ -179,6 +167,17 @@ public class ReceiveClient extends Thread {
         Client.closeScene(Client.SceneName.LOBBY);
         Client.openScene(Client.SceneName.INGAME);
         Client.ingame.displayLsPlayer(receivedRoom.getListPlayer());
+        
+        displayIngamePanel();
+    }
+    
+    // draw point
+    private void handleDrawPoint(String painter, DrawPoint drawPoint){
+        if(StreamData.Type.PAINT1.name().equals(painter)){
+            Client.ingame.getPaintPane1().addPointDraw(drawPoint);
+        } else {
+            Client.ingame.getPaintPane2().addPointDraw(drawPoint);
+        }
     }
     
     //============================ chat ========================================

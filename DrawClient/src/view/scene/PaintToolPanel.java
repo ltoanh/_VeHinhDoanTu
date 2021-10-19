@@ -1,5 +1,8 @@
 package view.scene;
 
+import java.awt.Color;
+import javax.swing.JColorChooser;
+
 /**
  *
  * @author whiwf
@@ -14,6 +17,11 @@ public class PaintToolPanel extends javax.swing.JPanel {
         this.ingame = ingame;
     }
 
+    private void setColorChooser(PaintPane panel, Color color){
+        panel.setCurrentColor(color); 
+        lbCurrentColor.setBackground(color);
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -30,8 +38,8 @@ public class PaintToolPanel extends javax.swing.JPanel {
         btnCyan = new javax.swing.JButton();
         btnMagenta = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
-        jButton4 = new javax.swing.JButton();
+        lbCurrentColor = new javax.swing.JPanel();
+        btnChooseColor = new javax.swing.JButton();
 
         setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -102,21 +110,26 @@ public class PaintToolPanel extends javax.swing.JPanel {
 
         jLabel1.setText("Màu được chọn:");
 
-        jPanel2.setBackground(new java.awt.Color(255, 102, 51));
+        lbCurrentColor.setBackground(new java.awt.Color(255, 102, 51));
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout lbCurrentColorLayout = new javax.swing.GroupLayout(lbCurrentColor);
+        lbCurrentColor.setLayout(lbCurrentColorLayout);
+        lbCurrentColorLayout.setHorizontalGroup(
+            lbCurrentColorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 26, Short.MAX_VALUE)
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        lbCurrentColorLayout.setVerticalGroup(
+            lbCurrentColorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 24, Short.MAX_VALUE)
         );
 
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/assets/icons8-paint-palette-30.png"))); // NOI18N
-        jButton4.setText("Bảng màu");
+        btnChooseColor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/assets/icons8-paint-palette-30.png"))); // NOI18N
+        btnChooseColor.setText("Bảng màu");
+        btnChooseColor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnChooseColorActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -142,9 +155,9 @@ public class PaintToolPanel extends javax.swing.JPanel {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lbCurrentColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton4)))
+                        .addComponent(btnChooseColor)))
                 .addGap(146, 146, 146))
         );
         jPanel1Layout.setVerticalGroup(
@@ -162,13 +175,13 @@ public class PaintToolPanel extends javax.swing.JPanel {
                 .addGap(18, 18, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(15, 15, 15))
+                        .addComponent(btnChooseColor)
+                        .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButton4)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap())))
+                            .addComponent(lbCurrentColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1))
+                        .addGap(15, 15, 15))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -235,10 +248,17 @@ public class PaintToolPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnClearActionPerformed
 
+    private void btnChooseColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChooseColorActionPerformed
+        Color color = JColorChooser.showDialog(null, "Chọn màu", Color.BLACK);
+        System.out.println(color);
+//        setColorChooser(color);
+    }//GEN-LAST:event_btnChooseColorActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBlack;
     private javax.swing.JButton btnBlue;
+    private javax.swing.JButton btnChooseColor;
     private javax.swing.JButton btnClear;
     private javax.swing.JButton btnCyan;
     private javax.swing.JButton btnErase;
@@ -247,9 +267,8 @@ public class PaintToolPanel extends javax.swing.JPanel {
     private javax.swing.JButton btnPencil;
     private javax.swing.JButton btnRed;
     private javax.swing.JButton btnYellow;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel lbCurrentColor;
     // End of variables declaration//GEN-END:variables
 }

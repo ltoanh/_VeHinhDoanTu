@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.ObjectModel;
 import client.Client;
+import model.DrawPoint;
 
 /**
  *
@@ -102,13 +103,9 @@ public class SenderClient extends Thread {
     }
 
     //========================= ingame ============================
-    public void sendGameEvent(String msg) {
-        sendPacket(StreamData.Type.GAME_EVENT.name() + ";" + msg);
-//        System.out.println("> " + StreamData.Type.GAME_EVENT.name() + ";" + msg);
-    }
-
-    public void drawPoint(int tool, int x1, int y1, int x2, int y2, Color color) {
-        String msg = StreamData.Type.DRAW_POSITION + ";" + tool + ";" + x1 + ";" + y1 + ";" + x2 + ";" + y2 + ";" + Integer.toString(color.getRGB());
-        this.sendGameEvent(msg);
+    public void drawPoint(String painter, DrawPoint drawPoint) {
+        String msg = StreamData.Type.GAME_EVENT.name() + ";" + StreamData.Type.DRAW_POSITION.name() + ";" + Client.room.getId() + ";" + painter;
+        ObjectModel obj = new ObjectModel(msg, drawPoint);
+        sendObjectPacket(obj);
     }
 }
