@@ -28,22 +28,23 @@ public class RoomHelpers {
     /**
      * Lua chon nguoi ve
      */
-    public static ArrayList chooseLsPlayerToDraw(int max){
-        ArrayList<Integer> lsPainterID = new ArrayList<>();
+    public static ArrayList chooseLsPlayerToDraw(ArrayList<Player> lsPlayers){
+        ArrayList<String> lsPainterUsername = new ArrayList<>();
        
+        int size = lsPlayers.size();
+        
         Random rd = new Random();
-        int num1 = rd.nextInt(0 + max);
+        int num1 = rd.nextInt(0 + size);
         
         int num2 = 0;
         
         do{
-            num2 = rd.nextInt(0 + max);
+            num2 = rd.nextInt(0 + size);
         } while(num2 == num1);
         
-        lsPainterID.add(num1);
-        lsPainterID.add(num2);
+        lsPainterUsername.add(lsPlayers.get(num1).getAccount().getUsername());
+        lsPainterUsername.add(lsPlayers.get(num2).getAccount().getUsername());
         
-        
-        return lsPainterID;
+        return lsPainterUsername;
     }
 }

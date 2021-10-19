@@ -10,17 +10,17 @@ import javax.swing.JColorChooser;
  */
 public class DrawSettingPane extends javax.swing.JPanel {
 
-    private Ingame ingame;
+//    private Ingame ingame;
     
     
-    public DrawSettingPane(Ingame ingame) {
-        initComponents();
-        
-        this.ingame = ingame;
-    }
+//    public DrawSettingPane(Ingame ingame) {
+//        initComponents();
+//        
+//        this.ingame = ingame;
+//    }
 
     private void setColorChooser(Color color){
-        ingame.getPaintPane().setCurrentColor(color);
+//        ingame.getPaintPane().setCurrentColor(color);
         btnCurrentColor.setBackground(color);
     }
     @SuppressWarnings("unchecked")
@@ -222,15 +222,15 @@ public class DrawSettingPane extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnPencilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPencilActionPerformed
-        ingame.getPaintPane().setTool(Constant.PENCIL_TOOL);
+//        ingame.getPaintPane().setTool(Constant.PENCIL_TOOL);
     }//GEN-LAST:event_btnPencilActionPerformed
 
     private void btnEraseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEraseActionPerformed
-        ingame.getPaintPane().setTool(Constant.ERASE_TOOL);
+//        ingame.getPaintPane().setTool(Constant.ERASE_TOOL);
     }//GEN-LAST:event_btnEraseActionPerformed
 
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
-        ingame.getPaintPane().clearPaint();
+//        ingame.getPaintPane().clearPaint();
     }//GEN-LAST:event_btnClearActionPerformed
 
     private void btnColorChooserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnColorChooserActionPerformed

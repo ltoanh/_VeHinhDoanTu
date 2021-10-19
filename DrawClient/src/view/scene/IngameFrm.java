@@ -1,6 +1,11 @@
 package view.scene;
 
+import client.Client;
+import constant.Constant;
+import java.awt.Color;
+import java.awt.Graphics;
 import java.util.ArrayList;
+import javax.swing.border.LineBorder;
 import model.Player;
 
 /**
@@ -10,7 +15,11 @@ import model.Player;
 public class IngameFrm extends javax.swing.JFrame {
 
     private PaintToolPanel paintToolPanel;
-    private PaintPane paintPane;
+    private GuessPane guessPane;
+    
+    private PaintPane paintPane1;
+    private PaintPane paintPane2;
+    
     
     public IngameFrm() {
         initComponents();
@@ -19,15 +28,45 @@ public class IngameFrm extends javax.swing.JFrame {
         
         setLayout(null);
         
-        //tool
-        paintToolPanel = new PaintToolPanel(this);
-        add(paintToolPanel);
-        paintToolPanel.setBounds(180, 450, 630, 150);
-        
         //paint
-        paintPane = new PaintPane();
-        add(paintPane);
-        paintPane.setBounds(190, 70, 600, 370);
+        paintPane1 = new PaintPane(this);
+        add(paintPane1);
+        paintPane1.setBounds(190, 70, 290, 370);
+        
+        paintPane2 = new PaintPane(this);
+        add(paintPane2);
+        paintPane2.setBounds(500, 70, 290, 370);
+        
+        if (Client.room.getLsPainterUsername().get(0).equals(Client.account.getUsername()) ) {
+            paintPane1.setBorder(new LineBorder(Color.red));
+        } else if (Client.room.getLsPainterUsername().get(1).equals(Client.account.getUsername())){
+            paintPane2.setBorder(new LineBorder(Color.red));
+        }
+        
+        //paint tool
+        paintToolPanel = new PaintToolPanel(this);
+        this.add(paintToolPanel);
+        paintToolPanel.setBounds(190, 450, 600, 150);
+        
+        paintToolPanel.setVisible(false);
+        
+        //guess pane
+        guessPane = new GuessPane();
+        this.add(guessPane);
+        guessPane.setBounds(190, 450, 600, 150);
+        
+        guessPane.setVisible(false);
+    }
+    //================start game============================
+    //show paint tool
+    public void displayPaintTool(){
+        paintToolPanel.setVisible(true);
+        guessPane.setVisible(false);
+    }
+    // show guess pane
+    public void displayGuessPane(){
+        paintToolPanel.setVisible(false);
+        guessPane.setVisible(true);
     }
 
     public void displayLsPlayer(ArrayList<Player> lsPlayer){
@@ -43,6 +82,7 @@ public class IngameFrm extends javax.swing.JFrame {
         // display room inf 
         //... code ...
     }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -68,7 +108,7 @@ public class IngameFrm extends javax.swing.JFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        lbCurPlayer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/assets/avatar/icons8_circled_user_male_skin_type_7_96px.png"))); // NOI18N
+        lbCurPlayer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/assets/avatar/icons8_circled_user_female_skin_type_7_96px.png"))); // NOI18N
         lbCurPlayer.setText("player 1");
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -168,7 +208,7 @@ public class IngameFrm extends javax.swing.JFrame {
                     .addComponent(jLabel4)
                     .addComponent(jLabel5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE)
+                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 470, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -211,9 +251,6 @@ public class IngameFrm extends javax.swing.JFrame {
        
     }//GEN-LAST:event_btnSendMsgActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -246,6 +283,15 @@ public class IngameFrm extends javax.swing.JFrame {
         });
     }
 
+    public PaintPane getPaintPane1() {
+        return paintPane1;
+    }
+
+    public PaintPane getPaintPane2() {
+        return paintPane2;
+    }
+
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSendMsg;
     private javax.swing.JLabel jLabel2;

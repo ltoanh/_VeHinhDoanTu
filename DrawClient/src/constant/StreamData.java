@@ -21,10 +21,14 @@ public class StreamData {
         //game
         GAME_EVENT, // cac su kien lien quan den in game
         START, // bat dau game
-        DRAW_POSITION, // ve hinh
+        DRAW_POSITION, // ve hinh 
+        PAINT1, //player 1 ve 
+        PAINT2, //player 2 ve
+        CHANGE_TURN, // thay doi turn nguoi ve
 
         // specific
         EXIT, // thoat
+        COUNTDOWN, // countdown time
         ERROR,
         UNKNOW_TYPE,
     }
