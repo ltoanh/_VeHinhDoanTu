@@ -48,7 +48,12 @@ public class ReceiveClient extends Thread {
 //                    case UNKNOW_TYPE:
 //                        break;
 //                }
-
+//            String receivedMsg = null;
+//            try {
+//                receivedMsg = receiveData(client);
+//            } catch (IOException ex) {
+//                Logger.getLogger(ReceiveClient.class.getName()).log(Level.SEVERE, null, ex);
+//            }
             ObjectModel objReceived = receiveObjectData(client);
 
             String msg = objReceived.getType();
@@ -67,6 +72,7 @@ public class ReceiveClient extends Thread {
                 case EXIT:
                     handleExitRoom((Room) objReceived.getT());
                     break;
+
                 case JOIN_ROOM:
                     handlePlayerJoinRoom((Room) objReceived.getT());
             }
@@ -186,6 +192,7 @@ public class ReceiveClient extends Thread {
         for (Player player : Client.listPlayer) {
             Account acc = player.getAccount();
             Client.lobby.removePlayerToList(acc.getName() + "(" + acc.getUsername() + ")");
+            break;
         }
     }
 

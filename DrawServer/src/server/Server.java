@@ -153,12 +153,20 @@ public class Server {
     
     private void handleExitRoom(String msg, Account receivedRoom) {
         int roomID = Integer.parseInt(msg.split(";")[1]);
-        Player player = new Player(receiveServer.clientIP, receiveServer.clientPort, receivedRoom, 0);
+        Player onPlayer = new Player(receiveServer.clientIP, receiveServer.clientPort, receivedRoom, 0);
         
+        //xóa player khỏi phòng
         Room curRoom = helpers.RoomHelpers.checkRoomByID(roomID); 
         ArrayList<Player> lsPlayers = curRoom.getListPlayer();
-        lsPlayers.remove(player);
+        lsPlayers.remove(onPlayer);
         curRoom.setListPlayer(lsPlayers);
+        
+        // gửi đến tất cả client trong phòng
+        ObjectModel obj = new ObjectModel(StreamData.Type.EXIT.name(), curRoom);
+        
+        for(Player player : lsPlayers){
+            senderServer.sendObjectData(obj, server, player.getHost(), player.getPort());
+        }
     }
 
     // game event

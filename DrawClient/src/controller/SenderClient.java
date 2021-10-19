@@ -106,14 +106,7 @@ public class SenderClient extends Thread {
         this.sendGameEvent(msg);
     }
     
-    public boolean sendExitRoomMessage(String roomID) {
-        try {
-            String msg = StreamData.Type.EXIT.name() + ";" + roomID;
-            ObjectModel obj = new ObjectModel(msg, Client.account);
-            sendObjectPacket(obj);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+    public void sendExitRoomMessage(String msg) {
+        sendPacket(StreamData.Type.EXIT.name() + ";" + msg);
     }
 }

@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import model.Account;
+import model.Room;
 
 /**
  *
@@ -209,6 +210,7 @@ public class Lobby extends javax.swing.JFrame {
         // open homepage
         Client.closeScene(Client.SceneName.LOBBY);
         Client.openScene(Client.SceneName.HOMEPAGE);
+        Room room =null;
     }//GEN-LAST:event_btnExitActionPerformed
 
     public static void main(String args[]) {
