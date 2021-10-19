@@ -8,8 +8,11 @@ import java.awt.Graphics;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 
 /**
  *
@@ -40,7 +43,8 @@ public class Ingame extends javax.swing.JFrame {
         paintPane = new PaintPane();
         gamePane.add(paintPane);
         paintPane.setBounds(0, 110, 625, 390);
-
+         
+       
 //        remove(drawSettingPane);
 //        
 //        guessPane = new GuessPane();
@@ -58,6 +62,9 @@ public class Ingame extends javax.swing.JFrame {
     
     //================result game===========================
     //================start game============================
+    //================count down============================
+    
+        
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -80,7 +87,8 @@ public class Ingame extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
+        jlabel = new javax.swing.JLabel();
+        timecountdown = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -170,7 +178,7 @@ public class Ingame extends javax.swing.JFrame {
             .addGroup(chatPaneLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(chatPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)
                     .addComponent(txtMsg)
                     .addGroup(chatPaneLayout.createSequentialGroup()
                         .addComponent(jLabel5)
@@ -209,9 +217,11 @@ public class Ingame extends javax.swing.JFrame {
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel8.setText("TU DOAN RAT LA DAI (n)");
 
-        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/assets/icons8-timer-30.png"))); // NOI18N
-        jLabel10.setText("120 s");
+        jlabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jlabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/assets/icons8-timer-30.png"))); // NOI18N
+
+        timecountdown.setFont(new java.awt.Font("Tahoma", 0, 22)); // NOI18N
+        timecountdown.setText("120s");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -225,8 +235,10 @@ public class Ingame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 455, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(24, 24, 24))
+                .addComponent(jlabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(timecountdown)
+                .addGap(42, 42, 42))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -241,7 +253,10 @@ public class Ingame extends javax.swing.JFrame {
                         .addGap(36, 36, 36)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel8)
-                            .addComponent(jLabel10))))
+                            .addComponent(jlabel)))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(34, 34, 34)
+                        .addComponent(timecountdown, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(31, Short.MAX_VALUE))
         );
 
@@ -305,7 +320,6 @@ public class Ingame extends javax.swing.JFrame {
     private javax.swing.JPanel chatPane;
     private javax.swing.JPanel gamePane;
     private javax.swing.JPanel infoPane;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -316,8 +330,11 @@ public class Ingame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel jlabel;
     private javax.swing.JTextArea taChat;
     private javax.swing.JTextArea taPlayers;
+    private javax.swing.JLabel timecountdown;
     private javax.swing.JTextField txtMsg;
     // End of variables declaration//GEN-END:variables
 }
+

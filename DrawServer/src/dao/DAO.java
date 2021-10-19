@@ -6,6 +6,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Account;
 
 /**
@@ -20,12 +22,16 @@ public class DAO {
     private String server = "localhost:3306";
     private String db = "scribble";
     private String user = "root";
-    private String pass = "";
+    private String pass = "trang1034408043";
 
     public DAO() {
         setupConnection();
     }
 
+    public Connection getConn() {
+        return conn;
+    }
+    
     private void setupConnection() {
         try {
             String url = "jdbc:mysql://" + server + "/" + db + "?useUnicode=true&characterEncoding=UTF-8";
@@ -61,5 +67,20 @@ public class DAO {
             ex.printStackTrace();
         }
         return null;
+    }
+    public void insertInformation(String name, String username, String password, String avatar){
+        try {
+            Statement stmt;
+            Class.forName(JDBC_DRIVER);
+            stmt = conn.createStatement();
+            String sql = "INSERT INTO account (name, username, password, avatar) VALUES ('" + name + "','" + username + "','"+ password+ "','" + avatar+"')";
+            stmt.executeUpdate(sql);
+            
+            System.out.println("Insert data success");
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
     }
 }
