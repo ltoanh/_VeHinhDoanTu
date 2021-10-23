@@ -68,19 +68,26 @@ public class IngameFrm extends javax.swing.JFrame {
         paintToolPanel.setVisible(false);
         guessPane.setVisible(true);
     }
-
+    // show player list
     public void displayLsPlayer(ArrayList<Player> lsPlayer){
+        taLsPlayer.setText("");
+        
         for(Player player : lsPlayer){
             String msgPlayer = player.getAccount().getName()+ "(" + player.getAccount().getUsername() + ") : " + player.getScore() + " điểm\n";
             taLsPlayer.append(msgPlayer);
         }
     }
-    
+    // show current player inf
     public void displayCurrentPlayerInf(){
         lbCurPlayer.setText(client.Client.account.getUsername());
         
         // display room inf 
         //... code ...
+    }
+    // show countdown time
+    public void displayCountdownTime(String msgTurn, String msgTime){
+        lbTurn.setText(msgTurn + "/3");
+        lbCountdown.setText(msgTime + " s");
     }
     
     @SuppressWarnings("unchecked")
@@ -100,8 +107,8 @@ public class IngameFrm extends javax.swing.JFrame {
         jTextArea2 = new javax.swing.JTextArea();
         jPanel3 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
+        lbTurn = new javax.swing.JLabel();
+        lbCountdown = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -189,11 +196,11 @@ public class IngameFrm extends javax.swing.JFrame {
 
         jLabel4.setText("Vòng:");
 
-        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel5.setText("2/3");
+        lbTurn.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lbTurn.setText("2/3");
 
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/assets/icons8-timer-30.png"))); // NOI18N
-        jLabel6.setText("120 s");
+        lbCountdown.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/assets/icons8-timer-30.png"))); // NOI18N
+        lbCountdown.setText("120 s");
 
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel7.setText("Từ để đoán (7)");
@@ -206,11 +213,11 @@ public class IngameFrm extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
-                    .addComponent(jLabel5))
+                    .addComponent(lbTurn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 470, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(lbCountdown, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -218,10 +225,10 @@ public class IngameFrm extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel5)
+                .addComponent(lbTurn)
                 .addContainerGap(15, Short.MAX_VALUE))
             .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(lbCountdown, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -297,8 +304,6 @@ public class IngameFrm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -307,7 +312,9 @@ public class IngameFrm extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea jTextArea2;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel lbCountdown;
     private javax.swing.JLabel lbCurPlayer;
+    private javax.swing.JLabel lbTurn;
     private javax.swing.JTextArea taLsPlayer;
     // End of variables declaration//GEN-END:variables
 }

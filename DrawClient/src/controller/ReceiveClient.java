@@ -145,6 +145,12 @@ public class ReceiveClient extends Thread {
             case DRAW_POSITION:
                 handleDrawPoint(data[2], (DrawPoint) objReceived.getT());
                 break;
+            case COUNTDOWN:
+                handleReceivedCountdown(receivedMsg);
+                break;
+            case CHANGE_TURN:
+                handleReceivedChangeTurn((Room) objReceived.getT());
+                break;
         }
     }
     
@@ -178,6 +184,20 @@ public class ReceiveClient extends Thread {
         } else {
             Client.ingame.getPaintPane2().addPointDraw(drawPoint);
         }
+    }
+    
+    //countdown time
+    private void handleReceivedCountdown(String msg){
+        String[] data = msg.split(";");
+        Client.ingame.displayCountdownTime(data[2], data[3]);
+    }
+    
+    //change turn
+    private void handleReceivedChangeTurn(Room receivedRoom){
+        Client.room = receivedRoom;
+        
+        Client.ingame.displayLsPlayer(receivedRoom.getListPlayer());
+        displayIngamePanel();
     }
     
     //============================ chat ========================================

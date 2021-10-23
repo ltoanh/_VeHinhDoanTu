@@ -3,6 +3,8 @@ package server;
 import com.mysql.cj.xdevapi.Client;
 import constant.StreamData;
 import dao.DAO;
+import game.LogicGame;
+import helpers.CountdownHelpers;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -170,7 +172,7 @@ public class Server {
     private void handleSendStartGameMessage(String msg) {
         int roomID = Integer.parseInt(msg.split(";")[2]);
         Room curRoom = helpers.RoomHelpers.checkRoomByID(roomID);
-
+        /**
         // chon 2 nguoi ve
         ArrayList<String> lsPainterID = helpers.RoomHelpers.chooseLsPlayerToDraw(curRoom.getListPlayer());
         curRoom.setLsPainterUsername(lsPainterID);
@@ -182,6 +184,12 @@ public class Server {
         for (Player player : lsPlayers) {
             senderServer.sendObjectData(obj, server, player.getHost(), player.getPort());
         }
+        
+        // send coundown to all player in room
+        new Thread(new CountdownHelpers(10, 1, server, curRoom)).start();
+        */
+        
+        new Thread(new LogicGame(server, curRoom, 3)).start();
     }
 
     // draw point
@@ -201,19 +209,7 @@ public class Server {
             senderServer.sendObjectData(obj, server, player.getHost(), player.getPort());
         }
     }
-
-    // change turn
-    private void changeTurnPlayerDraw(int roomID) {
-        // tim kiem phong
-        Room curRoom = helpers.RoomHelpers.checkRoomByID(roomID);
-        
-        // get 2 painter
-        ArrayList<String> lsPainterID = helpers.RoomHelpers.chooseLsPlayerToDraw(curRoom.getListPlayer());
-        curRoom.setLsPainterUsername(lsPainterID);
-        
-        // send coundown to all player in room
-    }
-
+    
     //============================= chat =======================================
     private void handleSendChatMessage(String msg) {
 
