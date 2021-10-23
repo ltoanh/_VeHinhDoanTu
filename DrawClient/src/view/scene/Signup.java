@@ -170,7 +170,8 @@ public class Signup extends javax.swing.JFrame {
         }else{
             ClientCtr.senderClient.sendSignUpAccount(name, userName, password, avatar);
             Client.closeScene(Client.SceneName.SIGNUP);
-            Client.openScene(Client.SceneName.LOGIN);;
+            Client.openScene(Client.SceneName.LOGIN);
+            JOptionPane.showMessageDialog(this, "Bạn đã đăng kí thành công, vui lòng đăng nhập để bắt đầu game!", "Success", JOptionPane.YES_OPTION);
         }
     }//GEN-LAST:event_btnSignupActionPerformed
 
