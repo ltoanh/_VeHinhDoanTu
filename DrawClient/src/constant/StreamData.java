@@ -25,7 +25,7 @@ public class StreamData {
         PAINT1, //player 1 ve 
         PAINT2, //player 2 ve
         CHANGE_TURN, // thay doi turn nguoi ve
-
+        RECEIVE_WORD,
         // specific
         EXIT, // thoat
         COUNTDOWN, // countdown time
