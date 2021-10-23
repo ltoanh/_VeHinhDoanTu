@@ -18,7 +18,7 @@ public class Homepage extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         
-        setTitle("Trang chủ");
+        setTitle("Trang chủ " + Client.account.getName());
     }
 
     /**

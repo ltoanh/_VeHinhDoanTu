@@ -63,11 +63,7 @@ public class Client {
     public void initScene() {
         login = new Login();
         signup = new Signup();
-
-        homepage = new Homepage();
-
         lobby = new Lobby();
-
     }
 
     public static void openScene(SceneName sceneName) {
@@ -80,7 +76,7 @@ public class Client {
                 break;
 
             case HOMEPAGE:
-//                homepage = new Homepage();
+                homepage = new Homepage();
                 homepage.setVisible(true);
                 break;
 

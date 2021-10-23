@@ -13,45 +13,50 @@ import static server.Server.senderServer;
  *
  * @author whiwf
  */
-public class CountdownHelpers {
-    // thay doi khi code obj
-    private static Timer timer;
-    private static final int countdownTime = 10;
-    private static int curSecond;
-    private static int turn;
-    
-    //============================= countdown ==================================
-    public static void countdownToChangeTurn(DatagramSocket server, int roomID) {
-        timer = new Timer();
-        curSecond = countdownTime;
-        turn = 0;
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                String msg = StreamData.Type.GAME_EVENT.name() + ";" 
-                        + StreamData.Type.COUNTDOWN.name() + ";" 
-                        + turn + ";" + curSecond;
-                ObjectModel obj = new ObjectModel(msg, null);
-                //send to all player in room
-                Room curRoom = helpers.RoomHelpers.checkRoomByID(roomID);
-                for (Player player : curRoom.getListPlayer()) {
-                    senderServer.sendObjectData(obj, server, player.getHost(), player.getPort());
-                }
-            }
+public class CountdownHelpers extends Thread {
 
-        }, 0, 1000);
+    private int time;
+    private int turn;
+
+    private DatagramSocket server;
+    private Room room;
+    private int roomID;
+
+    public CountdownHelpers(int time, int turn, DatagramSocket server, Room room) {
+        this.time = time;
+        this.turn = turn;
+        this.server = server;
+        this.room = room;
+        this.roomID = room.getId();
     }
 
-    public static int setIntervalCountdownTime() {
-        if (curSecond < 0) {
-            curSecond = countdownTime;
-            turn++;
-            if (turn == 3) {
-                timer.cancel();
-                return 0;
+    @Override
+    public void run() {
+        while (time >= 0) {
+            //send to all player in room
+            String senderTime = StreamData.Type.GAME_EVENT.name() + ";" + StreamData.Type.COUNTDOWN.name()
+                    + ";" + this.turn + ";" + this.time;
+            ObjectModel obj = new ObjectModel(senderTime, null);
+            for (Player player : room.getListPlayer()) {
+                senderServer.sendObjectData(obj, server, player.getHost(), player.getPort());
+            }
+
+            time--;
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
             }
         }
+        Thread.currentThread().interrupt();
+    }
 
-        return curSecond--;
+    public int getTime() {
+        return time;
+    }
+
+    public int getRoomID() {
+        return roomID;
     }
 }
