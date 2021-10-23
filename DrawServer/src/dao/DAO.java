@@ -6,6 +6,9 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Account;
 
 /**
@@ -20,7 +23,7 @@ public class DAO {
     private String server = "localhost:3306";
     private String db = "scribble";
     private String user = "root";
-    private String pass = "";
+    private String pass = "trang1034408043";
 
     public DAO() {
         setupConnection();
@@ -61,5 +64,25 @@ public class DAO {
             ex.printStackTrace();
         }
         return null;
+    }
+    
+    //get word
+    public ArrayList<String> getWord(){
+        ArrayList <String> listWord = new ArrayList<>();
+        try {
+            Class.forName(JDBC_DRIVER);
+            Statement stm = conn.createStatement();
+            String sql = "select word from word";
+            ResultSet rs = stm.executeQuery(sql);
+            while(rs.next()){
+                listWord.add(rs.getString(1));
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return listWord;
     }
 }

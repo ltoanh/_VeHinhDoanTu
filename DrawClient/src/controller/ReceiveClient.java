@@ -151,6 +151,9 @@ public class ReceiveClient extends Thread {
             case CHANGE_TURN:
                 handleReceivedChangeTurn((Room) objReceived.getT());
                 break;
+//            case RECEIVE_WORD:
+//                handReceiveWord(data[2],(Room) objReceived.getT());
+//                break;
         }
     }
     
@@ -199,7 +202,10 @@ public class ReceiveClient extends Thread {
         Client.ingame.displayLsPlayer(receivedRoom.getListPlayer());
         displayIngamePanel();
     }
-    
+    private void handReceiveWord(String word, Room receivedRoom){
+        Client.room = receivedRoom;
+        Client.ingame.displayWord(word);
+    }
     //============================ chat ========================================
     private void handleChatMsg(String receivedMsg) {
 //        Client.ingame.addChatMessage(receivedMsg.split(";")[1]);

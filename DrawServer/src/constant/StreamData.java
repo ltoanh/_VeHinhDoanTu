@@ -23,7 +23,7 @@ public class StreamData {
         START, // bat dau game
         DRAW_POSITION, // ve hinh
         CHANGE_TURN, // thay doi turn nguoi ve
-
+        RECEIVE_WORD,
         // specific
         EXIT, // thoat
         COUNTDOWN, // countdown time

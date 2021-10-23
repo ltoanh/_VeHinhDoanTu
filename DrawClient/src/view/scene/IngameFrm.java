@@ -89,7 +89,22 @@ public class IngameFrm extends javax.swing.JFrame {
         lbTurn.setText(msgTurn + "/3");
         lbCountdown.setText(msgTime + " s");
     }
-    
+    public void displayWord(String word){
+       // jLabelWord.setText(word);
+       if (Client.room.getLsPainterUsername().get(0).equals(Client.account.getUsername()) || 
+               Client.room.getLsPainterUsername().get(1).equals(Client.account.getUsername()) ) {
+            jLabelWord.setText(word);
+        }else{
+           String numOfWord="";
+           for(int i = 0; i < word.length(); i++)
+           {
+               numOfWord += "_ ";
+           }
+           jLabelWord.setText(numOfWord);
+       }
+      
+       
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -109,7 +124,7 @@ public class IngameFrm extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         lbTurn = new javax.swing.JLabel();
         lbCountdown = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
+        jLabelWord = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -202,8 +217,8 @@ public class IngameFrm extends javax.swing.JFrame {
         lbCountdown.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/assets/icons8-timer-30.png"))); // NOI18N
         lbCountdown.setText("120 s");
 
-        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel7.setText("Từ để đoán (7)");
+        jLabelWord.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelWord.setText("Từ để đoán (7)");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -215,7 +230,7 @@ public class IngameFrm extends javax.swing.JFrame {
                     .addComponent(jLabel4)
                     .addComponent(lbTurn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 470, Short.MAX_VALUE)
+                .addComponent(jLabelWord, javax.swing.GroupLayout.DEFAULT_SIZE, 470, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lbCountdown, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -227,7 +242,7 @@ public class IngameFrm extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lbTurn)
                 .addContainerGap(15, Short.MAX_VALUE))
-            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabelWord, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(lbCountdown, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
@@ -304,7 +319,7 @@ public class IngameFrm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabelWord;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
