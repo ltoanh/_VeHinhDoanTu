@@ -6,9 +6,9 @@ package constant;
  */
 public class Avatar {
 
-    public static final String ASSETS_PATH = "src/client/view/assets/";
-    public static final String PATH = "src/client/view/assets/avatar/";
-    public static final String PATH_RESOURCE = "/client/view/assets/avatar/";
+    public static final String ASSETS_PATH = "src/view/assets/";
+    public static final String PATH = "src/view/assets/avatar/";
+    public static final String PATH_RESOURCE = "/view/assets/avatar/";
 
     public static final String[] LIST = {
         "icons8-brave-96.png",

@@ -89,8 +89,8 @@ public class IngameFrm extends javax.swing.JFrame {
         lbTurn.setText(msgTurn + "/3");
         lbCountdown.setText(msgTime + " s");
     }
+    //show word for player
     public void displayWord(String word){
-       // jLabelWord.setText(word);
        if (Client.room.getLsPainterUsername().get(0).equals(Client.account.getUsername()) || 
                Client.room.getLsPainterUsername().get(1).equals(Client.account.getUsername()) ) {
             jLabelWord.setText(word);

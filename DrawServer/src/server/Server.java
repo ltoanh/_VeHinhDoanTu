@@ -72,7 +72,9 @@ public class Server {
                     case LOGIN:
                         handleLogin(msg);
                         break;
-
+                    case SIGNUP:
+                        handleSignUp(msg);
+                        break;
                     //============= room ===========
                     // create room
                     case CREATE_ROOM:
@@ -106,6 +108,12 @@ public class Server {
 
     //========================= sign =====================================
     //login
+    //Sign Up
+    private void handleSignUp(String msg){
+        String[] data = msg.trim().split(";");
+        dao.insertInformation(data[1], data[2], data[3], data[4]);
+    //    Account acc = new Account(data[2], data[1], data[4]);
+    }
     private void handleLogin(String msg) {
         String[] data = msg.trim().split(";");
         Account acc = dao.checkAccount(data[1], data[2]);

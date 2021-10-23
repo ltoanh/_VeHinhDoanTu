@@ -23,7 +23,7 @@ public class DAO {
     private String server = "localhost:3306";
     private String db = "scribble";
     private String user = "root";
-    private String pass = "trang1034408043";
+    private String pass = "";
 
     public DAO() {
         setupConnection();
@@ -66,6 +66,22 @@ public class DAO {
         return null;
     }
     
+    //Signup
+    public void insertInformation(String name, String username, String password, String avatar){
+        try {
+            Statement stmt;
+            Class.forName(JDBC_DRIVER);
+            stmt = conn.createStatement();
+            String sql = "INSERT INTO account (name, username, password, avatar) VALUES ('" + name + "','" + username + "','"+ password+ "','" + avatar+"')";
+            stmt.executeUpdate(sql);
+            
+            System.out.println("Insert data success");
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+    }
     //get word
     public ArrayList<String> getWord(){
         ArrayList <String> listWord = new ArrayList<>();

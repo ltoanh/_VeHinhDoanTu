@@ -61,7 +61,12 @@ public class SenderClient extends Thread {
         byte[] buff = val.getBytes();
         return new DatagramPacket(buff, 0, buff.length, host, port);
     }
-
+//=========================Signup==============================
+    public void sendSignUpAccount(String name, String userName, String password, String avatar){
+        String msg = StreamData.Type.SIGNUP.name()+";"+name.trim()+";"+userName.trim()+";"+password.trim()+";"+avatar.trim();
+        ObjectModel obj = new ObjectModel (msg, null);
+        sendObjectPacket(obj);
+    }
     //========================= login =============================
     public void sendLoginMessage(String username, String password) {
 //        sendPacket(StreamData.Type.LOGIN.name() + ";" + username + ";" + password);
