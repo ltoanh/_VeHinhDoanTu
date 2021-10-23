@@ -10,6 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import model.Account;
+import model.DrawPoint;
 import model.ObjectModel;
 import model.Player;
 import model.Room;
@@ -21,6 +22,8 @@ import model.Room;
 public class ReceiveClient extends Thread {
 
     private DatagramSocket client;
+    
+    private ObjectModel objReceived;
 
     ReceiveClient(DatagramSocket client) {
         this.client = client;
@@ -30,31 +33,8 @@ public class ReceiveClient extends Thread {
         boolean running = true;
 
         while (running) {
-//                String receivedMsg = receiveData(client);
-//    
-//
-//                System.out.println("> received msg: " + receivedMsg);
-//                // xu ly loai du lieu nhan dc
-//                StreamData.Type type = StreamData.getTypeFromReceivedData(receivedMsg);
-//                switch (type) {
-//                    case CHAT_ROOM:
-//                        handleChatMsg(receivedMsg);
-//                        break;
-//                    case JOIN_ROOM:
-//                        handlePlayerJoinRoom(receivedMsg);
-//                    case GAME_EVENT:
-//                        handleReceivedGameEvent(receivedMsg);
-//                        break;
-//                    case UNKNOW_TYPE:
-//                        break;
-//                }
-//            String receivedMsg = null;
-//            try {
-//                receivedMsg = receiveData(client);
-//            } catch (IOException ex) {
-//                Logger.getLogger(ReceiveClient.class.getName()).log(Level.SEVERE, null, ex);
-//            }
             ObjectModel objReceived = receiveObjectData(client);
+            objReceived = receiveObjectData(client);
 
             String msg = objReceived.getType();
             System.out.println("> received : " + msg + ":" + objReceived.getT());
@@ -75,6 +55,10 @@ public class ReceiveClient extends Thread {
 
                 case JOIN_ROOM:
                     handlePlayerJoinRoom((Room) objReceived.getT());
+                    break;
+                case GAME_EVENT:
+                    handleReceivedGameEvent(msg);
+                    break;
             }
 
         }
@@ -104,6 +88,7 @@ public class ReceiveClient extends Thread {
         return null;
     }
 
+    /**
     //receive string
     private String receiveData(DatagramSocket client) throws IOException {
         byte[] buff = new byte[1024];
@@ -112,6 +97,7 @@ public class ReceiveClient extends Thread {
         client.receive(din);
         return new String(din.getData());
     }
+    */
 
     //============================ sign =============================
     // login
@@ -130,24 +116,23 @@ public class ReceiveClient extends Thread {
     // create room
     private void handleReceivedCreatedRoom(Room receivedRoom) {
         Client.room = receivedRoom;
-        Client.listPlayer = receivedRoom.getListPlayer();
 
         Client.closeScene(Client.SceneName.HOMEPAGE);
         Client.openScene(Client.SceneName.LOBBY);
 
         Client.lobby.displayRoomID(Client.room.getId() + "");
+        Client.lobby.displayStartButton();
         Client.lobby.addPlayerToList(Client.account.getName() + "(" + Client.account.getUsername() + ")");
     }
 
     //join room
     private void handlePlayerJoinRoom(Room receivedRoom) {
         Client.room = receivedRoom;
-        Client.listPlayer = receivedRoom.getListPlayer();
 
         Client.lobby.displayRoomID(Client.room.getId() + "");
         Client.lobby.clearPlayersList();
         
-        for (Player player : Client.listPlayer) {
+        for (Player player : Client.room.getListPlayer()) {
             Account acc = player.getAccount();
             Client.lobby.addPlayerToList(acc.getName() + "(" + acc.getUsername() + ")");
         }
@@ -159,27 +144,71 @@ public class ReceiveClient extends Thread {
         String[] data = receivedMsg.split(";");
         StreamData.Type gameEventType = StreamData.getType(data[1]);
         switch (gameEventType) {
+            case START:
+                // open ingame scene
+                handleStartGame((Room) objReceived.getT());
+                break;
             case DRAW_POSITION:
-                int tool = Integer.parseInt(data[2]);
-                int x1 = Integer.parseInt(data[3]);
-                int y1 = Integer.parseInt(data[4]);
-                int x2 = Integer.parseInt(data[5]);
-                int y2 = Integer.parseInt(data[6]);
-                Color color = Color.BLACK;
-                try {
-                    color = new Color(Integer.parseInt(data[7]));
-                } catch (NumberFormatException e) {
-
-                }
-
-                Client.ingame.paintPane.addPointDraw(tool, x1, y1, x2, y2, color);
+                handleDrawPoint(data[2], (DrawPoint) objReceived.getT());
+                break;
+            case COUNTDOWN:
+                handleReceivedCountdown(receivedMsg);
+                break;
+            case CHANGE_TURN:
+                handleReceivedChangeTurn((Room) objReceived.getT());
                 break;
         }
     }
+    
+    // hien thi pane paint tool / guess
+    private void displayIngamePanel(){
+        String uPainter1 = Client.room.getLsPainterUsername().get(0);
+        String uPainter2 = Client.room.getLsPainterUsername().get(1);
+        String curUsername = Client.account.getUsername();
+        if(curUsername.equals(uPainter1) || curUsername.equals(uPainter2)){
+            Client.ingame.displayPaintTool();
+        } else {
+            Client.ingame.displayGuessPane();
+        }
+    }
 
+    //start
+    private void handleStartGame(Room receivedRoom){
+        Client.room = receivedRoom;
+        
+        Client.closeScene(Client.SceneName.LOBBY);
+        Client.openScene(Client.SceneName.INGAME);
+        Client.ingame.displayLsPlayer(receivedRoom.getListPlayer());
+        
+        displayIngamePanel();
+    }
+    
+    // draw point
+    private void handleDrawPoint(String painter, DrawPoint drawPoint){
+        if(StreamData.Type.PAINT1.name().equals(painter)){
+            Client.ingame.getPaintPane1().addPointDraw(drawPoint);
+        } else {
+            Client.ingame.getPaintPane2().addPointDraw(drawPoint);
+        }
+    }
+    
+    //countdown time
+    private void handleReceivedCountdown(String msg){
+        String[] data = msg.split(";");
+        Client.ingame.displayCountdownTime(data[2], data[3]);
+    }
+    
+    //change turn
+    private void handleReceivedChangeTurn(Room receivedRoom){
+        Client.room = receivedRoom;
+        
+        Client.ingame.displayLsPlayer(receivedRoom.getListPlayer());
+        displayIngamePanel();
+    }
+    
     //============================ chat ========================================
     private void handleChatMsg(String receivedMsg) {
-        Client.ingame.addChatMessage(receivedMsg.split(";")[1]);
+//        Client.ingame.addChatMessage(receivedMsg.split(";")[1]);
     }
 
     private void handleExitRoom(Room receivedRoom) {

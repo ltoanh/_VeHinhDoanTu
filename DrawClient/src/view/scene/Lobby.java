@@ -22,11 +22,18 @@ public class Lobby extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
 
         setTitle("Phòng chờ");
+        
+        btnStart.setVisible(false);
 
     }
     
     public void displayRoomID(String roomID){
         lbRoomID.setText("Mã phòng: " + roomID);
+    }
+    
+    // hien thi nut start
+    public void displayStartButton(){
+        btnStart.setVisible(true);
     }
     
     // clear ds
@@ -134,6 +141,11 @@ public class Lobby extends javax.swing.JFrame {
 
         btnStart.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/assets/icons8-circled-play-24.png"))); // NOI18N
         btnStart.setText("Bắt đầu");
+        btnStart.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnStartActionPerformed(evt);
+            }
+        });
 
         btnExit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/assets/icons8_logout_rounded_left_24px.png"))); // NOI18N
         btnExit.setText("Thoát");
@@ -212,6 +224,15 @@ public class Lobby extends javax.swing.JFrame {
         Client.openScene(Client.SceneName.HOMEPAGE);
         Room room =null;
     }//GEN-LAST:event_btnExitActionPerformed
+
+    private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartActionPerformed
+        // send start message
+        if(Client.room.getListPlayer().size() >= 2){
+            ClientCtr.senderClient.sendStartRoomMessage();
+        } else {
+            JOptionPane.showMessageDialog(null, "Phòng phải có ít nhất 2 người chơi!");
+        }
+    }//GEN-LAST:event_btnStartActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

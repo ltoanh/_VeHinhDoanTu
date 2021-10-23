@@ -18,4 +18,7 @@ public class Account implements java.io.Serializable {
         this.avatar = avatar;
     }
 
+    public String getUsername() {
+        return username;
+    }
 }

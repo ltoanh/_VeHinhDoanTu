@@ -9,12 +9,18 @@ import java.net.InetAddress;
 public class Player implements java.io.Serializable{
     private static final long serialVersionUID = 6529685098267757690L;
     
+    private static int playerID = 0;
+    private int id;
     private InetAddress host;
     private int port;
     private Account account;
     private int score;
 
+    //create room
+    
     public Player(InetAddress host, int port, Account account, int score) {
+        id = playerID;
+        playerID++;
         this.host = host;
         this.port = port;
         this.account = account;

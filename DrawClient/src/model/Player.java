@@ -10,6 +10,7 @@ public class Player implements java.io.Serializable{
 
     private static final long serialVersionUID = 6529685098267757690L;
     
+    private int id;
     private InetAddress host;
     private int port;
     private Account account;

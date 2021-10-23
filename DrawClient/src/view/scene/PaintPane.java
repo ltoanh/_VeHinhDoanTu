@@ -2,11 +2,15 @@ package view.scene;
 
 import client.Client;
 import constant.Constant;
+import constant.StreamData;
+import controller.ClientCtr;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import javax.swing.border.LineBorder;
+import model.DrawPoint;
 
 /**
  *
@@ -15,17 +19,19 @@ import java.awt.image.BufferedImage;
 public class PaintPane extends javax.swing.JPanel {
 
     private int lastX, lastY;
-    private int inkWidth = 625, inkHeight = 390;
+//    private int inkWidth = 590, inkHeight = 390;
 
     private int activeTool = 1;
     private Color currentColor = Color.BLACK;
 
-//    private boolean isPainer = true;
+    private IngameFrm ingame;
 
-    public PaintPane() {
+//    private boolean isPainer = true;
+    public PaintPane(IngameFrm ingame) {
         initComponents();
 
-        setSize(inkWidth, inkHeight);
+        this.ingame = ingame;
+//        setSize(inkWidth, inkHeight);
     }
 
     public void setTool(int tool) {
@@ -47,6 +53,7 @@ public class PaintPane extends javax.swing.JPanel {
     private void initComponents() {
 
         setBackground(new java.awt.Color(255, 255, 255));
+        setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
                 formMouseDragged(evt);
@@ -62,24 +69,31 @@ public class PaintPane extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 398, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGap(0, 298, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void formMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseDragged
-//        if (isPainer) {
-            int x = evt.getX(), y = evt.getY();
-
+        int x = evt.getX(), y = evt.getY();
+        
+        if (this.ingame.getPaintPane1().equals(this) && Client.room.getLsPainterUsername().get(0).equals(Client.account.getUsername()) ) {
+            // player 1 draw
             draw(lastX, lastY, x, y, currentColor);
-            Client.clientCtr.senderClient.drawPoint(activeTool, lastX, lastY, x, y, currentColor);
-            
-            lastX = x;
-            lastY = y;
-//        }
+            DrawPoint point = new DrawPoint(activeTool, lastX, lastY, x, y, currentColor);
+            ClientCtr.senderClient.drawPoint(StreamData.Type.PAINT1.name(), point);
+        } else if (this.ingame.getPaintPane2().equals(this) && Client.room.getLsPainterUsername().get(1).equals(Client.account.getUsername())){
+            // player 2 draw
+            draw(lastX, lastY, x, y, currentColor);
+            DrawPoint point = new DrawPoint(activeTool, lastX, lastY, x, y, currentColor);
+            ClientCtr.senderClient.drawPoint(StreamData.Type.PAINT2.name(), point);
+        }
+        
+        lastX = x;
+        lastY = y;
     }//GEN-LAST:event_formMouseDragged
 
     private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
@@ -100,14 +114,12 @@ public class PaintPane extends javax.swing.JPanel {
     }
 
     // diem nhan dc tu server => draw
-    public void addPointDraw(int tool, int x1, int y1, int x2, int y2, Color color) {
-//        if(!isPainer){
-            draw(x1, y1, x2, y2, color);
-//        }
+    public void addPointDraw(DrawPoint drawPoint) {
+        this.activeTool = drawPoint.getTool();
+        draw(drawPoint.getX1(), drawPoint.getY1(), drawPoint.getX2(), drawPoint.getY2(), drawPoint.getColor());
     }
-    
+
     //send point => server
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

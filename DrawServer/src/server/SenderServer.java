@@ -40,7 +40,8 @@ public class SenderServer extends Thread{
             ex.printStackTrace();
         }
     };
-    
+
+    /**
     // send string
     public void sendData(String msg, DatagramSocket server, InetAddress clientIP, int clientPort) throws IOException{
         byte[] buff = new byte[1024];
@@ -49,4 +50,5 @@ public class SenderServer extends Thread{
         DatagramPacket dp = new DatagramPacket(buff, 0, buff.length, clientIP, clientPort);
         server.send(dp);
     }
+    */
 }

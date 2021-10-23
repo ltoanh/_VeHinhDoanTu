@@ -46,6 +46,7 @@ public class ReceiveServer extends Thread {
         return null;
     }
 
+    /**
     // receive string
     public String receiveData(DatagramSocket server) throws IOException {
         byte[] buff = new byte[1024];
@@ -58,4 +59,5 @@ public class ReceiveServer extends Thread {
 
         return new String(dp.getData());
     }
+    */
 }

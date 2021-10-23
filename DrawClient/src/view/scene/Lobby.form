@@ -224,6 +224,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="B&#x1eaf;t &#x111;&#x1ea7;u"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnStartActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnExit">
       <Properties>
