@@ -74,11 +74,7 @@ public class LogicGame implements Runnable {
             ObjectModel obj = new ObjectModel(msgToPlayer, room);
             for (Player player : lsPlayers) {
                 senderServer.sendObjectData(obj, server, player.getHost(), player.getPort());
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(LogicGame.class.getName()).log(Level.SEVERE, null, ex);
-                }
+               //send word
                 senderServer.sendObjectData(objWordModel, server, player.getHost(), player.getPort());
             
             }
