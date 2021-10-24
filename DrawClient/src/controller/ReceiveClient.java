@@ -198,6 +198,8 @@ public class ReceiveClient extends Thread {
         
         Client.ingame.displayLsPlayer(receivedRoom.getListPlayer());
         displayIngamePanel();
+        Client.ingame.changeTurn(receivedRoom.getListPlayer());
+        
     }
     
     //============================ chat ========================================

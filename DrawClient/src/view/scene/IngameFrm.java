@@ -69,7 +69,7 @@ public class IngameFrm extends javax.swing.JFrame {
         guessPane.setVisible(true);
     }
     // show player list
-    public void displayLsPlayer(ArrayList<Player> lsPlayer){
+     public void displayLsPlayer(ArrayList<Player> lsPlayer){
         taLsPlayer.setText("");
         
         for(Player player : lsPlayer){
@@ -317,4 +317,27 @@ public class IngameFrm extends javax.swing.JFrame {
     private javax.swing.JLabel lbTurn;
     private javax.swing.JTextArea taLsPlayer;
     // End of variables declaration//GEN-END:variables
+
+    public void changeTurn(ArrayList<Player> listPlayer) {
+        if (Client.room.getLsPainterUsername().get(0).equals(Client.account.getUsername()) ) {
+            setTurn(Client.room.getLsPainterUsername().get(1));
+            paintPane1.repaint();
+        }
+        else if (Client.room.getLsPainterUsername().get(1).equals(Client.account.getUsername())){
+            setTurn(Client.room.getLsPainterUsername().get(0));
+            paintPane2.repaint();
+        }
+    }
+
+    private void setTurn(String username) {
+        if (Client.room.getLsPainterUsername().get(0).equals(username)){
+            paintPane1.setEnabled(false);
+            guessPane.setEnabled(false);
+        }
+        else if (Client.room.getLsPainterUsername().get(1).equals(username)){
+            paintPane2.setEnabled(false);
+            guessPane.setEnabled(false);
+        }
+                
+    }
 }
