@@ -24,7 +24,8 @@ public class StreamData {
         DRAW_POSITION, // ve hinh 
         PAINT1, //player 1 ve 
         PAINT2, //player 2 ve
-        GUESS_WORD, // tu doan
+        RECEIVE_WORD, // tu de doan
+        GUESS_WORD, // tu nguoi choi doan
         GUESS_RESULT, //ket qua doan tu
         SHOW_GUESS_RESULT, // hien thi ket qua doan tu vs nguoi choi khac
         CHANGE_TURN, // thay doi turn nguoi ve

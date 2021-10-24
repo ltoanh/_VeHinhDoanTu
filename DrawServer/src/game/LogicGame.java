@@ -4,6 +4,9 @@ import constant.StreamData;
 import helpers.CountdownHelpers;
 import java.net.DatagramSocket;
 import java.util.ArrayList;
+import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.ObjectModel;
 import model.Player;
 import model.Room;
@@ -29,7 +32,7 @@ public class LogicGame extends Thread{
         this.roomID = room.getId();
         this.turn = turn;
     }
-
+    
     @Override
     public void run() {
         ArrayList<Player> lsPlayers = room.getListPlayer();
@@ -41,6 +44,17 @@ public class LogicGame extends Thread{
             System.out.println(lsPainterID);
 
             //note: send word!
+            ArrayList <String> wordList = new ArrayList<>();
+            dao.DAO dao = new dao.DAO();
+            wordList = dao.getWord();
+            
+            Random rd = new Random();
+            int num1 = rd.nextInt(wordList.size());
+            String word = wordList.get(num1);
+            String msgWord =StreamData.Type.GAME_EVENT.name() + ";" //+ StreamData.Type.CHANGE_TURN.name()
+                    + StreamData.Type.RECEIVE_WORD.name()+";"+wordList.get(num1);
+            ObjectModel objWordModel = new ObjectModel(msgWord, null);
+            
             //...code...
             //countdown
             CountdownHelpers countdown = new CountdownHelpers(10, i, server, room);
@@ -57,6 +71,9 @@ public class LogicGame extends Thread{
             ObjectModel obj = new ObjectModel(msgToPlayer, room);
             for (Player player : lsPlayers) {
                 senderServer.sendObjectData(obj, server, player.getHost(), player.getPort());
+                
+                senderServer.sendObjectData(objWordModel, server, player.getHost(), player.getPort());
+            
             }
             
             countdown.start();
