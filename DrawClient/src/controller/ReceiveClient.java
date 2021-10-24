@@ -14,6 +14,7 @@ import model.DrawPoint;
 import model.ObjectModel;
 import model.Player;
 import model.Room;
+import view.scene.GuessPane;
 
 /**
  *
@@ -148,6 +149,12 @@ public class ReceiveClient extends Thread {
             case COUNTDOWN:
                 handleReceivedCountdown(receivedMsg);
                 break;
+            case GUESS_RESULT:
+                handleReceivedGuessResult(Boolean.valueOf(data[2]));
+                break;
+            case SHOW_GUESS_RESULT:
+                handleReceivedPlayerGuess(Boolean.valueOf(data[2]), data[3], (Room) objReceived.getT());
+                break;
             case CHANGE_TURN:
                 handleReceivedChangeTurn((Room) objReceived.getT());
                 break;
@@ -193,6 +200,27 @@ public class ReceiveClient extends Thread {
     private void handleReceivedCountdown(String msg){
         String[] data = msg.split(";");
         Client.ingame.displayCountdownTime(data[2], data[3]);
+    }
+    
+    //result client guess
+    private void handleReceivedGuessResult(boolean result){
+        // cap nhat guess pane
+        GuessPane guessPane = Client.ingame.getGuessPane();
+        if(result){
+            guessPane.closeGuessPane();
+        } else {
+            guessPane.descGuessTurn();
+            if(guessPane.getGuessTurn() == 0){
+                guessPane.closeGuessPane();
+            }
+        }
+    }
+    //show player guess
+    private void handleReceivedPlayerGuess(boolean result, String guessWord, Room curRoom){
+        Client.room = curRoom;
+        
+        Client.ingame.showPlayerGuessResult(guessWord);
+        Client.ingame.displayLsPlayer(curRoom.getListPlayer());
     }
     
     //change turn

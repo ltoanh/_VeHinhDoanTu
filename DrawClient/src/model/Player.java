@@ -19,7 +19,7 @@ public class Player implements java.io.Serializable{
     public int getScore() {
         return score;
     }
-
+    
     public Account getAccount() {
         return account;
     }

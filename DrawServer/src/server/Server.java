@@ -5,6 +5,7 @@ import constant.StreamData;
 import dao.DAO;
 import game.LogicGame;
 import helpers.CountdownHelpers;
+import helpers.RoomHelpers;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -40,6 +41,9 @@ public class Server {
     private ObjectModel receivedObj;
 
     public static ArrayList<Room> listRoom;
+    
+    //game
+    private LogicGame logicGame;
 
     public Server(int port) {
         this.port = port;
@@ -173,6 +177,9 @@ public class Server {
             case DRAW_POSITION:
                 handleSendDrawPoint(msgGameEvent[2], msgGameEvent[3], (DrawPoint) receivedObj.getT());
                 break;
+            case GUESS_WORD:
+                handleSendGuessWordResult(Integer.parseInt(msgGameEvent[2]), (Account) receivedObj.getT(),msgGameEvent[3]);
+                break;
         }
     }
 
@@ -197,7 +204,8 @@ public class Server {
         new Thread(new CountdownHelpers(10, 1, server, curRoom)).start();
         */
         
-        new Thread(new LogicGame(server, curRoom, 3)).start();
+        logicGame = new LogicGame(server, curRoom, 3);
+        logicGame.start();
     }
 
     // draw point
@@ -215,6 +223,50 @@ public class Server {
                 continue;
             }
             senderServer.sendObjectData(obj, server, player.getHost(), player.getPort());
+        }
+    }
+    
+    //guess word
+    private void handleSendGuessWordResult(int roomID, Account clientAccount, String guessWord){
+        Room curRoom = helpers.RoomHelpers.checkRoomByID(roomID);
+        ArrayList<Player> lsPlayers = curRoom.getListPlayer();
+        //get player account
+        int playerIndex = RoomHelpers.findPlayerIndexByAccount(lsPlayers, clientAccount);
+        
+        boolean isCorrect = true;
+        
+        String msgResult = StreamData.Type.GAME_EVENT.name() + ";" + StreamData.Type.GUESS_RESULT.name() + ";";
+        if(logicGame.getRoomID() == roomID){
+            if(guessWord.equals(logicGame.getWord())){
+                msgResult += "true";
+                // + 50 diem doan dung
+                int curScore = lsPlayers.get(playerIndex).getScore();
+                lsPlayers.get(playerIndex).setScore(curScore + 50);
+            } else {
+                msgResult += "false";
+                isCorrect = false;
+            }
+        }
+        ObjectModel obj = new ObjectModel(msgResult, null);
+        senderServer.sendObjectData(obj, server, receiveServer.clientIP, receiveServer.clientPort);
+        
+        // send to all player
+        String msgGame = StreamData.Type.GAME_EVENT.name() + ";" + StreamData.Type.SHOW_GUESS_RESULT.name() + ";";
+        if(isCorrect){
+            // send player is correct
+            msgGame += "true;" + clientAccount.getUsername() + "đã đoán đúng";
+        } else {
+            // send word player guess
+            msgGame += "false;" + clientAccount.getUsername() + ": " + guessWord;
+        }
+        
+        // sap xep ds theo thu tu diem desc
+        lsPlayers.sort((p1, p2) -> Integer.compare(p2.getScore(), p1.getScore()));
+        curRoom.setListPlayer(lsPlayers);
+        
+        ObjectModel objResult = new ObjectModel(msgGame, curRoom);
+        for(Player player : lsPlayers){
+            senderServer.sendObjectData(objResult, server, player.getHost(), player.getPort());
         }
     }
     
