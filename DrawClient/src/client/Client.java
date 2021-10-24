@@ -128,7 +128,6 @@ public class Client {
     }
 
     public static void main(String[] args) throws UnknownHostException, SocketException {
-        
         new Client();
     }
 }

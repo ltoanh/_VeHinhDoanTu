@@ -22,7 +22,11 @@ public class StreamData {
         GAME_EVENT, // cac su kien lien quan den in game
         START, // bat dau game
         DRAW_POSITION, // ve hinh
+        GUESS_WORD, // tu doan
+        GUESS_RESULT, //ket qua doan tu
+        SHOW_GUESS_RESULT, // hien thi ket qua doan tu vs nguoi choi khac
         CHANGE_TURN, // thay doi turn nguoi ve
+        TURN_RESULT, // hien thi ket qua 1 turn
 
         // specific
         EXIT, // thoat

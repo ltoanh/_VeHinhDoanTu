@@ -13,13 +13,15 @@ import static server.Server.senderServer;
  *
  * @author whiwf
  */
-public class LogicGame implements Runnable {
+public class LogicGame extends Thread{
 
     private DatagramSocket server;
 
     private int roomID;
     private Room room;
     private int turn;
+    
+    private String word;
 
     public LogicGame(DatagramSocket server, Room room, int turn) {
         this.server = server;
@@ -67,13 +69,25 @@ public class LogicGame implements Runnable {
 
             //send room result when end countdown
             if (!countdown.isAlive()) {
-                System.out.println("end countdown" + i);
                 try {
+                    
                     Thread.sleep(5000);
                 } catch (InterruptedException ex) {
                     ex.printStackTrace();
                 }
             }
         }
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
+    }
+
+    public int getRoomID() {
+        return roomID;
+    }
+
+    public String getWord() {
+        return word;
     }
 }

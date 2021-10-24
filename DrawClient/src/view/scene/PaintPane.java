@@ -84,12 +84,12 @@ public class PaintPane extends javax.swing.JPanel {
             // player 1 draw
             draw(lastX, lastY, x, y, currentColor);
             DrawPoint point = new DrawPoint(activeTool, lastX, lastY, x, y, currentColor);
-            ClientCtr.senderClient.drawPoint(StreamData.Type.PAINT1.name(), point);
+            ClientCtr.senderClient.sendDrawPoint(StreamData.Type.PAINT1.name(), point);
         } else if (this.ingame.getPaintPane2().equals(this) && Client.room.getLsPainterUsername().get(1).equals(Client.account.getUsername())){
             // player 2 draw
             draw(lastX, lastY, x, y, currentColor);
             DrawPoint point = new DrawPoint(activeTool, lastX, lastY, x, y, currentColor);
-            ClientCtr.senderClient.drawPoint(StreamData.Type.PAINT2.name(), point);
+            ClientCtr.senderClient.sendDrawPoint(StreamData.Type.PAINT2.name(), point);
         }
         
         lastX = x;

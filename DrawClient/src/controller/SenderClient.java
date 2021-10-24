@@ -48,6 +48,7 @@ public class SenderClient extends Thread {
 
     }
 
+    /**
     // send string
     public void sendPacket(String msg) {
         try {
@@ -56,6 +57,7 @@ public class SenderClient extends Thread {
             Logger.getLogger(SenderClient.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    */
 
     private DatagramPacket createPacket(String val) {
         byte[] buff = val.getBytes();
@@ -73,7 +75,7 @@ public class SenderClient extends Thread {
 
     //========================= chat ==============================
     public void sendChatMessage(String msg) {
-        sendPacket(StreamData.Type.CHAT_ROOM.name() + ";" + msg);
+//        sendPacket(StreamData.Type.CHAT_ROOM.name() + ";" + msg);
 //        System.out.println("> msg send: " + StreamData.Type.CHAT_ROOM.name() + ";" + msg);
     }
 
@@ -103,9 +105,18 @@ public class SenderClient extends Thread {
     }
 
     //========================= ingame ============================
-    public void drawPoint(String painter, DrawPoint drawPoint) {
+    // draw point
+    public void sendDrawPoint(String painter, DrawPoint drawPoint) {
         String msg = StreamData.Type.GAME_EVENT.name() + ";" + StreamData.Type.DRAW_POSITION.name() + ";" + Client.room.getId() + ";" + painter;
         ObjectModel obj = new ObjectModel(msg, drawPoint);
         sendObjectPacket(obj);
+    }
+    //guess word
+    public void sendGuessWord(String guessWord){
+        String msg = StreamData.Type.GAME_EVENT.name() + ";" + StreamData.Type.GUESS_WORD.name() + ";" 
+                + Client.room.getId() + ";" + guessWord;
+        ObjectModel obj = new ObjectModel(msg, Client.account);
+        sendObjectPacket(obj);
+        System.out.println("send guess: " + guessWord);
     }
 }
