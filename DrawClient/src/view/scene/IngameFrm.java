@@ -30,9 +30,6 @@ public class IngameFrm extends javax.swing.JFrame {
         
         setLayout(null);
         
-        //result turn
-        resultTurnDialog = new ResultTurnDialog(this, true);
-        
         //paint
         paintPane1 = new PaintPane(this);
         add(paintPane1);
@@ -96,7 +93,11 @@ public class IngameFrm extends javax.swing.JFrame {
     }
     
     //show result turn dialog
-    public void showResultTurnDialog(){
+    public void showResultTurnDialog(ArrayList<Player> lsPlayers){
+        //result turn
+//        loi khong tu dong dong
+        resultTurnDialog = new ResultTurnDialog(this, true);
+        resultTurnDialog.displayTurnResult(lsPlayers);
         resultTurnDialog.setVisible(true);
     }
     //close result turn dialog

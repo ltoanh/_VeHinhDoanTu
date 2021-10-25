@@ -47,5 +47,10 @@ public class Player implements java.io.Serializable{
     public void setScore(int score) {
         this.score = score;
     }
+
+    @Override
+    public String toString() {
+        return "Player{" + "id=" + id + ", host=" + host + ", port=" + port + ", account=" + account + ", score=" + score + '}';
+    }
     
 }
