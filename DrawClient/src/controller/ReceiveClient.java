@@ -159,8 +159,12 @@ public class ReceiveClient extends Thread {
                 handleReceivedChangeTurn((Room) objReceived.getT());
                 break;
             case RECEIVE_WORD:
-                handReceiveWord(data[2]);
+                handReceiveWord((Room) objReceived.getT());
                 break;
+            case TURN_RESULT:
+                handleRecivedTurnResult((Room) objReceived.getT());
+                break;
+                
         }
     }
     
@@ -196,6 +200,12 @@ public class ReceiveClient extends Thread {
         }
     }
     
+    //display word
+    private void handReceiveWord(Room curRoom){
+        Client.room = curRoom;
+        Client.ingame.displayWord(curRoom.getWord());
+    }
+    
     //countdown time
     private void handleReceivedCountdown(String msg){
         String[] data = msg.split(";");
@@ -215,6 +225,7 @@ public class ReceiveClient extends Thread {
             }
         }
     }
+    
     //show player guess
     private void handleReceivedPlayerGuess(boolean result, String guessWord, Room curRoom){
         Client.room = curRoom;
@@ -223,17 +234,28 @@ public class ReceiveClient extends Thread {
         Client.ingame.displayLsPlayer(curRoom.getListPlayer());
     }
     
+    // show turn result
+    private void handleRecivedTurnResult(Room curRoom){
+        Client.room = curRoom;
+        Client.ingame.showResultTurnDialog(curRoom.getListPlayer());
+    }
+    
     //change turn
     private void handleReceivedChangeTurn(Room receivedRoom){
         Client.room = receivedRoom;
+        // dong result dialog
+        Client.ingame.closeResultTurnDialog();
         
+        // hien thi lai ds nguoi choi (theo ket qua)
         Client.ingame.displayLsPlayer(receivedRoom.getListPlayer());
         displayIngamePanel();
+        
+        // cap nhat guess pane
+        GuessPane guessPane = Client.ingame.getGuessPane();
+        guessPane.resetGuessPane();
+        
     }
-    //display word
-    private void handReceiveWord(String word){
-        Client.ingame.displayWord(word);
-    }
+    
     //============================ chat ========================================
     private void handleChatMsg(String receivedMsg) {
 //        Client.ingame.addChatMessage(receivedMsg.split(";")[1]);

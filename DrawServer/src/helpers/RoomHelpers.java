@@ -54,7 +54,7 @@ public class RoomHelpers {
      */
     public static int findPlayerIndexByAccount(ArrayList<Player> lsPlayers, Account account){
         for(int i = 0; i < lsPlayers.size(); ++i){
-            if(lsPlayers.get(i).getAccount().equals(account)){
+            if(lsPlayers.get(i).getAccount().getUsername().equals(account.getUsername())){
                 return i;
             }
         }

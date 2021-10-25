@@ -12,7 +12,7 @@ public class GuessPane extends javax.swing.JPanel {
 
     public GuessPane() {
         initComponents();
-        canEditGuessPane();
+        resetGuessPane();
     }
 
     public void descGuessTurn(){
@@ -30,8 +30,9 @@ public class GuessPane extends javax.swing.JPanel {
         txtGuess.setEditable(false);
     }
     
-    public void canEditGuessPane(){
+    public void resetGuessPane(){
         txtGuess.setEditable(true);
+        lbGuessTurn.setText("3");
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
