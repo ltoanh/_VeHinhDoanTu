@@ -249,8 +249,6 @@ public class ReceiveClient extends Thread {
         // hien thi lai ds nguoi choi (theo ket qua)
         Client.ingame.displayLsPlayer(receivedRoom.getListPlayer());
         displayIngamePanel();
-        Client.ingame.changeTurn(receivedRoom.getListPlayer());
-
         
         // cap nhat guess pane
         GuessPane guessPane = Client.ingame.getGuessPane();
