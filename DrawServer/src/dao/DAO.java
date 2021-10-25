@@ -6,6 +6,9 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Account;
 
 /**
@@ -61,5 +64,41 @@ public class DAO {
             ex.printStackTrace();
         }
         return null;
+    }
+    
+    //Signup
+    public void insertInformation(String name, String username, String password, String avatar){
+        try {
+            Statement stmt;
+            Class.forName(JDBC_DRIVER);
+            stmt = conn.createStatement();
+            String sql = "INSERT INTO account (name, username, password, avatar) VALUES ('" + name + "','" + username + "','"+ password+ "','" + avatar+"')";
+            stmt.executeUpdate(sql);
+            
+            System.out.println("Insert data success");
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+    }
+    //get word
+    public ArrayList<String> getWord(){
+        ArrayList <String> listWord = new ArrayList<>();
+        try {
+            Class.forName(JDBC_DRIVER);
+            Statement stm = conn.createStatement();
+            String sql = "select word from word";
+            ResultSet rs = stm.executeQuery(sql);
+            while(rs.next()){
+                listWord.add(rs.getString(1));
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return listWord;
     }
 }

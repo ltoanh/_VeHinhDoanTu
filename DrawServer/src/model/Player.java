@@ -16,8 +16,10 @@ public class Player implements java.io.Serializable{
     private Account account;
     private int score;
 
+    public Player() {
+    }
+
     //create room
-    
     public Player(InetAddress host, int port, Account account, int score) {
         id = playerID;
         playerID++;
@@ -42,6 +44,13 @@ public class Player implements java.io.Serializable{
     public int getScore() {
         return score;
     }
-    
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    @Override
+    public String toString() {
+        return "Player{" + "id=" + id + ", host=" + host + ", port=" + port + ", account=" + account + ", score=" + score + '}';
+    }
     
 }

@@ -48,6 +48,7 @@ public class SenderClient extends Thread {
 
     }
 
+    /**
     // send string
     public void sendPacket(String msg) {
         try {
@@ -56,12 +57,18 @@ public class SenderClient extends Thread {
             Logger.getLogger(SenderClient.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    */
 
     private DatagramPacket createPacket(String val) {
         byte[] buff = val.getBytes();
         return new DatagramPacket(buff, 0, buff.length, host, port);
     }
-
+//=========================Signup==============================
+    public void sendSignUpAccount(String name, String userName, String password, String avatar){
+        String msg = StreamData.Type.SIGNUP.name()+";"+name.trim()+";"+userName.trim()+";"+password.trim()+";"+avatar.trim();
+        ObjectModel obj = new ObjectModel (msg, null);
+        sendObjectPacket(obj);
+    }
     //========================= login =============================
     public void sendLoginMessage(String username, String password) {
 //        sendPacket(StreamData.Type.LOGIN.name() + ";" + username + ";" + password);
@@ -73,7 +80,7 @@ public class SenderClient extends Thread {
 
     //========================= chat ==============================
     public void sendChatMessage(String msg) {
-        sendPacket(StreamData.Type.CHAT_ROOM.name() + ";" + msg);
+//        sendPacket(StreamData.Type.CHAT_ROOM.name() + ";" + msg);
 //        System.out.println("> msg send: " + StreamData.Type.CHAT_ROOM.name() + ";" + msg);
     }
 
@@ -103,9 +110,18 @@ public class SenderClient extends Thread {
     }
 
     //========================= ingame ============================
-    public void drawPoint(String painter, DrawPoint drawPoint) {
+    // draw point
+    public void sendDrawPoint(String painter, DrawPoint drawPoint) {
         String msg = StreamData.Type.GAME_EVENT.name() + ";" + StreamData.Type.DRAW_POSITION.name() + ";" + Client.room.getId() + ";" + painter;
         ObjectModel obj = new ObjectModel(msg, drawPoint);
         sendObjectPacket(obj);
+    }
+    //guess word
+    public void sendGuessWord(String guessWord){
+        String msg = StreamData.Type.GAME_EVENT.name() + ";" + StreamData.Type.GUESS_WORD.name() + ";" 
+                + Client.room.getId() + ";" + guessWord;
+        ObjectModel obj = new ObjectModel(msg, Client.account);
+        sendObjectPacket(obj);
+        System.out.println("send guess: " + guessWord);
     }
 }

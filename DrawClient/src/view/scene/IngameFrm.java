@@ -20,6 +20,8 @@ public class IngameFrm extends javax.swing.JFrame {
     private PaintPane paintPane1;
     private PaintPane paintPane2;
     
+    private ResultTurnDialog resultTurnDialog;
+    
     
     public IngameFrm() {
         initComponents();
@@ -90,6 +92,38 @@ public class IngameFrm extends javax.swing.JFrame {
         lbCountdown.setText(msgTime + " s");
     }
     
+    //show result turn dialog
+    public void showResultTurnDialog(ArrayList<Player> lsPlayers){
+        //result turn
+//        loi khong tu dong dong
+        resultTurnDialog = new ResultTurnDialog(this, true);
+        resultTurnDialog.displayTurnResult(lsPlayers);
+        resultTurnDialog.setVisible(true);
+    }
+    //close result turn dialog
+    public void closeResultTurnDialog(){
+        resultTurnDialog.setVisible(false);
+    }
+    
+    //=============================== chat area ================================
+    public void showPlayerGuessResult(String guess){
+        taChat.append(guess + "\n");
+    }
+  
+    //show word for player
+    public void displayWord(String word){
+       if (Client.room.getLsPainterUsername().get(0).equals(Client.account.getUsername()) || 
+               Client.room.getLsPainterUsername().get(1).equals(Client.account.getUsername()) ) {
+            jLabelWord.setText(word);
+        }else{
+           String numOfWord="";
+           for(int i = 0; i < word.length(); i++)
+           {
+               numOfWord += "_ ";
+           }
+           jLabelWord.setText(numOfWord);
+       }
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -104,12 +138,12 @@ public class IngameFrm extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         btnSendMsg = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea2 = new javax.swing.JTextArea();
+        taChat = new javax.swing.JTextArea();
         jPanel3 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         lbTurn = new javax.swing.JLabel();
         lbCountdown = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
+        jLabelWord = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -158,11 +192,11 @@ public class IngameFrm extends javax.swing.JFrame {
             }
         });
 
-        jTextArea2.setEditable(false);
-        jTextArea2.setColumns(20);
-        jTextArea2.setLineWrap(true);
-        jTextArea2.setRows(5);
-        jScrollPane2.setViewportView(jTextArea2);
+        taChat.setEditable(false);
+        taChat.setColumns(20);
+        taChat.setLineWrap(true);
+        taChat.setRows(5);
+        jScrollPane2.setViewportView(taChat);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -202,8 +236,8 @@ public class IngameFrm extends javax.swing.JFrame {
         lbCountdown.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/assets/icons8-timer-30.png"))); // NOI18N
         lbCountdown.setText("120 s");
 
-        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel7.setText("Từ để đoán (7)");
+        jLabelWord.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelWord.setText("Từ để đoán (7)");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -215,7 +249,7 @@ public class IngameFrm extends javax.swing.JFrame {
                     .addComponent(jLabel4)
                     .addComponent(lbTurn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 470, Short.MAX_VALUE)
+                .addComponent(jLabelWord, javax.swing.GroupLayout.DEFAULT_SIZE, 470, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lbCountdown, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -227,7 +261,7 @@ public class IngameFrm extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lbTurn)
                 .addContainerGap(15, Short.MAX_VALUE))
-            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabelWord, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(lbCountdown, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
@@ -298,23 +332,25 @@ public class IngameFrm extends javax.swing.JFrame {
         return paintPane2;
     }
 
-    
+    public GuessPane getGuessPane() {
+        return guessPane;
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSendMsg;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabelWord;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea jTextArea2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel lbCountdown;
     private javax.swing.JLabel lbCurPlayer;
     private javax.swing.JLabel lbTurn;
+    private javax.swing.JTextArea taChat;
     private javax.swing.JTextArea taLsPlayer;
     // End of variables declaration//GEN-END:variables
 

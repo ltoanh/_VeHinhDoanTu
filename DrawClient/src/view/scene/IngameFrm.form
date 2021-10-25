@@ -179,7 +179,7 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JTextArea" name="jTextArea2">
+            <Component class="javax.swing.JTextArea" name="taChat">
               <Properties>
                 <Property name="editable" type="boolean" value="false"/>
                 <Property name="columns" type="int" value="20"/>
@@ -210,7 +210,7 @@
                       <Component id="lbTurn" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jLabel7" pref="470" max="32767" attributes="0"/>
+                  <Component id="jLabelWord" pref="470" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="lbCountdown" min="-2" pref="70" max="-2" attributes="0"/>
               </Group>
@@ -225,7 +225,7 @@
                   <Component id="lbTurn" min="-2" max="-2" attributes="0"/>
                   <EmptySpace pref="15" max="32767" attributes="0"/>
               </Group>
-              <Component id="jLabel7" alignment="0" max="32767" attributes="0"/>
+              <Component id="jLabelWord" alignment="0" max="32767" attributes="0"/>
               <Component id="lbCountdown" alignment="0" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
@@ -252,7 +252,7 @@
             <Property name="text" type="java.lang.String" value="120 s"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabel7">
+        <Component class="javax.swing.JLabel" name="jLabelWord">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="text" type="java.lang.String" value="T&#x1eeb; &#x111;&#x1ec3; &#x111;o&#xe1;n (7)"/>

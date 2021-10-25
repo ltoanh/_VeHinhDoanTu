@@ -1,5 +1,11 @@
 package view.scene;
 
+import client.Client;
+import constant.Avatar;
+import controller.ClientCtr;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Admin
@@ -7,6 +13,7 @@ package view.scene;
 public class Signup extends javax.swing.JFrame {
     public Signup() {
         initComponents();
+        showAvatar();
         this.setLocationRelativeTo(null);
         setTitle("Đăng ký");
     }
@@ -23,8 +30,8 @@ public class Signup extends javax.swing.JFrame {
         txtUsername = new javax.swing.JTextField();
         btnRememberP = new javax.swing.JButton();
         btnSignup = new javax.swing.JButton();
-        jPasswordField1 = new javax.swing.JPasswordField();
-        jPasswordField2 = new javax.swing.JPasswordField();
+        txtPass = new javax.swing.JPasswordField();
+        txtPass2 = new javax.swing.JPasswordField();
         lbConfirm1 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
 
@@ -44,9 +51,19 @@ public class Signup extends javax.swing.JFrame {
 
         btnRememberP.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnRememberP.setText("Đăng nhập");
+        btnRememberP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRememberPActionPerformed(evt);
+            }
+        });
 
         btnSignup.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnSignup.setText("Đăng ký");
+        btnSignup.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSignupActionPerformed(evt);
+            }
+        });
 
         lbConfirm1.setText("Chọn ảnh đại diện:");
 
@@ -70,8 +87,8 @@ public class Signup extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(btnSignup)
-                            .addComponent(jPasswordField1, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPasswordField2, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtPass, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtPass2, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtUsername, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.LEADING, 0, 327, Short.MAX_VALUE))
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -93,11 +110,11 @@ public class Signup extends javax.swing.JFrame {
                 .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbPassword)
-                    .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbConfirm)
-                    .addComponent(jPasswordField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtPass2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -111,6 +128,52 @@ public class Signup extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnRememberPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRememberPActionPerformed
+        // TODO add your handling code here:
+        
+        Client.closeScene(Client.SceneName.SIGNUP);
+        Client.openScene(Client.SceneName.LOGIN);
+    }//GEN-LAST:event_btnRememberPActionPerformed
+
+    private void btnSignupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSignupActionPerformed
+        // TODO add your handling code here:
+        StringBuilder mes = new StringBuilder();
+        String name = txtName.getText();
+        String userName = txtUsername.getText();
+        String password = new String(txtPass.getPassword());
+        String repassword = new String(txtPass2.getPassword());
+        int idex = jComboBox1.getSelectedIndex();
+        String tmp = jComboBox1.getItemAt(idex).toString();
+        String avatar = Avatar.getAvatarFilNameFromPath(tmp);
+        System.out.println(avatar);
+        if(name.equals("")){
+            mes.append("Vui lòng điền tên\n");
+        }
+        if(userName.equals("")){
+            mes.append("Vui lòng điền username\n");
+        }
+        if(password.equals("")){
+            mes.append("Vui lòng điền mật khẩu\n");
+        }
+        if(repassword.equals("")){
+            mes.append("Vui lòng xác nhận mật khẩu\n");
+        }
+        if(name.length() > 0 && name.matches("[^a-zA-Z]+")){
+            mes.append("Tên chỉ gồm các chữ cái\n");
+        }
+        if(!password.equals(repassword)){
+            mes.append("Mật khẩu nhập lại không khớp");
+        }
+        if(mes.length()>0){
+            JOptionPane.showMessageDialog(this, mes.toString(), "Invalidation", JOptionPane.ERROR_MESSAGE);
+        }else{
+            ClientCtr.senderClient.sendSignUpAccount(name, userName, password, avatar);
+            Client.closeScene(Client.SceneName.SIGNUP);
+            Client.openScene(Client.SceneName.LOGIN);
+            JOptionPane.showMessageDialog(this, "Bạn đã đăng kí thành công, vui lòng đăng nhập để bắt đầu game!", "Success", JOptionPane.YES_OPTION);
+        }
+    }//GEN-LAST:event_btnSignupActionPerformed
 
     /**
      * @param args the command line arguments
@@ -150,16 +213,24 @@ public class Signup extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRememberP;
     private javax.swing.JButton btnSignup;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<ImageIcon> jComboBox1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JPasswordField jPasswordField2;
     private javax.swing.JLabel lbConfirm;
     private javax.swing.JLabel lbConfirm1;
     private javax.swing.JLabel lbName;
     private javax.swing.JLabel lbPassword;
     private javax.swing.JLabel lbUsername;
     private javax.swing.JTextField txtName;
+    private javax.swing.JPasswordField txtPass;
+    private javax.swing.JPasswordField txtPass2;
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
+private void showAvatar(){
+        String[] avatar = Avatar.LIST;
+        for (String string : avatar) {
+            ImageIcon img;
+            img = new ImageIcon(Avatar.PATH.concat(string));
+            jComboBox1.addItem(img);
+        }
+    }
 }
