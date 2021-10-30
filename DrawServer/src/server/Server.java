@@ -85,10 +85,7 @@ public class Server {
                         handlePlayerJoinRoom(msg, (Account) receivedObj.getT());
                         break;
 
-                    //============ game =============
-                    case CHAT_ROOM:
-                        handleSendChatMessage(msg);
-                        break;
+                    //============ game ============
                     case GAME_EVENT:
                         handleSendGameEvent(msg);
                         break;
