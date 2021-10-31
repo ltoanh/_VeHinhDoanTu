@@ -164,7 +164,9 @@ public class ReceiveClient extends Thread {
             case TURN_RESULT:
                 handleRecivedTurnResult((Room) objReceived.getT());
                 break;
-                
+            case CHAT_ROOM:
+                handleChatMsg(data[2]);
+              break;
         }
     }
     
@@ -187,7 +189,7 @@ public class ReceiveClient extends Thread {
         Client.closeScene(Client.SceneName.LOBBY);
         Client.openScene(Client.SceneName.INGAME);
         Client.ingame.displayLsPlayer(receivedRoom.getListPlayer());
-        
+        Client.ingame.displayInformation(Client.account.getAvatar(), Client.account.getName());
         displayIngamePanel();
     }
     
@@ -258,6 +260,7 @@ public class ReceiveClient extends Thread {
     
     //============================ chat ========================================
     private void handleChatMsg(String receivedMsg) {
+        Client.ingame.displayMesg(receivedMsg);
 //        Client.ingame.addChatMessage(receivedMsg.split(";")[1]);
     }
 

@@ -175,6 +175,9 @@ public class Server {
             case DRAW_POSITION:
                 handleSendDrawPoint(msgGameEvent[2], msgGameEvent[3], (DrawPoint) receivedObj.getT());
                 break;
+            case CHAT_ROOM:
+                handleSendChatMessage(msg);
+                break;
             case GUESS_WORD:
                 handleSendGuessWordResult(Integer.parseInt(msgGameEvent[2]), (Account) receivedObj.getT(), msgGameEvent[3]);
                 break;
@@ -249,6 +252,15 @@ public class Server {
 
     //============================= chat =======================================
     private void handleSendChatMessage(String msg) {
-
+        String [] data = msg.split(";");
+        int roomID = Integer.parseInt(data[2]);
+        Room curRoom = helpers.RoomHelpers.checkRoomByID(roomID);
+        // send result
+        String message = StreamData.Type.GAME_EVENT.name() + ";" +StreamData.Type.CHAT_ROOM.name() + ";" + data[3];
+        ObjectModel obj = new ObjectModel(message, null);
+        ArrayList<Player> lsPlayers = curRoom.getListPlayer();
+        for (Player player : lsPlayers) {
+            senderServer.sendObjectData(obj, server, player.getHost(), player.getPort());
+        }
     }
 }
