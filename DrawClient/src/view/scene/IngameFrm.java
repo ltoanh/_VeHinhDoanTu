@@ -23,6 +23,8 @@ public class IngameFrm extends javax.swing.JFrame {
     private PaintPane paintPane1;
     private PaintPane paintPane2;
     
+    private ResultTurnDialog resultTurnDialog;
+    
     
     public IngameFrm() {
         initComponents();
@@ -92,6 +94,25 @@ public class IngameFrm extends javax.swing.JFrame {
         lbTurn.setText(msgTurn + "/3");
         lbCountdown.setText(msgTime + " s");
     }
+    
+    //show result turn dialog
+    public void showResultTurnDialog(ArrayList<Player> lsPlayers){
+        //result turn
+//        loi khong tu dong dong
+        resultTurnDialog = new ResultTurnDialog(this, true);
+        resultTurnDialog.displayTurnResult(lsPlayers);
+        resultTurnDialog.setVisible(true);
+    }
+    //close result turn dialog
+    public void closeResultTurnDialog(){
+        resultTurnDialog.setVisible(false);
+    }
+    
+    //=============================== chat area ================================
+    public void showPlayerGuessResult(String guess){
+        taChat.append(guess + "\n");
+    }
+  
     //show word for player
     public void displayWord(String word){
        if (Client.room.getLsPainterUsername().get(0).equals(Client.account.getUsername()) || 
@@ -105,8 +126,6 @@ public class IngameFrm extends javax.swing.JFrame {
            }
            jLabelWord.setText(numOfWord);
        }
-      
-       
     }
     // Show message in jTextArea
     public void displayMesg(String mes) {
@@ -133,7 +152,7 @@ public class IngameFrm extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         btnSendMsg = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea2 = new javax.swing.JTextArea();
+        taChat = new javax.swing.JTextArea();
         jPanel3 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         lbTurn = new javax.swing.JLabel();
@@ -198,11 +217,11 @@ public class IngameFrm extends javax.swing.JFrame {
             }
         });
 
-        jTextArea2.setEditable(false);
-        jTextArea2.setColumns(20);
-        jTextArea2.setLineWrap(true);
-        jTextArea2.setRows(5);
-        jScrollPane2.setViewportView(jTextArea2);
+        taChat.setEditable(false);
+        taChat.setColumns(20);
+        taChat.setLineWrap(true);
+        taChat.setRows(5);
+        jScrollPane2.setViewportView(taChat);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -343,7 +362,9 @@ public class IngameFrm extends javax.swing.JFrame {
         return paintPane2;
     }
 
-    
+    public GuessPane getGuessPane() {
+        return guessPane;
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSendMsg;
     private javax.swing.JLabel jLabel2;
@@ -357,10 +378,10 @@ public class IngameFrm extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea jTextArea2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel lbCountdown;
     private javax.swing.JLabel lbTurn;
+    private javax.swing.JTextArea taChat;
     private javax.swing.JTextArea taLsPlayer;
     // End of variables declaration//GEN-END:variables
 }

@@ -5,6 +5,7 @@ import constant.StreamData;
 import dao.DAO;
 import game.LogicGame;
 import helpers.CountdownHelpers;
+import helpers.RoomHelpers;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -109,11 +110,12 @@ public class Server {
     //========================= sign =====================================
     //login
     //Sign Up
-    private void handleSignUp(String msg){
+    private void handleSignUp(String msg) {
         String[] data = msg.trim().split(";");
         dao.insertInformation(data[1], data[2], data[3], data[4]);
-    //    Account acc = new Account(data[2], data[1], data[4]);
+        //    Account acc = new Account(data[2], data[1], data[4]);
     }
+
     private void handleLogin(String msg) {
         String[] data = msg.trim().split(";");
         Account acc = dao.checkAccount(data[1], data[2]);
@@ -176,6 +178,9 @@ public class Server {
             case CHAT_ROOM:
                 handleSendChatMessage(msg);
                 break;
+            case GUESS_WORD:
+                handleSendGuessWordResult(Integer.parseInt(msgGameEvent[2]), (Account) receivedObj.getT(), msgGameEvent[3]);
+                break;
         }
     }
 
@@ -183,24 +188,8 @@ public class Server {
     private void handleSendStartGameMessage(String msg) {
         int roomID = Integer.parseInt(msg.split(";")[2]);
         Room curRoom = helpers.RoomHelpers.checkRoomByID(roomID);
-        /**
-        // chon 2 nguoi ve
-        ArrayList<String> lsPainterID = helpers.RoomHelpers.chooseLsPlayerToDraw(curRoom.getListPlayer());
-        curRoom.setLsPainterUsername(lsPainterID);
-
-        // send to all player
-        ArrayList<Player> lsPlayers = curRoom.getListPlayer();
-        String msgStart = StreamData.Type.GAME_EVENT.name() + ";" + StreamData.Type.START;
-        ObjectModel obj = new ObjectModel(msgStart, curRoom);
-        for (Player player : lsPlayers) {
-            senderServer.sendObjectData(obj, server, player.getHost(), player.getPort());
-        }
         
-        // send coundown to all player in room
-        new Thread(new CountdownHelpers(10, 1, server, curRoom)).start();
-        */
-        
-        new Thread(new LogicGame(server, curRoom, 3)).start();
+        new LogicGame(server, curRoom, 3).start();
     }
 
     // draw point
@@ -220,7 +209,47 @@ public class Server {
             senderServer.sendObjectData(obj, server, player.getHost(), player.getPort());
         }
     }
-    
+
+    //guess word
+    private void handleSendGuessWordResult(int roomID, Account clientAccount, String guessWord) {
+        Room curRoom = helpers.RoomHelpers.checkRoomByID(roomID);
+        ArrayList<Player> lsPlayers = curRoom.getListPlayer();
+        //get player account
+        int playerIndex = RoomHelpers.findPlayerIndexByAccount(lsPlayers, clientAccount);
+
+        boolean isCorrect = true;
+
+        String msgResult = StreamData.Type.GAME_EVENT.name() + ";" + StreamData.Type.GUESS_RESULT.name() + ";";
+
+        System.out.println("[ guess: " + guessWord + " - " + curRoom.getWord() + "]");
+        if (guessWord.equals(curRoom.getWord())) {
+            msgResult += "true";
+            // + 50 diem doan dung
+            int curScore = lsPlayers.get(playerIndex).getScore();
+            lsPlayers.get(playerIndex).setScore(curScore + 50);
+        } else {
+            msgResult += "false";
+            isCorrect = false;
+        }
+        ObjectModel obj = new ObjectModel(msgResult, null);
+        senderServer.sendObjectData(obj, server, receiveServer.clientIP, receiveServer.clientPort);
+
+        // send to all player
+        String msgGame = StreamData.Type.GAME_EVENT.name() + ";" + StreamData.Type.SHOW_GUESS_RESULT.name() + ";";
+        if (isCorrect) {
+            // send player is correct
+            msgGame += "true;" + clientAccount.getUsername() + " đã đoán đúng";
+        } else {
+            // send word player guess
+            msgGame += "false;" + clientAccount.getUsername() + ": " + guessWord;
+        }
+
+        ObjectModel objResult = new ObjectModel(msgGame, curRoom);
+        for (Player player : lsPlayers) {
+            senderServer.sendObjectData(objResult, server, player.getHost(), player.getPort());
+        }
+    }
+
     //============================= chat =======================================
     private void handleSendChatMessage(String msg) {
         String [] data = msg.split(";");

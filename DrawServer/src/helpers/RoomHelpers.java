@@ -2,6 +2,7 @@ package helpers;
 
 import java.util.ArrayList;
 import java.util.Random;
+import model.Account;
 import model.Player;
 import model.Room;
 
@@ -46,5 +47,17 @@ public class RoomHelpers {
         lsPainterUsername.add(lsPlayers.get(num2).getAccount().getUsername());
         
         return lsPainterUsername;
+    }
+    
+    /**
+     * Tim kiem player theo account
+     */
+    public static int findPlayerIndexByAccount(ArrayList<Player> lsPlayers, Account account){
+        for(int i = 0; i < lsPlayers.size(); ++i){
+            if(lsPlayers.get(i).getAccount().getUsername().equals(account.getUsername())){
+                return i;
+            }
+        }
+        return 0;
     }
 }

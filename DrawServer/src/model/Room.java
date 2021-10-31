@@ -1,5 +1,6 @@
 package model;
 
+import game.LogicGame;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -14,6 +15,8 @@ public class Room implements java.io.Serializable{
     private int id;
     private ArrayList<Player> listPlayer;
     private ArrayList<String> lsPainterUsername;
+    
+    private String word;
 
     public Room(ArrayList<Player> listPlayer) {
         this.roomID++;
@@ -31,6 +34,14 @@ public class Room implements java.io.Serializable{
     
     public int getId() {
         return id;
+    }
+
+    public String getWord() {
+        return word;
+    }
+
+    public void setWord(String word) {
+        this.word = word;
     }
     
     public ArrayList<Player> getListPlayer() {
