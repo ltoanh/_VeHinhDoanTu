@@ -1,6 +1,7 @@
 package view.scene;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
 import javax.swing.JColorChooser;
 
 /**
@@ -10,18 +11,19 @@ import javax.swing.JColorChooser;
 public class PaintToolPanel extends javax.swing.JPanel {
 
     private IngameFrm ingame;
-    
+//    private Graphics2D g2;
+
     public PaintToolPanel(IngameFrm ingame) {
         initComponents();
-        
+
         this.ingame = ingame;
     }
 
-    private void setColorChooser(PaintPane panel, Color color){
-        panel.setCurrentColor(color); 
+    private void setColorChooser(PaintPane panel, Color color) {
+        panel.setCurrentColor(color);
         lbCurrentColor.setBackground(color);
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -217,35 +219,44 @@ public class PaintToolPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRedActionPerformed
-        
+        ingame.getPaintPane1().setCurrentColor(Color.RED);
+        ingame.getPaintPane2().setCurrentColor(Color.RED);
     }//GEN-LAST:event_btnRedActionPerformed
 
     private void btnBlueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBlueActionPerformed
-        
+        ingame.getPaintPane1().setCurrentColor(Color.BLUE);
+        ingame.getPaintPane2().setCurrentColor(Color.BLUE);
     }//GEN-LAST:event_btnBlueActionPerformed
 
     private void btnYellowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnYellowActionPerformed
-        
+        ingame.getPaintPane1().setCurrentColor(Color.YELLOW);
+        ingame.getPaintPane2().setCurrentColor(Color.YELLOW);
     }//GEN-LAST:event_btnYellowActionPerformed
 
     private void btnBlackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBlackActionPerformed
-        
+        ingame.getPaintPane1().setCurrentColor(Color.BLACK);
+        ingame.getPaintPane2().setCurrentColor(Color.BLACK);
     }//GEN-LAST:event_btnBlackActionPerformed
 
     private void btnGreenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGreenActionPerformed
-        
+        ingame.getPaintPane1().setCurrentColor(Color.GREEN);
+        ingame.getPaintPane2().setCurrentColor(Color.GREEN);
     }//GEN-LAST:event_btnGreenActionPerformed
 
     private void btnCyanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCyanActionPerformed
-        
+        ingame.getPaintPane1().setCurrentColor(Color.CYAN);
+        ingame.getPaintPane2().setCurrentColor(Color.CYAN);
     }//GEN-LAST:event_btnCyanActionPerformed
 
     private void btnMagentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMagentaActionPerformed
-        
+        ingame.getPaintPane1().setCurrentColor(Color.MAGENTA);
+        ingame.getPaintPane2().setCurrentColor(Color.MAGENTA);
     }//GEN-LAST:event_btnMagentaActionPerformed
 
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
         // TODO add your handling code here:
+        ingame.getPaintPane1().clearPaint();
+        ingame.getPaintPane2().clearPaint();
     }//GEN-LAST:event_btnClearActionPerformed
 
     private void btnChooseColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChooseColorActionPerformed
@@ -253,8 +264,7 @@ public class PaintToolPanel extends javax.swing.JPanel {
         System.out.println(color);
 //        setColorChooser(color);
     }//GEN-LAST:event_btnChooseColorActionPerformed
-
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBlack;
     private javax.swing.JButton btnBlue;
