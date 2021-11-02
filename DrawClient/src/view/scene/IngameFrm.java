@@ -1,13 +1,10 @@
 package view.scene;
 
 import client.Client;
-import constant.Avatar;
 import constant.Constant;
-import controller.ClientCtr;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
-import javax.swing.ImageIcon;
 import javax.swing.border.LineBorder;
 import model.Player;
 
@@ -84,7 +81,7 @@ public class IngameFrm extends javax.swing.JFrame {
     }
     // show current player inf
     public void displayCurrentPlayerInf(){
-        jLabel_avatar.setText(client.Client.account.getUsername());
+        lbCurPlayer.setText(client.Client.account.getUsername());
         
         // display room inf 
         //... code ...
@@ -127,26 +124,15 @@ public class IngameFrm extends javax.swing.JFrame {
            jLabelWord.setText(numOfWord);
        }
     }
-    // Show message in jTextArea
-    public void displayMesg(String mes) {
-        jTextArea2.append(mes+"\n");
-    }
-    
-    public void displayInformation(String avatar, String name){
-        jLabel_Ten_nguoi_choi.setText(name);
-        ImageIcon img = new ImageIcon(Avatar.PATH.concat(avatar));
-        jLabel_avatar.setIcon(img);
-    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel_avatar = new javax.swing.JLabel();
+        lbCurPlayer = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         taLsPlayer = new javax.swing.JTextArea();
-        jLabel_Ten_nguoi_choi = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
@@ -163,7 +149,8 @@ public class IngameFrm extends javax.swing.JFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jLabel_avatar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/assets/avatar/icons8_circled_user_female_skin_type_7_96px.png"))); // NOI18N
+        lbCurPlayer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/assets/avatar/icons8_circled_user_female_skin_type_7_96px.png"))); // NOI18N
+        lbCurPlayer.setText("player 1");
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("100 điểm");
@@ -174,32 +161,20 @@ public class IngameFrm extends javax.swing.JFrame {
         taLsPlayer.setRows(5);
         jScrollPane1.setViewportView(taLsPlayer);
 
-        jLabel_Ten_nguoi_choi.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
-        jLabel_Ten_nguoi_choi.setText("Name");
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(lbCurPlayer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jLabel_avatar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel_Ten_nguoi_choi)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel_avatar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel_Ten_nguoi_choi)
-                        .addGap(49, 49, 49)))
+                .addComponent(lbCurPlayer)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel2)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1))
@@ -241,7 +216,7 @@ public class IngameFrm extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 542, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -306,20 +281,15 @@ public class IngameFrm extends javax.swing.JFrame {
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 636, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    // Send message
+
     private void btnSendMsgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendMsgActionPerformed
-        String msg = "";
-        msg = jTextField1.getText();
-        if(jTextField1.getText().trim().length() > 0){
-            ClientCtr.senderClient.sendChatMessage(msg);
-            jTextField1.setText("");
-        }
+       
     }//GEN-LAST:event_btnSendMsgActionPerformed
 
     public static void main(String args[]) {
@@ -371,8 +341,6 @@ public class IngameFrm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabelWord;
-    private javax.swing.JLabel jLabel_Ten_nguoi_choi;
-    private javax.swing.JLabel jLabel_avatar;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -380,6 +348,7 @@ public class IngameFrm extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel lbCountdown;
+    private javax.swing.JLabel lbCurPlayer;
     private javax.swing.JLabel lbTurn;
     private javax.swing.JTextArea taChat;
     private javax.swing.JTextArea taLsPlayer;
