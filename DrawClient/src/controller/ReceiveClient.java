@@ -1,6 +1,7 @@
 package controller;
 
 import client.Client;
+import com.sun.org.apache.xalan.internal.lib.ExsltStrings;
 import constant.StreamData;
 import java.awt.Color;
 import java.io.*;
@@ -54,6 +55,9 @@ public class ReceiveClient extends Thread {
                 case GAME_EVENT:
                     handleReceivedGameEvent(msg);
                     break;
+                case CHAT_ROOM:
+                    handleChatMsg(msg);
+                break;
             }
 
         }
@@ -260,7 +264,8 @@ public class ReceiveClient extends Thread {
     
     //============================ chat ========================================
     private void handleChatMsg(String receivedMsg) {
-//        Client.ingame.addChatMessage(receivedMsg.split(";")[1]);
+        String [] data = receivedMsg.split(";"); 
+        Client.ingame.displayMesg(data[1]);
     }
 
 }

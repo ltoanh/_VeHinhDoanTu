@@ -80,8 +80,9 @@ public class SenderClient extends Thread {
 
     //========================= chat ==============================
     public void sendChatMessage(String msg) {
-//        sendPacket(StreamData.Type.CHAT_ROOM.name() + ";" + msg);
-//        System.out.println("> msg send: " + StreamData.Type.CHAT_ROOM.name() + ";" + msg);
+        String message = StreamData.Type.CHAT_ROOM.name() + ";" +
+        Integer.toString( Client.room.getId())+";"+Client.account.getName()+": "+ msg;
+        sendObjectPacket(new ObjectModel(message, null));
     }
 
     //========================= create room =======================
