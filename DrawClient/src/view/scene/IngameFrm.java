@@ -2,6 +2,7 @@ package view.scene;
 
 import client.Client;
 import constant.Constant;
+import controller.ClientCtr;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
@@ -108,6 +109,10 @@ public class IngameFrm extends javax.swing.JFrame {
     //=============================== chat area ================================
     public void showPlayerGuessResult(String guess){
         taChat.append(guess + "\n");
+    }
+    // Show message in jTextArea
+    public void displayMesg(String mes) {
+        taChat.append(mes+"\n");
     }
   
     //show word for player
@@ -287,9 +292,15 @@ public class IngameFrm extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+  //send Messeage
     private void btnSendMsgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendMsgActionPerformed
-       
+        String msg = "";
+        msg = jTextField1.getText();
+        if(jTextField1.getText().trim().length() > 0){
+            ClientCtr.senderClient.sendChatMessage(msg);
+            
+        }
+        jTextField1.setText("");
     }//GEN-LAST:event_btnSendMsgActionPerformed
 
     public static void main(String args[]) {
