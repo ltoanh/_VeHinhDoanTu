@@ -218,7 +218,6 @@ public class Server {
 
         String msgResult = StreamData.Type.GAME_EVENT.name() + ";" + StreamData.Type.GUESS_RESULT.name() + ";";
 
-        System.out.println("[ guess: " + guessWord + " - " + curRoom.getWord() + "]");
         if (guessWord.equals(curRoom.getWord())) {
             msgResult += "true";
             // + 50 diem doan dung
@@ -238,7 +237,7 @@ public class Server {
             msgGame += "true;" + clientAccount.getUsername() + " đã đoán đúng";
         } else {
             // send word player guess
-            msgGame += "false;" + clientAccount.getUsername() + ": " + guessWord;
+            msgGame += "false;" + clientAccount.getUsername() + " đã đoán: " + guessWord;
         }
 
         ObjectModel objResult = new ObjectModel(msgGame, curRoom);

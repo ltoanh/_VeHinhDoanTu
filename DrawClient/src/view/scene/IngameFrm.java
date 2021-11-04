@@ -40,11 +40,7 @@ public class IngameFrm extends javax.swing.JFrame {
         add(paintPane2);
         paintPane2.setBounds(500, 70, 290, 370);
         
-        if (Client.room.getLsPainterUsername().get(0).equals(Client.account.getUsername()) ) {
-            paintPane1.setBorder(new LineBorder(Color.red));
-        } else if (Client.room.getLsPainterUsername().get(1).equals(Client.account.getUsername())){
-            paintPane2.setBorder(new LineBorder(Color.red));
-        }
+        displayCurrentPainterPane();
         
         //paint tool
         paintToolPanel = new PaintToolPanel(this);
@@ -80,6 +76,20 @@ public class IngameFrm extends javax.swing.JFrame {
             taLsPlayer.append(msgPlayer);
         }
     }
+    // display current painter
+    public void displayCurrentPainterPane(){
+        resetPaintPane();
+        if (Client.room.getLsPainterUsername().get(0).equals(Client.account.getUsername()) ) {
+            paintPane1.setBorder(new LineBorder(Color.red));
+        } else if (Client.room.getLsPainterUsername().get(1).equals(Client.account.getUsername())){
+            paintPane2.setBorder(new LineBorder(Color.red));
+        }
+    }
+    // reset paintpane
+    public void resetPaintPane(){
+        paintPane1.setBorder(new LineBorder(Color.black));
+        paintPane2.setBorder(new LineBorder(Color.black));
+    }
     // show current player inf
     public void displayCurrentPlayerInf(){
         lbCurPlayer.setText(client.Client.account.getUsername());
@@ -108,9 +118,9 @@ public class IngameFrm extends javax.swing.JFrame {
     
     //=============================== chat area ================================
     public void showPlayerGuessResult(String guess){
-        taChat.append(guess + "\n");
+        taChat.append("> " + guess + "\n");
     }
-    // Show message in jTextArea
+    // Show message in text area
     public void displayMesg(String mes) {
         taChat.append(mes+"\n");
     }

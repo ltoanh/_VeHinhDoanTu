@@ -19,7 +19,6 @@ import model.DrawPoint;
 public class PaintPane extends javax.swing.JPanel {
 
     private int lastX, lastY;
-//    private int inkWidth = 590, inkHeight = 390;
 
     private int activeTool = 1;
     private Color currentColor = Color.BLACK;
@@ -31,7 +30,6 @@ public class PaintPane extends javax.swing.JPanel {
         initComponents();
 
         this.ingame = ingame;
-//        setSize(inkWidth, inkHeight);
     }
 
     public void setTool(int tool) {
