@@ -57,7 +57,7 @@ public class ReceiveClient extends Thread {
                     break;
                 case CHAT_ROOM:
                     handleChatMsg(msg);
-                break;
+                    break;
             }
 
         }
@@ -249,6 +249,9 @@ public class ReceiveClient extends Thread {
         Client.room = receivedRoom;
         // dong result dialog
         Client.ingame.closeResultTurnDialog();
+        
+        // hien thi nguoi choi hien tai
+        Client.ingame.displayCurrentPainterPane();
         
         // hien thi lai ds nguoi choi (theo ket qua)
         Client.ingame.displayLsPlayer(receivedRoom.getListPlayer());
