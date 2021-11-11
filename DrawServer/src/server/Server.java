@@ -70,13 +70,17 @@ public class Server {
                 StreamData.Type type = StreamData.getTypeFromReceivedData(msg);
 
                 switch (type) {
-                    case LOGIN:
+                    case LOGIN:{
                         handleLogin(msg);
-                        break;
+                        break;}
                     case SIGNUP:
                         handleSignUp(msg);
                         break;
                     //============= room ===========
+                    // show room id
+                    case SHOW_ROOMID:
+                        handleShowRoomID();
+                        break;
                     // create room
                     case CREATE_ROOM:
                         handleCreateRoom();
@@ -115,16 +119,29 @@ public class Server {
         dao.insertInformation(data[1], data[2], data[3], data[4]);
         //    Account acc = new Account(data[2], data[1], data[4]);
     }
-
+    
     private void handleLogin(String msg) {
         String[] data = msg.trim().split(";");
         Account acc = dao.checkAccount(data[1], data[2]);
         // send result
         ObjectModel obj = new ObjectModel(StreamData.Type.LOGIN.name(), acc);
         senderServer.sendObjectData(obj, server, receiveServer.clientIP, receiveServer.clientPort);
+        if(acc != null){
+            handleShowRoomID();
+        }
     }
-
+    //======================== show room ID =========================
+    private void handleShowRoomID(){
+        String msg = StreamData.Type.SHOW_ROOMID.name();
+        ArrayList<Player> listPlayers = new ArrayList<>();
+        for (Room room : listRoom) {
+            listPlayers = room.getListPlayer();
+            msg +=";" +Integer.toString(room.getId())+","+ Integer.toString(listPlayers.size());
+        }
+        senderServer.sendObjectData(new ObjectModel(msg,null), server, receiveServer.clientIP, receiveServer.clientPort);
+    }
     //========================= game =====================================
+    
     //create room
     private void handleCreateRoom() {
         Player player = new Player(receiveServer.clientIP, receiveServer.clientPort, (Account) receivedObj.getT(), 0);

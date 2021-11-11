@@ -2,8 +2,12 @@ package view.scene;
 
 import client.Client;
 import controller.ClientCtr;
+import java.util.List;
+import java.util.Vector;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import model.Account;
+import org.graalvm.compiler.nodes.NodeView;
 
 /**
  *
@@ -14,13 +18,33 @@ public class Homepage extends javax.swing.JFrame {
     /**
      * Creates new form Homepage
      */
+    String cols[] = {"Ma Phong", "So nguoi tham gia"};
+    DefaultTableModel tm = new DefaultTableModel(cols, 0);
     public Homepage() {
         initComponents();
         this.setLocationRelativeTo(null);
         
         setTitle("Trang chủ " + Client.account.getName());
     }
-
+    //================= show room id=======
+    public void ClearTable(){
+        int rowCount = tm.getRowCount();
+            for (int i = rowCount - 1; i >= 0; i--) {
+                tm.removeRow(i);
+            }
+    }
+    public void ShowRoomID(String maPhong, String soNguoi){
+        tbRoom.setModel(tm);
+        tm.addRow(new Object[]{maPhong, soNguoi});
+    }
+    
+    public void jionRoom() {
+        int result = tbRoom.getSelectedRow();
+        String roomID = (String) tm.getValueAt(result, 0);
+        ClientCtr.senderClient.sendJoinRoomMessage(roomID);
+        Client.closeScene(Client.SceneName.HOMEPAGE);
+        Client.openScene(Client.SceneName.LOBBY);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -118,19 +142,34 @@ public class Homepage extends javax.swing.JFrame {
 
         tbRoom.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"123", "5", "4"},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
-                "Mã phòng", "Số lượng", "Tham gia"
+                "Mã phòng", "Số người tham gia"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        tbRoom.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbRoomMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbRoom);
 
         btnRefreshListRoom.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/assets/icons8_replay_24px.png"))); // NOI18N
         btnRefreshListRoom.setText("Làm mới");
+        btnRefreshListRoom.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefreshListRoomActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -198,6 +237,14 @@ public class Homepage extends javax.swing.JFrame {
     private void btnCreateRoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateRoomActionPerformed
         ClientCtr.senderClient.sendCreateRoomMessage();
     }//GEN-LAST:event_btnCreateRoomActionPerformed
+
+    private void btnRefreshListRoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshListRoomActionPerformed
+        ClientCtr.senderClient.sendShowRoomID();
+    }//GEN-LAST:event_btnRefreshListRoomActionPerformed
+
+    private void tbRoomMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbRoomMouseClicked
+       jionRoom();
+    }//GEN-LAST:event_tbRoomMouseClicked
 
     /**
      * @param args the command line arguments

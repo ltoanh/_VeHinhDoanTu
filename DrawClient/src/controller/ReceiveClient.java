@@ -7,6 +7,8 @@ import java.awt.Color;
 import java.io.*;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.util.List;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -44,6 +46,9 @@ public class ReceiveClient extends Thread {
             switch (type) {
                 case LOGIN:
                     handleReceivedAccountLogin((Account) objReceived.getT());
+                    break;
+                case SHOW_ROOMID:
+                    handleReceiveRoomID(msg);
                     break;
                 // GAME
                 case LOBBY_ROOM:
@@ -110,7 +115,17 @@ public class ReceiveClient extends Thread {
             Client.openScene(Client.SceneName.HOMEPAGE);
         }
     }
-
+    //===========================show room id=============================
+    private void handleReceiveRoomID(String msg){
+        String [] roomData = new String[1024];
+        roomData = msg.split(";"); 
+        Client.homepage.ClearTable();
+        for(int i = 1; i < roomData.length; i++){
+           String [] data = new String[3];
+           data = roomData[i].split(",");
+           Client.homepage.ShowRoomID(data[0], data[1]);
+        }
+    }
     // =========================== game =============================
     // create room
     private void handleReceivedCreatedRoom(Room receivedRoom) {

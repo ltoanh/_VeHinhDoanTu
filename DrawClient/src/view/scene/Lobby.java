@@ -216,6 +216,7 @@ public class Lobby extends javax.swing.JFrame {
         // open homepage
         Client.closeScene(Client.SceneName.LOBBY);
         Client.openScene(Client.SceneName.HOMEPAGE);
+        ClientCtr.senderClient.sendShowRoomID();
     }//GEN-LAST:event_btnExitActionPerformed
 
     private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartActionPerformed

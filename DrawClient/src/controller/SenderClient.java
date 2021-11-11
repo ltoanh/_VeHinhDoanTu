@@ -77,6 +77,12 @@ public class SenderClient extends Thread {
         ObjectModel obj = new ObjectModel(msg, null);
         sendObjectPacket(obj);
     }
+    //==========================send requesst show room id=====================
+    public void sendShowRoomID(){
+        String msg = StreamData.Type.SHOW_ROOMID.name();
+        ObjectModel obj = new ObjectModel(msg, null);
+        sendObjectPacket(obj);
+    }
 
     //========================= chat ==============================
     public void sendChatMessage(String msg) {
