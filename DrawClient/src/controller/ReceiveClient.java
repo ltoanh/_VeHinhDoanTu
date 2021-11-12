@@ -26,7 +26,7 @@ import view.scene.GuessPane;
 public class ReceiveClient extends Thread {
 
     private DatagramSocket client;
-    
+
     private ObjectModel objReceived;
 
     ReceiveClient(DatagramSocket client) {
@@ -53,6 +53,9 @@ public class ReceiveClient extends Thread {
                 // GAME
                 case LOBBY_ROOM:
                     handleReceivedCreatedRoom((Room) objReceived.getT());
+                    break;
+                case EXIT:
+                    handleExitRoom((Room) objReceived.getT());
                     break;
                 case JOIN_ROOM:
                     handlePlayerJoinRoom((Room) objReceived.getT());
@@ -93,16 +96,12 @@ public class ReceiveClient extends Thread {
     }
 
     /**
-    //receive string
-    private String receiveData(DatagramSocket client) throws IOException {
-        byte[] buff = new byte[1024];
-        DatagramPacket din = new DatagramPacket(buff, buff.length);
-
-        client.receive(din);
-        return new String(din.getData());
-    }
-    */
-
+     * //receive string private String receiveData(DatagramSocket client) throws
+     * IOException { byte[] buff = new byte[1024]; DatagramPacket din = new
+     * DatagramPacket(buff, buff.length);
+     *
+     * client.receive(din); return new String(din.getData()); }
+     */
     //============================ sign =============================
     // login
     private void handleReceivedAccountLogin(Account acc) {
@@ -115,17 +114,19 @@ public class ReceiveClient extends Thread {
             Client.openScene(Client.SceneName.HOMEPAGE);
         }
     }
+
     //===========================show room id=============================
-    private void handleReceiveRoomID(String msg){
-        String [] roomData = new String[1024];
-        roomData = msg.split(";"); 
+    private void handleReceiveRoomID(String msg) {
+        String[] roomData = new String[1024];
+        roomData = msg.split(";");
         Client.homepage.ClearTable();
-        for(int i = 1; i < roomData.length; i++){
-           String [] data = new String[3];
-           data = roomData[i].split(",");
-           Client.homepage.ShowRoomID(data[0], data[1]);
+        for (int i = 1; i < roomData.length; i++) {
+            String[] data = new String[3];
+            data = roomData[i].split(",");
+            Client.homepage.ShowRoomID(data[0], data[1]);
         }
     }
+
     // =========================== game =============================
     // create room
     private void handleReceivedCreatedRoom(Room receivedRoom) {
@@ -145,11 +146,23 @@ public class ReceiveClient extends Thread {
 
         Client.lobby.displayRoomID(Client.room.getId() + "");
         Client.lobby.clearPlayersList();
-        
+
         for (Player player : Client.room.getListPlayer()) {
             Account acc = player.getAccount();
             Client.lobby.addPlayerToList(acc.getName() + "(" + acc.getUsername() + ")");
         }
+    }
+
+    //exit
+    private void handleExitRoom(Room receivedRoom) {
+        Client.room = receivedRoom;
+
+        Client.lobby.displayRoomID(Client.room.getId() + "");
+
+        Player player = Client.room.getListPlayer().get(MIN_PRIORITY);
+        Account acc = player.getAccount();
+        Client.lobby.removePlayerToList(acc.getName() + "(" + acc.getUsername() + ")");
+
     }
 
     //============================ in game ===========================
@@ -183,16 +196,16 @@ public class ReceiveClient extends Thread {
             case TURN_RESULT:
                 handleRecivedTurnResult((Room) objReceived.getT());
                 break;
-                
+
         }
     }
-    
+
     // hien thi pane paint tool / guess
-    private void displayIngamePanel(){
+    private void displayIngamePanel() {
         String uPainter1 = Client.room.getLsPainterUsername().get(0);
         String uPainter2 = Client.room.getLsPainterUsername().get(1);
         String curUsername = Client.account.getUsername();
-        if(curUsername.equals(uPainter1) || curUsername.equals(uPainter2)){
+        if (curUsername.equals(uPainter1) || curUsername.equals(uPainter2)) {
             Client.ingame.displayPaintTool();
         } else {
             Client.ingame.displayGuessPane();
@@ -200,89 +213,88 @@ public class ReceiveClient extends Thread {
     }
 
     //start
-    private void handleStartGame(Room receivedRoom){
+    private void handleStartGame(Room receivedRoom) {
         Client.room = receivedRoom;
-        
+
         Client.closeScene(Client.SceneName.LOBBY);
         Client.openScene(Client.SceneName.INGAME);
         Client.ingame.displayLsPlayer(receivedRoom.getListPlayer());
-        
+
         displayIngamePanel();
     }
-    
+
     // draw point
-    private void handleDrawPoint(String painter, DrawPoint drawPoint){
-        if(StreamData.Type.PAINT1.name().equals(painter)){
+    private void handleDrawPoint(String painter, DrawPoint drawPoint) {
+        if (StreamData.Type.PAINT1.name().equals(painter)) {
             Client.ingame.getPaintPane1().addPointDraw(drawPoint);
         } else {
             Client.ingame.getPaintPane2().addPointDraw(drawPoint);
         }
     }
-    
+
     //display word
-    private void handReceiveWord(Room curRoom){
+    private void handReceiveWord(Room curRoom) {
         Client.room = curRoom;
         Client.ingame.displayWord(curRoom.getWord());
     }
-    
+
     //countdown time
-    private void handleReceivedCountdown(String msg){
+    private void handleReceivedCountdown(String msg) {
         String[] data = msg.split(";");
         Client.ingame.displayCountdownTime(data[2], data[3]);
     }
-    
+
     //result client guess
-    private void handleReceivedGuessResult(boolean result){
+    private void handleReceivedGuessResult(boolean result) {
         // cap nhat guess pane
         GuessPane guessPane = Client.ingame.getGuessPane();
-        if(result){
+        if (result) {
             guessPane.closeGuessPane();
         } else {
             guessPane.descGuessTurn();
-            if(guessPane.getGuessTurn() == 0){
+            if (guessPane.getGuessTurn() == 0) {
                 guessPane.closeGuessPane();
             }
         }
     }
-    
+
     //show player guess
-    private void handleReceivedPlayerGuess(boolean result, String guessWord, Room curRoom){
+    private void handleReceivedPlayerGuess(boolean result, String guessWord, Room curRoom) {
         Client.room = curRoom;
-        
+
         Client.ingame.showPlayerGuessResult(guessWord);
         Client.ingame.displayLsPlayer(curRoom.getListPlayer());
     }
-    
+
     // show turn result
-    private void handleRecivedTurnResult(Room curRoom){
+    private void handleRecivedTurnResult(Room curRoom) {
         Client.room = curRoom;
         Client.ingame.showResultTurnDialog(curRoom.getListPlayer());
     }
-    
+
     //change turn
-    private void handleReceivedChangeTurn(Room receivedRoom){
+    private void handleReceivedChangeTurn(Room receivedRoom) {
         Client.room = receivedRoom;
         // dong result dialog
         Client.ingame.closeResultTurnDialog();
-        
+
         // hien thi nguoi choi hien tai
         Client.ingame.displayCurrentPainterPane();
-        
+
         // hien thi lai ds nguoi choi (theo ket qua)
         Client.ingame.displayLsPlayer(receivedRoom.getListPlayer());
         displayIngamePanel();
         Client.ingame.changeTurn(receivedRoom.getListPlayer());
 
-        
         // cap nhat guess pane
         GuessPane guessPane = Client.ingame.getGuessPane();
         guessPane.resetGuessPane();
-        
+
     }
-    
+
     //============================ chat ========================================
     private void handleChatMsg(String receivedMsg) {
-        String [] data = receivedMsg.split(";"); 
+        String[] data = receivedMsg.split(";");
         Client.ingame.displayMesg(data[1]);
     }
 
