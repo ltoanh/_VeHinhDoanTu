@@ -5,6 +5,7 @@ import constant.Constant;
 import controller.ClientCtr;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import javax.swing.border.LineBorder;
 import model.Player;
@@ -199,6 +200,17 @@ public class IngameFrm extends javax.swing.JFrame {
 
         jLabel3.setText("Nhập tin nhắn");
 
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField1KeyPressed(evt);
+            }
+        });
+
         btnSendMsg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/assets/icons8_paper_plane_24px.png"))); // NOI18N
         btnSendMsg.setText("Gửi");
         btnSendMsg.addActionListener(new java.awt.event.ActionListener() {
@@ -308,10 +320,25 @@ public class IngameFrm extends javax.swing.JFrame {
         msg = jTextField1.getText();
         if(jTextField1.getText().trim().length() > 0){
             ClientCtr.senderClient.sendChatMessage(msg);
-            
         }
         jTextField1.setText("");
     }//GEN-LAST:event_btnSendMsgActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+            // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            String msg ="";
+            msg = jTextField1.getText();
+            //send to server
+            if(jTextField1.getText().trim().length() > 0){
+                ClientCtr.senderClient.sendChatMessage(msg);
+            }
+            jTextField1.setText("");
+        }
+    }//GEN-LAST:event_jTextField1KeyPressed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

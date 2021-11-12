@@ -13,6 +13,7 @@ public class StreamData {
         // room
         CREATE_ROOM, //tao phong
         LOBBY_ROOM, // phong cho
+        SHOW_ROOMID,//hien thi id cho phong
         
         // in game
         JOIN_ROOM, // join room
