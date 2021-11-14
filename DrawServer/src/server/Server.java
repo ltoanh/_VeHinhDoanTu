@@ -161,22 +161,29 @@ public class Server {
     // join room
     private void handlePlayerJoinRoom(String msg, Account receivedAcc) {
         int roomID = Integer.parseInt(msg.split(";")[1]);
-        Player newPlayer = new Player(receiveServer.clientIP, receiveServer.clientPort, receivedAcc, 0);
-
-        // them player vao phong
         Room curRoom = helpers.RoomHelpers.checkRoomByID(roomID); // chua check exception
-        ArrayList<Player> lsPlayers = curRoom.getListPlayer();
-        lsPlayers.add(newPlayer);
-        curRoom.setListPlayer(lsPlayers);
+        if(curRoom != null){
+            Player newPlayer = new Player(receiveServer.clientIP, receiveServer.clientPort, receivedAcc, 0);
 
-        // send to all client in room
-        ObjectModel obj = new ObjectModel(StreamData.Type.JOIN_ROOM.name(), curRoom);
+            // them player vao phong
 
-        for (Player player : lsPlayers) {
-            senderServer.sendObjectData(obj, server, player.getHost(), player.getPort());
+            ArrayList<Player> lsPlayers = curRoom.getListPlayer();
+            lsPlayers.add(newPlayer);
+            curRoom.setListPlayer(lsPlayers);
+
+            // send to all client in room
+            ObjectModel obj = new ObjectModel(StreamData.Type.JOIN_ROOM.name(), curRoom);
+
+            for (Player player : lsPlayers) {
+                senderServer.sendObjectData(obj, server, player.getHost(), player.getPort());
+            }
+
+            System.out.println("> send: " + obj.toString());
         }
-
-        System.out.println("> send: " + obj.toString());
+        else{ 
+            ObjectModel obj = new ObjectModel(StreamData.Type.JOIN_ROOM.name(),null);
+            handleShowRoomID();
+        }
     }
 
     //===========================game event=====================================
@@ -202,7 +209,7 @@ public class Server {
     private void handleSendStartGameMessage(String msg) {
         int roomID = Integer.parseInt(msg.split(";")[2]);
         Room curRoom = helpers.RoomHelpers.checkRoomByID(roomID);
-        
+        listRoom.remove(curRoom);
         new LogicGame(server, curRoom, 3).start();
     }
 

@@ -42,8 +42,11 @@ public class Homepage extends javax.swing.JFrame {
         int result = tbRoom.getSelectedRow();
         String roomID = (String) tm.getValueAt(result, 0);
         ClientCtr.senderClient.sendJoinRoomMessage(roomID);
-        Client.closeScene(Client.SceneName.HOMEPAGE);
-        Client.openScene(Client.SceneName.LOBBY);
+        
+    }
+    
+    public  void showError(){
+         JOptionPane.showMessageDialog(null, "Khong the vao phong nay", "Error", JOptionPane.ERROR_MESSAGE);
     }
     /**
      * This method is called from within the constructor to initialize the form.
