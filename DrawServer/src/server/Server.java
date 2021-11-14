@@ -135,8 +135,10 @@ public class Server {
         String msg = StreamData.Type.SHOW_ROOMID.name();
         ArrayList<Player> listPlayers = new ArrayList<>();
         for (Room room : listRoom) {
-            listPlayers = room.getListPlayer();
-            msg +=";" +Integer.toString(room.getId())+","+ Integer.toString(listPlayers.size());
+            if(!room.isIsStart()){
+                listPlayers = room.getListPlayer();
+                msg +=";" +Integer.toString(room.getId())+","+ Integer.toString(listPlayers.size());
+            }
         }
         senderServer.sendObjectData(new ObjectModel(msg,null), server, receiveServer.clientIP, receiveServer.clientPort);
     }
@@ -161,22 +163,27 @@ public class Server {
     // join room
     private void handlePlayerJoinRoom(String msg, Account receivedAcc) {
         int roomID = Integer.parseInt(msg.split(";")[1]);
-        Player newPlayer = new Player(receiveServer.clientIP, receiveServer.clientPort, receivedAcc, 0);
-
         // them player vao phong
         Room curRoom = helpers.RoomHelpers.checkRoomByID(roomID); // chua check exception
-        ArrayList<Player> lsPlayers = curRoom.getListPlayer();
-        lsPlayers.add(newPlayer);
-        curRoom.setListPlayer(lsPlayers);
+        if(!curRoom.isIsStart()){
+            Player newPlayer = new Player(receiveServer.clientIP, receiveServer.clientPort, receivedAcc, 0);
+            ArrayList<Player> lsPlayers = curRoom.getListPlayer();
+            lsPlayers.add(newPlayer);
+            curRoom.setListPlayer(lsPlayers);
 
-        // send to all client in room
-        ObjectModel obj = new ObjectModel(StreamData.Type.JOIN_ROOM.name(), curRoom);
+            // send to all client in room
+             ObjectModel obj = new ObjectModel(StreamData.Type.JOIN_ROOM.name(), curRoom);
 
-        for (Player player : lsPlayers) {
-            senderServer.sendObjectData(obj, server, player.getHost(), player.getPort());
+            for (Player player : lsPlayers) {
+                senderServer.sendObjectData(obj, server, player.getHost(), player.getPort());
+            }
+
+            System.out.println("> send: " + obj.toString());
         }
-
-        System.out.println("> send: " + obj.toString());
+        else{
+           senderServer.sendObjectData(new ObjectModel(StreamData.Type.JOIN_ROOM.name(),null), server, receiveServer.clientIP, receiveServer.clientPort); 
+           handleShowRoomID();
+        }
     }
 
     //===========================game event=====================================
@@ -202,7 +209,7 @@ public class Server {
     private void handleSendStartGameMessage(String msg) {
         int roomID = Integer.parseInt(msg.split(";")[2]);
         Room curRoom = helpers.RoomHelpers.checkRoomByID(roomID);
-        
+        curRoom.setIsStart(true);
         new LogicGame(server, curRoom, 3).start();
     }
 

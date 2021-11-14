@@ -85,12 +85,7 @@ public class JoinRoomDialog extends javax.swing.JDialog {
 
     private void btnJoinRoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJoinRoomActionPerformed
         String roomID = txtRoomID.getText();
-        if(ClientCtr.senderClient.sendJoinRoomMessage(roomID)){
-            Client.closeScene(Client.SceneName.HOMEPAGE);
-            Client.openScene(Client.SceneName.LOBBY);
-        } else {
-            JOptionPane.showMessageDialog(null, "Phong khong ton tai", "Error", JOptionPane.ERROR_MESSAGE);
-        }
+        ClientCtr.senderClient.sendJoinRoomMessage(roomID);
     }//GEN-LAST:event_btnJoinRoomActionPerformed
 
     /**
