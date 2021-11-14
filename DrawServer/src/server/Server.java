@@ -89,10 +89,7 @@ public class Server {
                     case JOIN_ROOM:
                         handlePlayerJoinRoom(msg, (Account) receivedObj.getT());
                         break;
-                    // exit
-                    case EXIT:
-                        handleExitRoom(msg, (Account) receivedObj.getT());
-                        break;
+
                     //============ game =============
                     case CHAT_ROOM:
                         handleSendChatMessage(msg);
@@ -278,25 +275,5 @@ public class Server {
         for (Player player : lsPlayers) {
             senderServer.sendObjectData(obj, server, player.getHost(), player.getPort());
         }
-    }
-
-    private void handleExitRoom(String msg, Account receivedAcc) {
-       int roomID = Integer.parseInt(msg.split(";")[1]);
-        Player newPlayer = new Player(receiveServer.clientIP, receiveServer.clientPort, receivedAcc, 0);
-
-        // xóa player khỏi phòng
-        Room curRoom = helpers.RoomHelpers.checkRoomByID(roomID); // chua check exception
-        ArrayList<Player> lsPlayers = curRoom.getListPlayer();
-        lsPlayers.remove(newPlayer);
-        curRoom.setListPlayer(lsPlayers);
-
-        // gửi đến các client
-        ObjectModel obj = new ObjectModel(StreamData.Type.EXIT.name(), curRoom);
-
-        for (Player player : lsPlayers) {
-            senderServer.sendObjectData(obj, server, player.getHost(), player.getPort());
-        }
-
-        System.out.println("> send: " + obj.toString());
     }
 }
