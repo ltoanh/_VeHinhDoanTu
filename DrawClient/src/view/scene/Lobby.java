@@ -212,10 +212,7 @@ public class Lobby extends javax.swing.JFrame {
         // remove player out room
         //--code---
         
-        String roomID = lbRoomID.getText();
-        roomID = roomID.replaceAll("[^0-9]", "");
-         
-        ClientCtr.senderClient.sendExitRoomMessage(roomID);
+        
         // open homepage
         Client.closeScene(Client.SceneName.LOBBY);
         Client.openScene(Client.SceneName.HOMEPAGE);
@@ -280,11 +277,4 @@ public class Lobby extends javax.swing.JFrame {
     private javax.swing.JLabel lbRoomID;
     private javax.swing.JTextArea taPlayer;
     // End of variables declaration//GEN-END:variables
-
-    public void removePlayerToList(String inf) {
-        String s=taPlayer.getText();
-        taPlayer.setText("");
-        String result = s.replace(inf, "");
-        taPlayer.setText(result);
-    }
 }
