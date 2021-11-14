@@ -137,19 +137,27 @@ public class ReceiveClient extends Thread {
         Client.lobby.displayRoomID(Client.room.getId() + "");
         Client.lobby.displayStartButton();
         Client.lobby.addPlayerToList(Client.account.getName() + "(" + Client.account.getUsername() + ")");
+        
     }
 
     //join room
     private void handlePlayerJoinRoom(Room receivedRoom) {
-        Client.room = receivedRoom;
-
-        Client.lobby.displayRoomID(Client.room.getId() + "");
-        Client.lobby.clearPlayersList();
         
-        for (Player player : Client.room.getListPlayer()) {
-            Account acc = player.getAccount();
-            Client.lobby.addPlayerToList(acc.getName() + "(" + acc.getUsername() + ")");
+        if(receivedRoom != null){
+            Client.room = receivedRoom;
+            Client.closeScene(Client.SceneName.HOMEPAGE);
+            Client.openScene(Client.SceneName.LOBBY);
+            Client.lobby.displayRoomID(Client.room.getId() + "");
+            Client.lobby.clearPlayersList();
+
+            for (Player player : Client.room.getListPlayer()) {
+                Account acc = player.getAccount();
+                Client.lobby.addPlayerToList(acc.getName() + "(" + acc.getUsername() + ")");
+           }
+        }else{
+             Client.homepage.showError();
         }
+            
     }
 
     //============================ in game ===========================
