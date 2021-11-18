@@ -15,7 +15,7 @@ public class Room implements java.io.Serializable {
     private ArrayList<String> lsPainterUsername;
     
     private String word;
-
+    private boolean isStart;
     public int getId() {
         return id;
     }

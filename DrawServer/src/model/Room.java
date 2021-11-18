@@ -17,7 +17,8 @@ public class Room implements java.io.Serializable{
     private ArrayList<String> lsPainterUsername;
     
     private String word;
-
+    private boolean isStart = false;
+    
     public Room(ArrayList<Player> listPlayer) {
         this.roomID++;
         this.id = this.roomID;
@@ -46,6 +47,14 @@ public class Room implements java.io.Serializable{
     
     public ArrayList<Player> getListPlayer() {
         return listPlayer;
+    }
+
+    public boolean isIsStart() {
+        return isStart;
+    }
+
+    public void setIsStart(boolean isStart) {
+        this.isStart = isStart;
     }
 
     @Override
