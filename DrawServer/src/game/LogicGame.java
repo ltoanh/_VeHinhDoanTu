@@ -78,6 +78,7 @@ public class LogicGame extends Thread {
             countdown.start();
 
             try {
+                // cho` ket thuc countdown
                 countdown.join();
             } catch (InterruptedException ex) {
                 ex.printStackTrace();

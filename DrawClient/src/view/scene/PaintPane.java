@@ -40,12 +40,6 @@ public class PaintPane extends javax.swing.JPanel {
         this.currentColor = color;
     }
 
-    public void clearPaint() {
-        this.removeAll();
-        this.updateUI();
-        this.activeTool = Constant.PENCIL_TOOL;
-    }
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

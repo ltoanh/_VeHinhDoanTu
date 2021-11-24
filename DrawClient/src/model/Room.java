@@ -13,7 +13,6 @@ public class Room implements java.io.Serializable {
     private int id;
     private ArrayList<Player> listPlayer;
     private ArrayList<String> lsPainterUsername;
-    
     private String word;
     private boolean isStart;
     public int getId() {

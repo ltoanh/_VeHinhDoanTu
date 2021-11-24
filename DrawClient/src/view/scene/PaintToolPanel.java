@@ -11,17 +11,11 @@ import javax.swing.JColorChooser;
 public class PaintToolPanel extends javax.swing.JPanel {
 
     private IngameFrm ingame;
-//    private Graphics2D g2;
 
     public PaintToolPanel(IngameFrm ingame) {
         initComponents();
 
         this.ingame = ingame;
-    }
-
-    private void setColorChooser(PaintPane panel, Color color) {
-        panel.setCurrentColor(color);
-        lbCurrentColor.setBackground(color);
     }
 
     @SuppressWarnings("unchecked")
@@ -30,7 +24,6 @@ public class PaintToolPanel extends javax.swing.JPanel {
 
         btnPencil = new javax.swing.JButton();
         btnErase = new javax.swing.JButton();
-        btnClear = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         btnRed = new javax.swing.JButton();
         btnBlue = new javax.swing.JButton();
@@ -50,12 +43,9 @@ public class PaintToolPanel extends javax.swing.JPanel {
 
         btnErase.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/assets/icons8-erase-30.png"))); // NOI18N
         btnErase.setText("Tẩy");
-
-        btnClear.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/assets/icons8-delete-30.png"))); // NOI18N
-        btnClear.setText("Xóa");
-        btnClear.addActionListener(new java.awt.event.ActionListener() {
+        btnErase.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnClearActionPerformed(evt);
+                btnEraseActionPerformed(evt);
             }
         });
 
@@ -112,7 +102,7 @@ public class PaintToolPanel extends javax.swing.JPanel {
 
         jLabel1.setText("Màu được chọn:");
 
-        lbCurrentColor.setBackground(new java.awt.Color(255, 102, 51));
+        lbCurrentColor.setBackground(new java.awt.Color(0, 0, 0));
 
         javax.swing.GroupLayout lbCurrentColorLayout = new javax.swing.GroupLayout(lbCurrentColor);
         lbCurrentColor.setLayout(lbCurrentColorLayout);
@@ -192,84 +182,89 @@ public class PaintToolPanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(25, 25, 25)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnPencil, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnErase, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(btnPencil)
                 .addGap(18, 18, 18)
-                .addComponent(btnClear)
-                .addGap(41, 41, 41)
+                .addComponent(btnErase, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(24, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addComponent(btnPencil)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnErase)
-                    .addComponent(btnClear))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnErase)
+                    .addComponent(btnPencil))
+                .addGap(53, 53, 53))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRedActionPerformed
         ingame.getPaintPane1().setCurrentColor(Color.RED);
         ingame.getPaintPane2().setCurrentColor(Color.RED);
+        lbCurrentColor.setBackground(Color.RED);
     }//GEN-LAST:event_btnRedActionPerformed
 
     private void btnBlueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBlueActionPerformed
         ingame.getPaintPane1().setCurrentColor(Color.BLUE);
         ingame.getPaintPane2().setCurrentColor(Color.BLUE);
+        lbCurrentColor.setBackground(Color.BLUE);
     }//GEN-LAST:event_btnBlueActionPerformed
 
     private void btnYellowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnYellowActionPerformed
         ingame.getPaintPane1().setCurrentColor(Color.YELLOW);
         ingame.getPaintPane2().setCurrentColor(Color.YELLOW);
+        lbCurrentColor.setBackground(Color.YELLOW);
     }//GEN-LAST:event_btnYellowActionPerformed
 
     private void btnBlackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBlackActionPerformed
         ingame.getPaintPane1().setCurrentColor(Color.BLACK);
         ingame.getPaintPane2().setCurrentColor(Color.BLACK);
+        lbCurrentColor.setBackground(Color.BLACK);
     }//GEN-LAST:event_btnBlackActionPerformed
 
     private void btnGreenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGreenActionPerformed
         ingame.getPaintPane1().setCurrentColor(Color.GREEN);
         ingame.getPaintPane2().setCurrentColor(Color.GREEN);
+        lbCurrentColor.setBackground(Color.GREEN);
     }//GEN-LAST:event_btnGreenActionPerformed
 
     private void btnCyanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCyanActionPerformed
         ingame.getPaintPane1().setCurrentColor(Color.CYAN);
         ingame.getPaintPane2().setCurrentColor(Color.CYAN);
+        lbCurrentColor.setBackground(Color.CYAN);
     }//GEN-LAST:event_btnCyanActionPerformed
 
     private void btnMagentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMagentaActionPerformed
         ingame.getPaintPane1().setCurrentColor(Color.MAGENTA);
         ingame.getPaintPane2().setCurrentColor(Color.MAGENTA);
+        lbCurrentColor.setBackground(Color.MAGENTA);
     }//GEN-LAST:event_btnMagentaActionPerformed
-
-    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
-        // TODO add your handling code here:
-        ingame.getPaintPane1().clearPaint();
-        ingame.getPaintPane2().clearPaint();
-    }//GEN-LAST:event_btnClearActionPerformed
 
     private void btnChooseColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChooseColorActionPerformed
         Color color = JColorChooser.showDialog(null, "Chọn màu", Color.BLACK);
         System.out.println(color);
-//        setColorChooser(color);
+        
+        ingame.getPaintPane1().setCurrentColor(color);
+        ingame.getPaintPane2().setCurrentColor(color);
+        
+        lbCurrentColor.setBackground(color);
     }//GEN-LAST:event_btnChooseColorActionPerformed
+
+    private void btnEraseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEraseActionPerformed
+        ingame.getPaintPane1().setCurrentColor(Color.WHITE);
+        ingame.getPaintPane2().setCurrentColor(Color.WHITE);
+    }//GEN-LAST:event_btnEraseActionPerformed
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBlack;
     private javax.swing.JButton btnBlue;
     private javax.swing.JButton btnChooseColor;
-    private javax.swing.JButton btnClear;
     private javax.swing.JButton btnCyan;
     private javax.swing.JButton btnErase;
     private javax.swing.JButton btnGreen;
