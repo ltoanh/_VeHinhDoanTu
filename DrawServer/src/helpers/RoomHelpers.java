@@ -25,6 +25,17 @@ public class RoomHelpers {
         
         return null;
     }
+    /**
+     * Tim kiem idx room theo roomid
+     */
+    public static int getRoomIndexByRoomID(int roomID){
+        for(int i = 0; i < server.Server.listRoom.size(); ++i){
+            if(roomID == server.Server.listRoom.get(i).getId()){
+                return i;
+            }
+        }
+        return -1;
+    }
     
     /**
      * Lua chon nguoi ve

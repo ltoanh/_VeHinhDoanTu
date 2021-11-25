@@ -8,6 +8,7 @@ import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import model.Room;
 
 /**
  *
@@ -22,11 +23,25 @@ public class Lobby extends javax.swing.JFrame {
         setTitle("Phòng chờ");
         
         btnStart.setVisible(false);
+        
+        // close window event
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                if (JOptionPane.showConfirmDialog(Lobby.this,
+                        "Bạn có chắc muốn thoát game?", "Thoát game?",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+                    ClientCtr.senderClient.sendLeaveRoom();
+                }
+            }
+        });
 
     }
 
-    public void displayRoomID(String roomID){
-        lbRoomID.setText("Mã phòng: " + roomID);
+    public void displayRoomInf(Room room){
+        lbRoomID.setText("Mã phòng: " + room.getId());
+        lbNumberPlayers.setText(room.getListPlayer().size() + "");
     }
     
     // hien thi nut start
@@ -52,10 +67,9 @@ public class Lobby extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
+        lbNumberPlayers = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        btnSetting = new javax.swing.JButton();
         btnStart = new javax.swing.JButton();
         btnExit = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -76,16 +90,16 @@ public class Lobby extends javax.swing.JFrame {
         jLabel3.setText("Thời gian đoán:");
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel4.setText("90 giây");
+        jLabel4.setText("30 giây");
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel7.setText("Số lượng người chơi:");
 
-        jLabel9.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel9.setText("10");
+        lbNumberPlayers.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lbNumberPlayers.setText("10");
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel10.setText("5");
+        jLabel10.setText("3");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -105,7 +119,7 @@ public class Lobby extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel9)))
+                        .addComponent(lbNumberPlayers)))
                 .addContainerGap(83, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -122,20 +136,12 @@ public class Lobby extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(jLabel9))
+                    .addComponent(lbNumberPlayers))
                 .addContainerGap(27, Short.MAX_VALUE))
         );
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel6.setText("Danh sách người chơi");
-
-        btnSetting.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/assets/icons8-settings-24.png"))); // NOI18N
-        btnSetting.setText("Cài đặt phòng");
-        btnSetting.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSettingActionPerformed(evt);
-            }
-        });
 
         btnStart.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/assets/icons8-circled-play-24.png"))); // NOI18N
         btnStart.setText("Bắt đầu");
@@ -153,6 +159,7 @@ public class Lobby extends javax.swing.JFrame {
             }
         });
 
+        taPlayer.setEditable(false);
         taPlayer.setColumns(20);
         taPlayer.setRows(5);
         jScrollPane2.setViewportView(taPlayer);
@@ -167,8 +174,7 @@ public class Lobby extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnSetting))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -186,15 +192,13 @@ public class Lobby extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addComponent(lbRoomID)
-                .addGap(35, 35, 35)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(btnSetting))
+                .addGap(41, 41, 41)
+                .addComponent(jLabel6)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnStart)
                     .addComponent(btnExit))
@@ -204,14 +208,9 @@ public class Lobby extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnSettingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSettingActionPerformed
-        
-    }//GEN-LAST:event_btnSettingActionPerformed
-
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
         // remove player out room
-        //--code---
-        
+        ClientCtr.senderClient.sendLeaveRoom();
         
         // open homepage
         Client.closeScene(Client.SceneName.LOBBY);
@@ -221,10 +220,10 @@ public class Lobby extends javax.swing.JFrame {
 
     private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartActionPerformed
         // send start message
-        if(Client.room.getListPlayer().size() >= 2){
+        if(Client.room.getListPlayer().size() >= 3){
             ClientCtr.senderClient.sendStartRoomMessage();
         } else {
-            JOptionPane.showMessageDialog(null, "Phòng phải có ít nhất 2 người chơi!");
+            JOptionPane.showMessageDialog(null, "Phòng phải có ít nhất 3 người chơi!");
         }
     }//GEN-LAST:event_btnStartActionPerformed
 
@@ -263,7 +262,6 @@ public class Lobby extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnExit;
-    private javax.swing.JButton btnSetting;
     private javax.swing.JButton btnStart;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -271,9 +269,9 @@ public class Lobby extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lbNumberPlayers;
     private javax.swing.JLabel lbRoomID;
     private javax.swing.JTextArea taPlayer;
     // End of variables declaration//GEN-END:variables

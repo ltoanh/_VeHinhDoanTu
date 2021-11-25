@@ -129,6 +129,7 @@ public class Server {
         }
     }
     //======================== show room ID =========================
+    //display room list at homepage
     private void handleShowRoomID(){
         String msg = StreamData.Type.SHOW_ROOMID.name();
         ArrayList<Player> listPlayers = new ArrayList<>();
@@ -200,6 +201,9 @@ public class Server {
             case GUESS_WORD:
                 handleSendGuessWordResult(Integer.parseInt(msgGameEvent[2]), (Account) receivedObj.getT(), msgGameEvent[3]);
                 break;
+            case LEAVE_ROOM:
+                handlePlayerLeaveRoom(Integer.parseInt(msgGameEvent[2]), (Account) receivedObj.getT());
+                break;
         }
     }
 
@@ -208,6 +212,7 @@ public class Server {
         int roomID = Integer.parseInt(msg.split(";")[2]);
         Room curRoom = helpers.RoomHelpers.checkRoomByID(roomID);
         curRoom.setIsStart(true);
+        
         new LogicGame(server, curRoom, 3).start();
     }
 
@@ -267,6 +272,29 @@ public class Server {
             senderServer.sendObjectData(objResult, server, player.getHost(), player.getPort());
         }
     }
+    
+    // leave room
+    private void handlePlayerLeaveRoom(int roomID, Account account) {
+        Room curRoom = helpers.RoomHelpers.checkRoomByID(roomID);
+        ArrayList<Player> lsPlayers = curRoom.getListPlayer();
+        // remove player
+        int idxPlayer = RoomHelpers.findPlayerIndexByAccount(lsPlayers, account);
+        lsPlayers.remove(idxPlayer);
+        curRoom.setListPlayer(lsPlayers);
+
+        // send message to all player in room
+        String msgGame = StreamData.Type.GAME_EVENT.name() + ";" + StreamData.Type.LEAVE_ROOM.name() + ";" + account.getUsername() + " đã rời khỏi phòng";
+        ObjectModel obj = new ObjectModel(msgGame, curRoom);
+        for (Player player : lsPlayers) {
+            senderServer.sendObjectData(obj, server, player.getHost(), player.getPort());
+        }
+        // check if player in room = 0
+        if(lsPlayers.size() == 0){
+           int idxRoom = RoomHelpers.getRoomIndexByRoomID(roomID);
+           listRoom.remove(idxRoom);
+        }
+    }
+    
 
     //============================= chat =======================================
     private void handleSendChatMessage(String msg) {
@@ -281,4 +309,5 @@ public class Server {
             senderServer.sendObjectData(obj, server, player.getHost(), player.getPort());
         }
     }
+
 }

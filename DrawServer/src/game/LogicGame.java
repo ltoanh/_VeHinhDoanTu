@@ -70,39 +70,38 @@ public class LogicGame extends Thread {
             ObjectModel objWordModel = new ObjectModel(msgWord, room);
 
             for (Player player : lsPlayers) {
+                // send msg start/change turn
                 senderServer.sendObjectData(obj, server, player.getHost(), player.getPort());
-
+                // send word to guess
                 senderServer.sendObjectData(objWordModel, server, player.getHost(), player.getPort());
             }
 
             countdown.start();
 
             try {
-                // cho` ket thuc countdown
+                // logicgame cho` ket thuc countdown
                 countdown.join();
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }
 
             //send room result when end countdown
-            if (!countdown.isAlive()) {
-                try {
-                    // sap xep ds theo thu tu diem desc
-                    lsPlayers.sort((p1, p2) -> Integer.compare(p2.getScore(), p1.getScore()));
-                    room.setListPlayer(lsPlayers);
-                    
-                    System.out.println(lsPlayers);
-                    // send result to all player
-                    String turnResult = StreamData.Type.GAME_EVENT.name() + ";" + StreamData.Type.TURN_RESULT.name();
-                    ObjectModel objResultTurn = new ObjectModel(turnResult, room);
-                    for (Player player : lsPlayers) {
-                        senderServer.sendObjectData(objResultTurn, server, player.getHost(), player.getPort());
-                    }
+            try {
+                // sap xep ds theo thu tu diem desc
+                lsPlayers.sort((p1, p2) -> Integer.compare(p2.getScore(), p1.getScore()));
+                room.setListPlayer(lsPlayers);
 
-                    Thread.sleep(5000);
-                } catch (InterruptedException ex) {
-                    ex.printStackTrace();
+                System.out.println(lsPlayers);
+                // send result to all player
+                String turnResult = StreamData.Type.GAME_EVENT.name() + ";" + StreamData.Type.TURN_RESULT.name();
+                ObjectModel objResultTurn = new ObjectModel(turnResult, room);
+                for (Player player : lsPlayers) {
+                    senderServer.sendObjectData(objResultTurn, server, player.getHost(), player.getPort());
                 }
+
+                Thread.sleep(5000);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
             }
         }
     }
