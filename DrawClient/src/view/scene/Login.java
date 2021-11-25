@@ -28,6 +28,11 @@ public class Login extends javax.swing.JFrame {
         txtUsername.setEnabled(true);
         txtPassword.setEnabled(true);
     }
+    
+    public void clearInput(){
+        txtUsername.setText("");
+        txtPassword.setText("");
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -137,7 +142,6 @@ public class Login extends javax.swing.JFrame {
 
         ClientCtr.senderClient.sendLoginMessage(username, password);
         setLoading();
-
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void btnSignupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSignupActionPerformed

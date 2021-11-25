@@ -103,13 +103,14 @@ public class ReceiveClient extends Thread {
     // login
     private void handleReceivedAccountLogin(Account acc) {
         if (acc == null) {
-            JOptionPane.showMessageDialog(null, "Nguoi dung khong ton tai", "Error", JOptionPane.ERROR_MESSAGE);
-            Client.login.setUnloading();
+            JOptionPane.showMessageDialog(null, "Người dùng không tồn tại", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
             Client.account = acc;
             Client.closeScene(Client.SceneName.LOGIN);
+            Client.login.clearInput();
             Client.openScene(Client.SceneName.HOMEPAGE);
         }
+        Client.login.setUnloading();
     }
 
     //===========================show room id=============================
