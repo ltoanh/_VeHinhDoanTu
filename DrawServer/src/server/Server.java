@@ -68,9 +68,10 @@ public class Server {
                 StreamData.Type type = StreamData.getTypeFromReceivedData(msg);
 
                 switch (type) {
-                    case LOGIN:{
+                    case LOGIN: {
                         handleLogin(msg);
-                        break;}
+                        break;
+                    }
                     case SIGNUP:
                         handleSignUp(msg);
                         break;
@@ -117,32 +118,33 @@ public class Server {
         dao.insertInformation(data[1], data[2], data[3], data[4]);
         //    Account acc = new Account(data[2], data[1], data[4]);
     }
-    
+
     private void handleLogin(String msg) {
         String[] data = msg.trim().split(";");
         Account acc = dao.checkAccount(data[1], data[2]);
         // send result
         ObjectModel obj = new ObjectModel(StreamData.Type.LOGIN.name(), acc);
         senderServer.sendObjectData(obj, server, receiveServer.clientIP, receiveServer.clientPort);
-        if(acc != null){
+        if (acc != null) {
             handleShowRoomID();
         }
     }
+
     //======================== show room ID =========================
     //display room list at homepage
-    private void handleShowRoomID(){
+    private void handleShowRoomID() {
         String msg = StreamData.Type.SHOW_ROOMID.name();
         ArrayList<Player> listPlayers = new ArrayList<>();
         for (Room room : listRoom) {
-            if(!room.isIsStart()){
+            if (!room.isIsStart()) {
                 listPlayers = room.getListPlayer();
-                msg +=";" +Integer.toString(room.getId())+","+ Integer.toString(listPlayers.size());
+                msg += ";" + Integer.toString(room.getId()) + "," + Integer.toString(listPlayers.size());
             }
         }
-        senderServer.sendObjectData(new ObjectModel(msg,null), server, receiveServer.clientIP, receiveServer.clientPort);
+        senderServer.sendObjectData(new ObjectModel(msg, null), server, receiveServer.clientIP, receiveServer.clientPort);
     }
     //========================= game =====================================
-    
+
     //create room
     private void handleCreateRoom() {
         Player player = new Player(receiveServer.clientIP, receiveServer.clientPort, (Account) receivedObj.getT(), 0);
@@ -163,26 +165,31 @@ public class Server {
     private void handlePlayerJoinRoom(String msg, Account receivedAcc) {
         int roomID = Integer.parseInt(msg.split(";")[1]);
         // them player vao phong
-        Room curRoom = helpers.RoomHelpers.checkRoomByID(roomID); // chua check exception
-        if(!curRoom.isIsStart()){
-            Player newPlayer = new Player(receiveServer.clientIP, receiveServer.clientPort, receivedAcc, 0);
-            ArrayList<Player> lsPlayers = curRoom.getListPlayer();
-            lsPlayers.add(newPlayer);
-            curRoom.setListPlayer(lsPlayers);
+        Room curRoom = helpers.RoomHelpers.checkRoomByID(roomID);
+        if (curRoom != null) {
+            if (!curRoom.isIsStart()) {
+                Player newPlayer = new Player(receiveServer.clientIP, receiveServer.clientPort, receivedAcc, 0);
+                ArrayList<Player> lsPlayers = curRoom.getListPlayer();
+                lsPlayers.add(newPlayer);
+                curRoom.setListPlayer(lsPlayers);
 
-            // send to all client in room
-             ObjectModel obj = new ObjectModel(StreamData.Type.JOIN_ROOM.name(), curRoom);
+                // send to all client in room
+                ObjectModel obj = new ObjectModel(StreamData.Type.JOIN_ROOM.name(), curRoom);
 
-            for (Player player : lsPlayers) {
-                senderServer.sendObjectData(obj, server, player.getHost(), player.getPort());
+                for (Player player : lsPlayers) {
+                    senderServer.sendObjectData(obj, server, player.getHost(), player.getPort());
+                }
+
+                System.out.println("> send: " + obj.toString());
+            } else {
+                senderServer.sendObjectData(new ObjectModel(StreamData.Type.JOIN_ROOM.name(), null), server, receiveServer.clientIP, receiveServer.clientPort);
+                handleShowRoomID();
             }
+        } else {
+            // nguoi dung nhap ma phong khong ton tai
+            senderServer.sendObjectData(new ObjectModel(StreamData.Type.JOIN_ROOM.name(), null), server, receiveServer.clientIP, receiveServer.clientPort);
+        }
 
-            System.out.println("> send: " + obj.toString());
-        }
-        else{
-           senderServer.sendObjectData(new ObjectModel(StreamData.Type.JOIN_ROOM.name(),null), server, receiveServer.clientIP, receiveServer.clientPort); 
-           handleShowRoomID();
-        }
     }
 
     //===========================game event=====================================
@@ -212,7 +219,7 @@ public class Server {
         int roomID = Integer.parseInt(msg.split(";")[2]);
         Room curRoom = helpers.RoomHelpers.checkRoomByID(roomID);
         curRoom.setIsStart(true);
-        
+
         new LogicGame(server, curRoom, 3).start();
     }
 
@@ -272,7 +279,7 @@ public class Server {
             senderServer.sendObjectData(objResult, server, player.getHost(), player.getPort());
         }
     }
-    
+
     // leave room
     private void handlePlayerLeaveRoom(int roomID, Account account) {
         Room curRoom = helpers.RoomHelpers.checkRoomByID(roomID);
@@ -289,16 +296,15 @@ public class Server {
             senderServer.sendObjectData(obj, server, player.getHost(), player.getPort());
         }
         // check if player in room = 0
-        if(lsPlayers.size() == 0){
-           int idxRoom = RoomHelpers.getRoomIndexByRoomID(roomID);
-           listRoom.remove(idxRoom);
+        if (lsPlayers.size() == 0) {
+            int idxRoom = RoomHelpers.getRoomIndexByRoomID(roomID);
+            listRoom.remove(idxRoom);
         }
     }
-    
 
     //============================= chat =======================================
     private void handleSendChatMessage(String msg) {
-         String [] data = msg.split(";");
+        String[] data = msg.split(";");
         int roomID = Integer.parseInt(data[1]);
         Room curRoom = helpers.RoomHelpers.checkRoomByID(roomID);
         // send result
