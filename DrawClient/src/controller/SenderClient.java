@@ -129,6 +129,13 @@ public class SenderClient extends Thread {
                 + Client.room.getId() + ";" + guessWord;
         ObjectModel obj = new ObjectModel(msg, Client.account);
         sendObjectPacket(obj);
-        System.out.println("send guess: " + guessWord);
+    }
+    
+    //send leave room message
+    public void sendLeaveRoom(){
+        String msg = StreamData.Type.GAME_EVENT + ";" + StreamData.Type.LEAVE_ROOM.name() + ";" + Client.room.getId();
+        ObjectModel obj = new ObjectModel(msg, Client.account);
+        sendObjectPacket(obj);
+        Client.room = null;
     }
 }

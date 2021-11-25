@@ -24,14 +24,7 @@ public class PaintToolPanel extends javax.swing.JPanel {
 
         btnPencil = new javax.swing.JButton();
         btnErase = new javax.swing.JButton();
-        jPanel1 = new javax.swing.JPanel();
-        btnRed = new javax.swing.JButton();
-        btnBlue = new javax.swing.JButton();
-        btnYellow = new javax.swing.JButton();
-        btnBlack = new javax.swing.JButton();
-        btnGreen = new javax.swing.JButton();
-        btnCyan = new javax.swing.JButton();
-        btnMagenta = new javax.swing.JButton();
+        btnSharing = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         lbCurrentColor = new javax.swing.JPanel();
         btnChooseColor = new javax.swing.JButton();
@@ -49,56 +42,8 @@ public class PaintToolPanel extends javax.swing.JPanel {
             }
         });
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Chọn màu"));
-
-        btnRed.setBackground(new java.awt.Color(255, 0, 0));
-        btnRed.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRedActionPerformed(evt);
-            }
-        });
-
-        btnBlue.setBackground(java.awt.Color.blue);
-        btnBlue.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBlueActionPerformed(evt);
-            }
-        });
-
-        btnYellow.setBackground(java.awt.Color.yellow);
-        btnYellow.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnYellowActionPerformed(evt);
-            }
-        });
-
-        btnBlack.setBackground(java.awt.Color.black);
-        btnBlack.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBlackActionPerformed(evt);
-            }
-        });
-
-        btnGreen.setBackground(java.awt.Color.green);
-        btnGreen.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGreenActionPerformed(evt);
-            }
-        });
-
-        btnCyan.setBackground(java.awt.Color.cyan);
-        btnCyan.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCyanActionPerformed(evt);
-            }
-        });
-
-        btnMagenta.setBackground(java.awt.Color.magenta);
-        btnMagenta.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnMagentaActionPerformed(evt);
-            }
-        });
+        btnSharing.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/assets/icons8-share-32.png"))); // NOI18N
+        btnSharing.setText("Chia sẻ màn hình");
 
         jLabel1.setText("Màu được chọn:");
 
@@ -123,128 +68,42 @@ public class PaintToolPanel extends javax.swing.JPanel {
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnRed)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnBlue)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnYellow)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnBlack)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnGreen)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnCyan)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnMagenta))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(18, 18, 18)
-                        .addComponent(lbCurrentColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnChooseColor)))
-                .addGap(166, 166, 166))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnRed, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnBlue, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnYellow, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnBlack, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnGreen, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnMagenta, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnCyan, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnChooseColor)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(lbCurrentColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1))
-                        .addGap(15, 15, 15))))
-        );
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addComponent(btnPencil)
-                .addGap(18, 18, 18)
-                .addComponent(btnErase, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addGap(22, 22, 22)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(18, 18, 18)
+                        .addComponent(lbCurrentColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(btnChooseColor, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnErase, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnPencil, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnSharing, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnErase)
-                    .addComponent(btnPencil))
-                .addGap(53, 53, 53))
+                .addComponent(btnSharing)
+                .addGap(18, 18, 18)
+                .addComponent(btnPencil)
+                .addGap(18, 18, 18)
+                .addComponent(btnErase)
+                .addGap(14, 14, 14)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lbCurrentColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addGap(18, 18, 18)
+                .addComponent(btnChooseColor)
+                .addContainerGap(92, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnRedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRedActionPerformed
-        ingame.getPaintPane1().setCurrentColor(Color.RED);
-        ingame.getPaintPane2().setCurrentColor(Color.RED);
-        lbCurrentColor.setBackground(Color.RED);
-    }//GEN-LAST:event_btnRedActionPerformed
-
-    private void btnBlueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBlueActionPerformed
-        ingame.getPaintPane1().setCurrentColor(Color.BLUE);
-        ingame.getPaintPane2().setCurrentColor(Color.BLUE);
-        lbCurrentColor.setBackground(Color.BLUE);
-    }//GEN-LAST:event_btnBlueActionPerformed
-
-    private void btnYellowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnYellowActionPerformed
-        ingame.getPaintPane1().setCurrentColor(Color.YELLOW);
-        ingame.getPaintPane2().setCurrentColor(Color.YELLOW);
-        lbCurrentColor.setBackground(Color.YELLOW);
-    }//GEN-LAST:event_btnYellowActionPerformed
-
-    private void btnBlackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBlackActionPerformed
-        ingame.getPaintPane1().setCurrentColor(Color.BLACK);
-        ingame.getPaintPane2().setCurrentColor(Color.BLACK);
-        lbCurrentColor.setBackground(Color.BLACK);
-    }//GEN-LAST:event_btnBlackActionPerformed
-
-    private void btnGreenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGreenActionPerformed
-        ingame.getPaintPane1().setCurrentColor(Color.GREEN);
-        ingame.getPaintPane2().setCurrentColor(Color.GREEN);
-        lbCurrentColor.setBackground(Color.GREEN);
-    }//GEN-LAST:event_btnGreenActionPerformed
-
-    private void btnCyanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCyanActionPerformed
-        ingame.getPaintPane1().setCurrentColor(Color.CYAN);
-        ingame.getPaintPane2().setCurrentColor(Color.CYAN);
-        lbCurrentColor.setBackground(Color.CYAN);
-    }//GEN-LAST:event_btnCyanActionPerformed
-
-    private void btnMagentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMagentaActionPerformed
-        ingame.getPaintPane1().setCurrentColor(Color.MAGENTA);
-        ingame.getPaintPane2().setCurrentColor(Color.MAGENTA);
-        lbCurrentColor.setBackground(Color.MAGENTA);
-    }//GEN-LAST:event_btnMagentaActionPerformed
 
     private void btnChooseColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChooseColorActionPerformed
         Color color = JColorChooser.showDialog(null, "Chọn màu", Color.BLACK);
@@ -262,18 +121,11 @@ public class PaintToolPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnEraseActionPerformed
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnBlack;
-    private javax.swing.JButton btnBlue;
     private javax.swing.JButton btnChooseColor;
-    private javax.swing.JButton btnCyan;
     private javax.swing.JButton btnErase;
-    private javax.swing.JButton btnGreen;
-    private javax.swing.JButton btnMagenta;
     private javax.swing.JButton btnPencil;
-    private javax.swing.JButton btnRed;
-    private javax.swing.JButton btnYellow;
+    private javax.swing.JButton btnSharing;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel lbCurrentColor;
     // End of variables declaration//GEN-END:variables
 }

@@ -30,9 +30,10 @@ public class StreamData {
         SHOW_GUESS_RESULT, // hien thi ket qua doan tu vs nguoi choi khac
         CHANGE_TURN, // thay doi turn nguoi ve
         TURN_RESULT, // hien thi ket qua 1 turn
+        LEAVE_ROOM, // thoat game
 
         // specific
-        EXIT, // thoat
+        EXIT, // dang xuat
         COUNTDOWN, // countdown time
         ERROR,
         UNKNOW_TYPE,
