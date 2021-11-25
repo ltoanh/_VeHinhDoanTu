@@ -37,14 +37,14 @@ public class Homepage extends javax.swing.JFrame {
         tm.addRow(new Object[]{maPhong, soNguoi});
     }
     
-    public void jionRoom() {
+    public void joinRoom() {
         int result = tbRoom.getSelectedRow();
         String roomID = (String) tm.getValueAt(result, 0);
         ClientCtr.senderClient.sendJoinRoomMessage(roomID);
         
     }
     public void showError(){
-        JOptionPane.showMessageDialog(this, "khong the tham gia phong nay", "ERROR", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Không thể tham gia phòng này", "ERROR", JOptionPane.ERROR_MESSAGE);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -73,6 +73,11 @@ public class Homepage extends javax.swing.JFrame {
 
         btnLogout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/assets/icons8_logout_rounded_left_24px.png"))); // NOI18N
         btnLogout.setText("Đăng xuất");
+        btnLogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLogoutActionPerformed(evt);
+            }
+        });
 
         btnProfile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/assets/icons8_contact_24px.png"))); // NOI18N
         btnProfile.setText("Hồ sơ");
@@ -244,8 +249,14 @@ public class Homepage extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRefreshListRoomActionPerformed
 
     private void tbRoomMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbRoomMouseClicked
-       jionRoom();
+       joinRoom();
     }//GEN-LAST:event_tbRoomMouseClicked
+
+    private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
+       Client.closeScene(Client.SceneName.HOMEPAGE);
+       Client.openScene(Client.SceneName.LOGIN);
+       Client.account = null;
+    }//GEN-LAST:event_btnLogoutActionPerformed
 
     /**
      * @param args the command line arguments
