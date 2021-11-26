@@ -32,7 +32,9 @@ public class ReceiveClient extends Thread {
     private DatagramSocket client;
 
     private ObjectModel objReceived;
-
+    
+    private boolean isStart;//share mh
+    
     ReceiveClient(DatagramSocket client) {
         this.client = client;
     }
@@ -201,11 +203,12 @@ public class ReceiveClient extends Thread {
     }
 
     private void handleShareScreen(Player player){
+        isStart = true;
         new Thread(new Runnable() {
                     @Override
                     public void run() {
                         try {
-                            while (true) {
+                            while (isStart) {
                                 try (Socket soc = new Socket(player.getHost(),1007)) {
                                     BufferedImage img = ImageIO.read(soc.getInputStream());
                                     Client.ingame.getPaintPane1().display(img);
@@ -264,6 +267,10 @@ public class ReceiveClient extends Thread {
     private void handleReceivedCountdown(String msg) {
         String[] data = msg.split(";");
         Client.ingame.displayCountdownTime(data[2], data[3]);
+        //dung share
+        if(data[3].equals("0")){
+            isStart = false;
+        }
     }
 
     //result client guess

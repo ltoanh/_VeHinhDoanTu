@@ -149,7 +149,7 @@ public class PaintToolPanel extends javax.swing.JPanel {
         ingame.getPaintPane1().setCurrentColor(Color.WHITE);
         ingame.getPaintPane2().setCurrentColor(Color.WHITE);
     }//GEN-LAST:event_btnEraseActionPerformed
-    static boolean isStart = true;
+    boolean isStart = false;
     private void btnSharingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSharingActionPerformed
         ClientCtr.senderClient.shareScreen();
         isStart = true;
@@ -171,6 +171,9 @@ public class PaintToolPanel extends javax.swing.JPanel {
                             try {
                                 Thread.sleep(10);
                             } catch (Exception e) {
+                            }
+                            if(!isStart){
+                                
                             }
                         }
                     } catch (Exception e) {e.printStackTrace();
