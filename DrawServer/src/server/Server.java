@@ -230,9 +230,14 @@ public class Server {
         int roomID = Integer.parseInt(msg.split(";")[2]);
         Room curRoom = helpers.RoomHelpers.checkRoomByID(roomID);
         ArrayList <Player> IsPlayers = curRoom.getListPlayer();
-        String ip = receiveServer.clientIP.getHostName();
-        String mes = StreamData.Type.GAME_EVENT.name() + ";"+StreamData.Type.SHARE_SCREEN.name()+";"+ip;
-        ObjectModel obj = new ObjectModel(mes, null);
+        Player playerShareScreen = new Player();
+        for (Player player : IsPlayers) {
+            if (player.getHost().toString().equals(receiveServer.clientIP.toString()) && player.getPort() == receiveServer.clientPort) {
+                playerShareScreen = player;
+            }
+        }
+        String mes = StreamData.Type.GAME_EVENT.name() + ";"+StreamData.Type.SHARE_SCREEN.name();
+        ObjectModel obj = new ObjectModel(mes, playerShareScreen);
         for (Player isPlayer : IsPlayers) {
             senderServer.sendObjectData(obj, server, isPlayer.getHost(), isPlayer.getPort());
         }

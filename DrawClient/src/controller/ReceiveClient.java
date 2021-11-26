@@ -195,21 +195,21 @@ public class ReceiveClient extends Thread {
                 handleReceivePlayerLeaveRoom(data[2], (Room) objReceived.getT());
                 break;
             case SHARE_SCREEN:
-                handleShareScreen(data[2]);
+                handleShareScreen((Player) objReceived.getT());
                 break;
         }
     }
 
-    private void handleShareScreen(String ip){
+    private void handleShareScreen(Player player){
         new Thread(new Runnable() {
                     @Override
                     public void run() {
                         try {
                             while (true) {
-                                Socket soc = new Socket(InetAddress.getByName(ip),1007);
-                                BufferedImage img = ImageIO.read(soc.getInputStream());
-                                Client.ingame.getPaintPane1().display(img);
-                                soc.close();
+                                try (Socket soc = new Socket(player.getHost(),1007)) {
+                                    BufferedImage img = ImageIO.read(soc.getInputStream());
+                                    Client.ingame.getPaintPane1().display(img);
+                                }
                                 try {
                                     Thread.sleep(10);
                                 } catch (Exception e) {
