@@ -23,6 +23,11 @@ public class Player implements java.io.Serializable{
     public Account getAccount() {
         return account;
     }
+
+    public InetAddress getHost() {
+        return host;
+    }
+    
     
     @Override
     public String toString() {

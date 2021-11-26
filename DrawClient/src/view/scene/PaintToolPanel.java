@@ -1,5 +1,6 @@
 package view.scene;
 
+import client.Client;
 import controller.ClientCtr;
 import java.awt.AWTException;
 import java.awt.Color;
