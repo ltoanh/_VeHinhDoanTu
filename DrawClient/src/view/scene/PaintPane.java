@@ -110,7 +110,9 @@ public class PaintPane extends javax.swing.JPanel {
         this.activeTool = drawPoint.getTool();
         draw(drawPoint.getX1(), drawPoint.getY1(), drawPoint.getX2(), drawPoint.getY2(), drawPoint.getColor());
     }
-
+    public void display(BufferedImage img){
+        this.getGraphics().drawImage(img, 0, 0, this.getWidth() - 1, this.getHeight() - 1, null);
+    }
     //send point => server
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

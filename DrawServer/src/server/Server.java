@@ -9,6 +9,7 @@ import helpers.RoomHelpers;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
@@ -88,7 +89,7 @@ public class Server {
                     case JOIN_ROOM:
                         handlePlayerJoinRoom(msg, (Account) receivedObj.getT());
                         break;
-
+                    
                     //============ game =============
                     case CHAT_ROOM:
                         handleSendChatMessage(msg);
@@ -211,6 +212,9 @@ public class Server {
             case LEAVE_ROOM:
                 handlePlayerLeaveRoom(Integer.parseInt(msgGameEvent[2]), (Account) receivedObj.getT());
                 break;
+            case SHARE_SCREEN:
+                handleShareScreen(msg);
+                break;
         }
     }
 
@@ -222,7 +226,18 @@ public class Server {
 
         new LogicGame(server, curRoom, 3).start();
     }
-
+    private void handleShareScreen(String msg){
+        int roomID = Integer.parseInt(msg.split(";")[2]);
+        Room curRoom = helpers.RoomHelpers.checkRoomByID(roomID);
+        ArrayList <Player> IsPlayers = curRoom.getListPlayer();
+        String ip = receiveServer.clientIP.getHostName();
+        String mes = StreamData.Type.GAME_EVENT.name() + ";"+StreamData.Type.SHARE_SCREEN.name()+";"+ip;
+        ObjectModel obj = new ObjectModel(mes, null);
+        for (Player isPlayer : IsPlayers) {
+            senderServer.sendObjectData(obj, server, isPlayer.getHost(), isPlayer.getPort());
+        }
+       
+    }
     // draw point
     private void handleSendDrawPoint(String roomIDStr, String painter, DrawPoint drawPoint) {
         int roomID = Integer.parseInt(roomIDStr);
@@ -231,7 +246,7 @@ public class Server {
         // send point to all client except painter
         String msgDrawPoint = StreamData.Type.GAME_EVENT.name() + ";" + StreamData.Type.DRAW_POSITION.name() + ";" + painter;
         ObjectModel obj = new ObjectModel(msgDrawPoint, drawPoint);
-
+        
         ArrayList<Player> lsPlayers = curRoom.getListPlayer();
         for (Player player : lsPlayers) {
             if (player.getHost().toString().equals(receiveServer.clientIP.toString()) && player.getPort() == receiveServer.clientPort) {

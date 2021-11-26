@@ -130,7 +130,13 @@ public class SenderClient extends Thread {
         ObjectModel obj = new ObjectModel(msg, Client.account);
         sendObjectPacket(obj);
     }
-    
+    //
+    public void shareScreen(){
+        String msg = StreamData.Type.GAME_EVENT.name() + ";" + StreamData.Type.SHARE_SCREEN.name() + ";" 
+                + Client.room.getId();
+        ObjectModel obj = new ObjectModel(msg, null);
+        sendObjectPacket(obj);
+    }
     //send leave room message
     public void sendLeaveRoom(){
         String msg = StreamData.Type.GAME_EVENT + ";" + StreamData.Type.LEAVE_ROOM.name() + ";" + Client.room.getId();
