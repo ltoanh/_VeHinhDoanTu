@@ -1,8 +1,23 @@
 package view.scene;
 
+import controller.ClientCtr;
+import java.awt.AWTException;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.Robot;
+import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.JColorChooser;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -44,6 +59,11 @@ public class PaintToolPanel extends javax.swing.JPanel {
 
         btnSharing.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/assets/icons8-share-32.png"))); // NOI18N
         btnSharing.setText("Chia sẻ màn hình");
+        btnSharing.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSharingActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Màu được chọn:");
 
@@ -119,6 +139,38 @@ public class PaintToolPanel extends javax.swing.JPanel {
         ingame.getPaintPane1().setCurrentColor(Color.WHITE);
         ingame.getPaintPane2().setCurrentColor(Color.WHITE);
     }//GEN-LAST:event_btnEraseActionPerformed
+
+    private void btnSharingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSharingActionPerformed
+        ClientCtr.senderClient.shareScreen();
+        new Thread(new Runnable(){
+             @Override
+             public void run() {
+                 try {
+                        Robot rob = new Robot();
+                        Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+                        while (true) {
+                            ServerSocket soc = new ServerSocket(1007);
+                            Socket so = soc.accept();
+                            BufferedImage img = rob.createScreenCapture(new Rectangle(0, 0, (int) d.getWidth(), (int) d.getHeight()));
+
+                            ByteArrayOutputStream ous = new ByteArrayOutputStream();
+                            ImageIO.write(img, "png", ous);
+                            so.getOutputStream().write(ous.toByteArray());
+                            soc.close();
+                            try {
+                                Thread.sleep(10);
+                            } catch (Exception e) {
+                            }
+                        }
+                    } catch (Exception e) {e.printStackTrace();
+                        System.out.println(e);
+                    }
+                 
+             }
+            
+        }).start();
+         
+    }//GEN-LAST:event_btnSharingActionPerformed
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnChooseColor;

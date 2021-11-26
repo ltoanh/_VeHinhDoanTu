@@ -31,7 +31,7 @@ public class StreamData {
         CHANGE_TURN, // thay doi turn nguoi ve
         TURN_RESULT, // hien thi ket qua 1 turn
         LEAVE_ROOM, // thoat game
-
+        SHARE_SCREEN,
         // specific
         EXIT, // dang xuat
         COUNTDOWN, // countdown time

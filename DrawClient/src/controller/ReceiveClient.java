@@ -4,13 +4,17 @@ import client.Client;
 import com.sun.org.apache.xalan.internal.lib.ExsltStrings;
 import constant.StreamData;
 import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.Socket;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import model.Account;
 import model.DrawPoint;
@@ -190,9 +194,33 @@ public class ReceiveClient extends Thread {
             case LEAVE_ROOM:
                 handleReceivePlayerLeaveRoom(data[2], (Room) objReceived.getT());
                 break;
+            case SHARE_SCREEN:
+                handleShareScreen(data[2]);
+                break;
         }
     }
 
+    private void handleShareScreen(String ip){
+        new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            while (true) {
+                                Socket soc = new Socket(InetAddress.getByName(ip),1007);
+                                BufferedImage img = ImageIO.read(soc.getInputStream());
+                                Client.ingame.getPaintPane1().display(img);
+                                soc.close();
+                                try {
+                                    Thread.sleep(10);
+                                } catch (Exception e) {
+                                }
+                            }
+                        } catch (Exception e) {
+                            System.out.println(e);
+                        }
+                    }
+                }).start();
+    }
     // hien thi pane paint tool / guess
     private void displayIngamePanel() {
         String uPainter1 = Client.room.getLsPainterUsername().get(0);
