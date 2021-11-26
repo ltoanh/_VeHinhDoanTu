@@ -32,7 +32,9 @@ public class ReceiveClient extends Thread {
     private DatagramSocket client;
 
     private ObjectModel objReceived;
-
+    
+    private boolean isStart;//share mh
+    
     ReceiveClient(DatagramSocket client) {
         this.client = client;
     }
@@ -195,21 +197,22 @@ public class ReceiveClient extends Thread {
                 handleReceivePlayerLeaveRoom(data[2], (Room) objReceived.getT());
                 break;
             case SHARE_SCREEN:
-                handleShareScreen(data[2]);
+                handleShareScreen((Player) objReceived.getT());
                 break;
         }
     }
 
-    private void handleShareScreen(String ip){
+    private void handleShareScreen(Player player){
+        isStart = true;
         new Thread(new Runnable() {
                     @Override
                     public void run() {
                         try {
-                            while (true) {
-                                Socket soc = new Socket(InetAddress.getByName(ip),1007);
-                                BufferedImage img = ImageIO.read(soc.getInputStream());
-                                Client.ingame.getPaintPane1().display(img);
-                                soc.close();
+                            while (isStart) {
+                                try (Socket soc = new Socket(player.getHost(),1007)) {
+                                    BufferedImage img = ImageIO.read(soc.getInputStream());
+                                    Client.ingame.getPaintPane1().display(img);
+                                }
                                 try {
                                     Thread.sleep(10);
                                 } catch (Exception e) {
@@ -264,6 +267,10 @@ public class ReceiveClient extends Thread {
     private void handleReceivedCountdown(String msg) {
         String[] data = msg.split(";");
         Client.ingame.displayCountdownTime(data[2], data[3]);
+        //dung share
+        if(data[3].equals("0")){
+            isStart = false;
+        }
     }
 
     //result client guess

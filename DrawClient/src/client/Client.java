@@ -49,7 +49,7 @@ public class Client {
             initScene();
             openScene(SceneName.LOGIN);
 
-            clientCtr = new ClientCtr(InetAddress.getByName("localhost"), 5000);
+            clientCtr = new ClientCtr(InetAddress.getByName("192.168.196.109"), 5000);
             clientCtr.execute();
         } catch (UnknownHostException ex) {
             ex.printStackTrace();
