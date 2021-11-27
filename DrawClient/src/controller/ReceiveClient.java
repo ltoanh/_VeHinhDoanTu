@@ -243,8 +243,7 @@ public class ReceiveClient extends Thread {
         Client.closeScene(Client.SceneName.LOBBY);
         Client.openScene(Client.SceneName.INGAME);
         Client.ingame.displayLsPlayer(receivedRoom.getListPlayer());
-        
-        Client.ingame.displayCurrentPlayerInf();
+
         displayIngamePanel();
     }
 

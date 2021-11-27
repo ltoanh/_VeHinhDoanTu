@@ -6,9 +6,11 @@ package constant;
  */
 public class Avatar {
 
+    public static final String ASSETS_PATH = "src/view/assets/";
     public static final String PATH = "src/view/assets/avatar/";
+    public static final String PATH_RESOURCE = "/view/assets/avatar/";
 
-    public static final String[] AVATAR_NAME_LIST = {
+    public static final String[] LIST = {
         "icons8-brave-96.png",
         "icons8-futurama-fry-96.png",
         "icons8-lumpy-space-princess-96.png",
@@ -55,10 +57,12 @@ public class Avatar {
         "icons8_super_mario_96px.png",
         "icons8_the_flash_head_96px.png",
         "icons8_transformer_96px.png",
+        "icons8_trinity_96px.png",
+        "icons8_vietnam_96px.png",
         "icons8_year_of_rooster_96px.png"
     };
     
-    public static String getAvatarFromPath(String path) {
+    public static String getAvatarFilNameFromPath(String path) {
         String[] splitted = path.split("/");
         return splitted[splitted.length - 1];
     }
