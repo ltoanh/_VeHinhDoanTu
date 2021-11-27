@@ -34,7 +34,7 @@ public class ReceiveClient extends Thread {
     private ObjectModel objReceived;
     
     private boolean isStart;//share mh
-    
+
     ReceiveClient(DatagramSocket client) {
         this.client = client;
     }
@@ -209,10 +209,17 @@ public class ReceiveClient extends Thread {
                     public void run() {
                         try {
                             while (isStart) {
+
+                                Socket soc = new Socket(player.getHost(),1007);
+                                BufferedImage img = ImageIO.read(soc.getInputStream());
+                                Client.ingame.getPaintPane1().display(img);
+                                soc.close();
+
                                 try (Socket soc = new Socket(player.getHost(),1007)) {
                                     BufferedImage img = ImageIO.read(soc.getInputStream());
                                     Client.ingame.getPaintPane1().display(img);
                                 }
+
                                 try {
                                     Thread.sleep(10);
                                 } catch (Exception e) {
@@ -223,6 +230,12 @@ public class ReceiveClient extends Thread {
                         }
                     }
                 }).start();
+//        try {
+//            Thread.sleep(30000);
+//            t1.interrupt();
+//        } catch (InterruptedException ex) {
+//            // do nothing
+//        }
     }
     // hien thi pane paint tool / guess
     private void displayIngamePanel() {

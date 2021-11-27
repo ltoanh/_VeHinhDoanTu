@@ -23,7 +23,7 @@ public class DAO {
     private String server = "localhost:3306";
     private String db = "scribble";
     private String user = "root";
-    private String pass = "trang1034408043";
+    private String pass = "";
 
     public DAO() {
         setupConnection();
