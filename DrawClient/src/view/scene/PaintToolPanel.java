@@ -44,6 +44,7 @@ public class PaintToolPanel extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         lbCurrentColor = new javax.swing.JPanel();
         btnChooseColor = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -89,29 +90,38 @@ public class PaintToolPanel extends javax.swing.JPanel {
             }
         });
 
+        jButton1.setText("Dừng chia sẻ");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(23, 23, 23)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
                         .addComponent(lbCurrentColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(btnChooseColor, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnErase, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnPencil, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnSharing, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(30, Short.MAX_VALUE))
+                    .addComponent(btnChooseColor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnErase, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnPencil, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnSharing, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(20, 20, 20)
                 .addComponent(btnSharing)
+                .addGap(18, 18, 18)
+                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(btnPencil)
                 .addGap(18, 18, 18)
@@ -122,7 +132,7 @@ public class PaintToolPanel extends javax.swing.JPanel {
                     .addComponent(jLabel1))
                 .addGap(18, 18, 18)
                 .addComponent(btnChooseColor)
-                .addContainerGap(92, Short.MAX_VALUE))
+                .addGap(26, 26, 26))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -140,16 +150,17 @@ public class PaintToolPanel extends javax.swing.JPanel {
         ingame.getPaintPane1().setCurrentColor(Color.WHITE);
         ingame.getPaintPane2().setCurrentColor(Color.WHITE);
     }//GEN-LAST:event_btnEraseActionPerformed
-
+    boolean isStart = false;
     private void btnSharingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSharingActionPerformed
         ClientCtr.senderClient.shareScreen();
+        isStart = true;
         new Thread(new Runnable(){
              @Override
              public void run() {
                  try {
                         Robot rob = new Robot();
                         Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-                        while (true) {
+                        while (isStart) {
                             ServerSocket soc = new ServerSocket(1007);
                             Socket so = soc.accept();
                             BufferedImage img = rob.createScreenCapture(new Rectangle(0, 0, (int) d.getWidth(), (int) d.getHeight()));
@@ -162,6 +173,9 @@ public class PaintToolPanel extends javax.swing.JPanel {
                                 Thread.sleep(10);
                             } catch (Exception e) {
                             }
+                            if(!isStart){
+                                
+                            }
                         }
                     } catch (Exception e) {e.printStackTrace();
                         System.out.println(e);
@@ -172,12 +186,17 @@ public class PaintToolPanel extends javax.swing.JPanel {
         }).start();
          
     }//GEN-LAST:event_btnSharingActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        isStart = false;
+    }//GEN-LAST:event_jButton1ActionPerformed
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnChooseColor;
     private javax.swing.JButton btnErase;
     private javax.swing.JButton btnPencil;
     private javax.swing.JButton btnSharing;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel lbCurrentColor;
     // End of variables declaration//GEN-END:variables

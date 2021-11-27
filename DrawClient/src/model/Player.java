@@ -15,6 +15,10 @@ public class Player implements java.io.Serializable{
     private int port;
     private Account account;
     private int score;
+
+    public InetAddress getHost() {
+        return host;
+    }
     
     public int getScore() {
         return score;

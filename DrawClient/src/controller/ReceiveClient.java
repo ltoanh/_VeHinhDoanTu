@@ -203,16 +203,23 @@ public class ReceiveClient extends Thread {
     }
 
     private void handleShareScreen(Player player){
-         isStart=true;//share mh
-       new Thread(new Runnable() {
+        isStart = true;
+        new Thread(new Runnable() {
                     @Override
                     public void run() {
                         try {
                             while (isStart) {
+
                                 Socket soc = new Socket(player.getHost(),1007);
                                 BufferedImage img = ImageIO.read(soc.getInputStream());
                                 Client.ingame.getPaintPane1().display(img);
                                 soc.close();
+
+                                try (Socket soc = new Socket(player.getHost(),1007)) {
+                                    BufferedImage img = ImageIO.read(soc.getInputStream());
+                                    Client.ingame.getPaintPane1().display(img);
+                                }
+
                                 try {
                                     Thread.sleep(10);
                                 } catch (Exception e) {
@@ -249,8 +256,7 @@ public class ReceiveClient extends Thread {
         Client.closeScene(Client.SceneName.LOBBY);
         Client.openScene(Client.SceneName.INGAME);
         Client.ingame.displayLsPlayer(receivedRoom.getListPlayer());
-        
-        Client.ingame.displayCurrentPlayerInf();
+
         displayIngamePanel();
     }
 

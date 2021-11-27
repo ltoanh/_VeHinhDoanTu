@@ -60,7 +60,7 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Component id="lbCurPlayer" max="32767" attributes="0"/>
-              <Component id="lbScore" alignment="0" max="32767" attributes="0"/>
+              <Component id="jLabel2" alignment="0" max="32767" attributes="0"/>
               <Component id="jScrollPane1" alignment="1" max="32767" attributes="0"/>
               <Component id="jPanel4" alignment="0" max="32767" attributes="0"/>
           </Group>
@@ -71,7 +71,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="lbCurPlayer" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="lbScore" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="jScrollPane1" min="-2" pref="344" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -89,7 +89,7 @@
             <Property name="text" type="java.lang.String" value="player 1"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="lbScore">
+        <Component class="javax.swing.JLabel" name="jLabel2">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="text" type="java.lang.String" value="100 &#x111;i&#x1ec3;m"/>
@@ -212,6 +212,7 @@
         </Component>
         <Component class="javax.swing.JTextField" name="jTextField1">
           <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextField1ActionPerformed"/>
             <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextField1KeyPressed"/>
           </Events>
         </Component>

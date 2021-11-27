@@ -1,14 +1,12 @@
 package view.scene;
 
 import client.Client;
-import constant.Avatar;
 import constant.Constant;
 import controller.ClientCtr;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.border.LineBorder;
 import model.Player;
@@ -74,7 +72,7 @@ public class IngameFrm extends javax.swing.JFrame {
     }
 
     //================start game============================
-        //show paint tool
+    //show paint tool
     public void displayPaintTool() {
         paintToolPanel.setVisible(true);
         guessPane.setVisible(false);
@@ -85,7 +83,7 @@ public class IngameFrm extends javax.swing.JFrame {
         paintToolPanel.setVisible(false);
         guessPane.setVisible(true);
     }
-    
+
     // show player list
     public void displayLsPlayer(ArrayList<Player> lsPlayer) {
         taLsPlayer.setText("");
@@ -93,10 +91,6 @@ public class IngameFrm extends javax.swing.JFrame {
         for (Player player : lsPlayer) {
             String msgPlayer = player.getAccount().getName() + "(" + player.getAccount().getUsername() + ") : " + player.getScore() + " điểm\n";
             taLsPlayer.append(msgPlayer);
-            //show current player score
-            if(player.getAccount().getUsername().equals(Client.account.getUsername())){
-                lbScore.setText(player.getScore() + " điểm");
-            }
         }
     }
 
@@ -119,10 +113,9 @@ public class IngameFrm extends javax.swing.JFrame {
     // show current player inf
     public void displayCurrentPlayerInf() {
         lbCurPlayer.setText(client.Client.account.getUsername());
-        if(Client.account.getAvatar() != null){
-            ImageIcon avatar = new ImageIcon(Avatar.PATH + Client.account.getAvatar());
-            lbCurPlayer.setIcon(avatar);
-        }
+
+        // display room inf 
+        //... code ...
     }
 
     // show countdown time
@@ -178,7 +171,7 @@ public class IngameFrm extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         lbCurPlayer = new javax.swing.JLabel();
-        lbScore = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         taLsPlayer = new javax.swing.JTextArea();
         jPanel4 = new javax.swing.JPanel();
@@ -203,8 +196,8 @@ public class IngameFrm extends javax.swing.JFrame {
         lbCurPlayer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/assets/avatar/icons8_circled_user_female_skin_type_7_96px.png"))); // NOI18N
         lbCurPlayer.setText("player 1");
 
-        lbScore.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbScore.setText("100 điểm");
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("100 điểm");
 
         taLsPlayer.setEditable(false);
         taLsPlayer.setColumns(20);
@@ -236,7 +229,7 @@ public class IngameFrm extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(lbCurPlayer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(lbScore, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
@@ -246,7 +239,7 @@ public class IngameFrm extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(lbCurPlayer)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lbScore)
+                .addComponent(jLabel2)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -257,6 +250,11 @@ public class IngameFrm extends javax.swing.JFrame {
 
         jLabel3.setText("Nhập tin nhắn");
 
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
         jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 jTextField1KeyPressed(evt);
@@ -378,6 +376,10 @@ public class IngameFrm extends javax.swing.JFrame {
         jTextField1.setText("");
     }//GEN-LAST:event_btnSendMsgActionPerformed
 
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
+
     private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String msg = "";
@@ -435,6 +437,7 @@ public class IngameFrm extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSendMsg;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabelWord;
@@ -448,7 +451,6 @@ public class IngameFrm extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel lbCountdown;
     private javax.swing.JLabel lbCurPlayer;
-    private javax.swing.JLabel lbScore;
     private javax.swing.JLabel lbTurn;
     private javax.swing.JTextArea taChat;
     private javax.swing.JTextArea taLsPlayer;
