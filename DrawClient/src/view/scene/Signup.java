@@ -17,6 +17,15 @@ public class Signup extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         setTitle("Đăng ký");
     }
+    
+    private void showAvatar() {
+        String[] avatar = Avatar.AVATAR_NAME_LIST;
+        for (String string : avatar) {
+            ImageIcon img = new ImageIcon(Avatar.PATH + string);
+            cbAvatar.addItem(img);
+        }
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -28,12 +37,12 @@ public class Signup extends javax.swing.JFrame {
         lbConfirm = new javax.swing.JLabel();
         txtName = new javax.swing.JTextField();
         txtUsername = new javax.swing.JTextField();
-        btnRememberP = new javax.swing.JButton();
+        btnLogin = new javax.swing.JButton();
         btnSignup = new javax.swing.JButton();
         txtPass = new javax.swing.JPasswordField();
         txtPass2 = new javax.swing.JPasswordField();
-        lbConfirm1 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        lbAvatar = new javax.swing.JLabel();
+        cbAvatar = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -49,11 +58,11 @@ public class Signup extends javax.swing.JFrame {
 
         lbConfirm.setText("Xác nhận mật khẩu:");
 
-        btnRememberP.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btnRememberP.setText("Đăng nhập");
-        btnRememberP.addActionListener(new java.awt.event.ActionListener() {
+        btnLogin.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnLogin.setText("Đăng nhập");
+        btnLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRememberPActionPerformed(evt);
+                btnLoginActionPerformed(evt);
             }
         });
 
@@ -65,7 +74,7 @@ public class Signup extends javax.swing.JFrame {
             }
         });
 
-        lbConfirm1.setText("Chọn ảnh đại diện:");
+        lbAvatar.setText("Chọn ảnh đại diện:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -79,8 +88,8 @@ public class Signup extends javax.swing.JFrame {
                     .addComponent(lbName)
                     .addComponent(lbPassword)
                     .addComponent(lbConfirm)
-                    .addComponent(btnRememberP)
-                    .addComponent(lbConfirm1))
+                    .addComponent(btnLogin)
+                    .addComponent(lbAvatar))
                 .addGap(74, 74, 74)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtName)
@@ -90,7 +99,7 @@ public class Signup extends javax.swing.JFrame {
                             .addComponent(txtPass, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtPass2, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtUsername, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.LEADING, 0, 327, Short.MAX_VALUE))
+                            .addComponent(cbAvatar, javax.swing.GroupLayout.Alignment.LEADING, 0, 327, Short.MAX_VALUE))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(60, 60, 60))
         );
@@ -117,35 +126,32 @@ public class Signup extends javax.swing.JFrame {
                     .addComponent(txtPass2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbConfirm1))
+                    .addComponent(cbAvatar, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbAvatar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSignup)
-                    .addComponent(btnRememberP))
+                    .addComponent(btnLogin))
                 .addGap(48, 48, 48))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnRememberPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRememberPActionPerformed
-        // TODO add your handling code here:
-        
+    private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         Client.closeScene(Client.SceneName.SIGNUP);
         Client.openScene(Client.SceneName.LOGIN);
-    }//GEN-LAST:event_btnRememberPActionPerformed
+    }//GEN-LAST:event_btnLoginActionPerformed
 
     private void btnSignupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSignupActionPerformed
-        // TODO add your handling code here:
         StringBuilder mes = new StringBuilder();
         String name = txtName.getText();
         String userName = txtUsername.getText();
         String password = new String(txtPass.getPassword());
         String repassword = new String(txtPass2.getPassword());
-        int idex = jComboBox1.getSelectedIndex();
-        String tmp = jComboBox1.getItemAt(idex).toString();
-        String avatar = Avatar.getAvatarFilNameFromPath(tmp);
+        int idex = cbAvatar.getSelectedIndex();
+        String avatarPath = cbAvatar.getItemAt(idex).toString();
+        String avatar = Avatar.getAvatarFromPath(avatarPath);
         System.out.println(avatar);
         if(name.equals("")){
             mes.append("Vui lòng điền tên\n");
@@ -211,12 +217,12 @@ public class Signup extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnRememberP;
+    private javax.swing.JButton btnLogin;
     private javax.swing.JButton btnSignup;
-    private javax.swing.JComboBox<ImageIcon> jComboBox1;
+    private javax.swing.JComboBox<ImageIcon> cbAvatar;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel lbAvatar;
     private javax.swing.JLabel lbConfirm;
-    private javax.swing.JLabel lbConfirm1;
     private javax.swing.JLabel lbName;
     private javax.swing.JLabel lbPassword;
     private javax.swing.JLabel lbUsername;
@@ -225,12 +231,5 @@ public class Signup extends javax.swing.JFrame {
     private javax.swing.JPasswordField txtPass2;
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
-private void showAvatar(){
-        String[] avatar = Avatar.LIST;
-        for (String string : avatar) {
-            ImageIcon img;
-            img = new ImageIcon(Avatar.PATH.concat(string));
-            jComboBox1.addItem(img);
-        }
-    }
+    
 }
